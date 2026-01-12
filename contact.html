@@ -17,7 +17,11 @@
                     <span class="brand-text">DevSym</span>
                 </a>
             </div>
-            <nav class="nav">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation"
+                aria-label="Ouvrir le menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <nav id="primary-navigation" class="nav">
                 <a href="index.html">Accueil</a>
                 <a href="about.html">À propos</a>
                 <a href="services.html">Services</a>
@@ -26,6 +30,16 @@
         </div>
     </header>
 
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-inner">
+                <h1>Contactez-nous</h1>
+                <p class="lead">Échangeons sur vos projets, partenariats ou demandes d'intervention — disponible par
+                    email, téléphone ou formulaire ci-dessous.</p>
+            </div>
+        </div>
+    </section>
+
     <main>
         <section class="section">
             <div class="container">
@@ -33,8 +47,7 @@
                 <p>Nous sommes disponibles pour échanger sur vos projets, demandes de collaboration ou interventions.
                 </p>
 
-                <div class="contact-grid"
-                    style="display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start;margin-top:20px;">
+                <div class="contact-grid">
                     <div>
                         <h3>Coordonnées</h3>
                         <p><strong>Adresse :</strong> Tanger, Maroc</p>
@@ -83,6 +96,7 @@
     <footer class="footer">
         <p>© 2026 Coopérative DevSym – Tous droits réservés</p>
     </footer>
+    <script src="main.js" defer></script>
 </body>
 
 </html>

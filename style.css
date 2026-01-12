@@ -24,6 +24,50 @@ body {
     --card-bg: #ffffff;
 }
 
+/* Homepage hero: make hero fullscreen and prevent native scrolling on index */
+.hero-page {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.hero-page .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+}
+
+/* header height used to size the hero area */
+:root {
+    --header-height: 72px;
+}
+
+.hero-page .hero {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--header-height);
+}
+
+/* ensure content inside hero is centered and responsive */
+.hero-page .hero .container {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 64px;
+    }
+
+    .hero-page .hero {
+        min-height: calc(100vh - var(--header-height));
+        padding-top: var(--header-height);
+    }
+}
+
 h1,
 h2,
 h3 {
@@ -196,17 +240,57 @@ p {
 
 .card {
     background-color: var(--card-bg);
-    padding: 26px 22px;
+    padding: 28px 22px;
     border-radius: 14px;
     text-align: center;
-    font-weight: 700;
     box-shadow: 0 10px 25px rgba(2, 6, 23, 0.06);
     transition: transform 0.22s ease, box-shadow 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 150px;
+}
+
+.card .card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+    box-shadow: 0 8px 20px rgba(228, 86, 0, 0.18);
+    display: block;
+}
+
+.card .card-body {
+    max-width: 100%;
+}
+
+.card h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--black);
+    font-weight: 700;
+}
+
+.card p {
+    margin: 0;
+    color: var(--muted-color);
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-top: 6px;
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 22px 40px rgba(2, 6, 23, 0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 26px 48px rgba(2, 6, 23, 0.14);
+}
+
+@media (max-width: 768px) {
+    .card {
+        min-height: auto;
+        padding: 20px;
+    }
 }
 
 /* =====================
@@ -385,5 +469,216 @@ p {
 
     .values-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Ensure container relative for mobile nav positioning */
+.header .container {
+    position: relative;
+}
+
+/* Mobile nav toggle button */
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: inherit;
+}
+
+.nav-toggle .hamburger {
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    display: block;
+    position: relative;
+}
+
+.nav-toggle .hamburger::before,
+.nav-toggle .hamburger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    transition: transform 0.2s ease;
+}
+
+.nav-toggle .hamburger::before {
+    top: -7px;
+}
+
+.nav-toggle .hamburger::after {
+    top: 7px;
+}
+
+/* Mobile-specific */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav {
+        display: none;
+        position: absolute;
+        top: var(--header-height);
+        right: 12px;
+        left: 12px;
+        background: #fff;
+        color: #0b0b0b;
+        padding: 16px;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.12);
+        border-radius: 8px;
+        z-index: 1200;
+    }
+
+    .nav a {
+        color: #0b0b0b;
+        margin-left: 0;
+        font-weight: 700;
+        padding: 10px 14px;
+        display: block;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    .nav a.btn {
+        background: var(--brand);
+        color: #fff;
+    }
+
+    .nav.nav--open {
+        display: flex;
+    }
+
+    .hero h2 {
+        font-size: 1.9rem;
+    }
+
+    .hero-page {
+        overflow: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        padding: 0 12px;
+    }
+
+    .section {
+        padding: 40px 0;
+    }
+}
+
+/* Contact grid (moved from inline styles) */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 28px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+/* Responsive images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Modal for service details */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 1400;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-dialog {
+    position: relative;
+    background: #fff;
+    color: #0b0b0b;
+    max-width: 760px;
+    width: calc(100% - 40px);
+    margin: 16px;
+    border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(2, 6, 23, 0.18);
+    padding: 24px;
+    z-index: 1401;
+    overflow: auto;
+    max-height: 90vh;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal h3 {
+    margin-top: 0;
+}
+
+.modal .modal-lead {
+    color: var(--muted-color);
+    margin-bottom: 12px;
+}
+
+.modal .modal-body {
+    color: #334155;
+}
+
+@media (max-width: 480px) {
+    .modal-dialog {
+        padding: 18px;
+        width: calc(100% - 24px);
     }
 }

@@ -17,7 +17,11 @@
                     <span class="brand-text">DevSym</span>
                 </a>
             </div>
-            <nav class="nav">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation"
+                aria-label="Ouvrir le menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <nav id="primary-navigation" class="nav">
                 <a href="index.html">Accueil</a>
                 <a href="about.html">À propos</a>
                 <a href="index.html#contact" class="btn">Contact</a>
@@ -25,25 +29,102 @@
         </div>
     </header>
 
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-inner">
+                <h1>Nos services</h1>
+                <p class="lead">Accompagnement stratégique, gestion de projet, formation et évaluation pour maximiser
+                    l'impact social.</p>
+                <p><a href="contact.html" class="btn btn-light">Contactez-nous</a></p>
+            </div>
+        </div>
+    </section>
+
     <main>
         <section class="section">
             <div class="container">
                 <h2>Nos services</h2>
                 <div class="grid">
-                    <div class="card">Conseils &amp; Accompagnement</div>
-                    <div class="card">Formation</div>
-                    <div class="card">Étude &amp; Diagnostic</div>
-                    <div class="card">Suivi &amp; Évaluation</div>
-                    <div class="card">Animation &amp; Interventions publiques</div>
-                    <div class="card">Rédaction de rapports</div>
+                    <div class="card" role="button" tabindex="0" aria-haspopup="dialog"
+                        data-title="Conseils & Accompagnement" data-lead="Support stratégique & opérationnel"
+                        data-description="Accompagnement stratégique, co-construction de feuilles de route, aide à la définition de modèles opérationnels et appui au pilotage des projets.">
+                        <span class="card-icon" aria-hidden="true"></span>
+                        <div class="card-body">
+                            <h4>Conseils &amp; Accompagnement</h4>
+                            <p>Support stratégique et opérationnel pour concevoir et piloter vos projets à impact.</p>
+                        </div>
+                    </div>
+
+                    <div class="card" role="button" tabindex="0" aria-haspopup="dialog" data-title="Formation"
+                        data-lead="Programmes sur mesure"
+                        data-description="Formations pratiques et ateliers pour renforcer compétences techniques et méthodologiques des équipes (conception, animation, évaluation).">
+                        <span class="card-icon" aria-hidden="true"></span>
+                        <div class="card-body">
+                            <h4>Formation</h4>
+                            <p>Programmes sur mesure pour renforcer compétences et capacités des équipes.</p>
+                        </div>
+                    </div>
+
+                    <div class="card" role="button" tabindex="0" aria-haspopup="dialog" data-title="Étude & Diagnostic"
+                        data-lead="Analyses et diagnostics"
+                        data-description="Études contextuelles, diagnostics organisationnels et évaluations rapides pour orienter décisions et priorités stratégiques.">
+                        <span class="card-icon" aria-hidden="true"></span>
+                        <div class="card-body">
+                            <h4>Étude &amp; Diagnostic</h4>
+                            <p>Analyses contextuelles et diagnostics pour orienter décisions et priorités.</p>
+                        </div>
+                    </div>
+
+                    <div class="card" role="button" tabindex="0" aria-haspopup="dialog" data-title="Suivi & Évaluation"
+                        data-lead="Indicateurs & évaluations"
+                        data-description="Conception de systèmes de suivi et mise en place d'évaluations qualitatives et quantitatives pour mesurer la portée et l'efficacité des actions.">
+                        <span class="card-icon" aria-hidden="true"></span>
+                        <div class="card-body">
+                            <h4>Suivi &amp; Évaluation</h4>
+                            <p>Mise en place d'indicateurs et évaluations pour mesurer l'impact réel.</p>
+                        </div>
+                    </div>
+
+                    <div class="card" role="button" tabindex="0" aria-haspopup="dialog"
+                        data-title="Animation & Interventions publiques" data-lead="Ateliers & mobilisation"
+                        data-description="Conception et animation d'ateliers participatifs, événements et interventions publiques pour favoriser l'appropriation et la mobilisation des acteurs.">
+                        <span class="card-icon" aria-hidden="true"></span>
+                        <div class="card-body">
+                            <h4>Animation &amp; Interventions publiques</h4>
+                            <p>Animation d'ateliers et interventions pour mobiliser et partager savoir-faire.</p>
+                        </div>
+                    </div>
+
+                    <div class="card" role="button" tabindex="0" aria-haspopup="dialog"
+                        data-title="Rédaction de rapports" data-lead="Restitution & recommandations"
+                        data-description="Rédaction de rapports clairs et structurés, restitution des résultats et formulation de recommandations opérationnelles et politiques.">
+                        <span class="card-icon" aria-hidden="true"></span>
+                        <div class="card-body">
+                            <h4>Rédaction de rapports</h4>
+                            <p>Rédaction claire et structurée pour restituer résultats, recommandations et preuves.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Service modal -->
+    <div id="service-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true"
+        aria-labelledby="service-modal-title">
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-dialog" role="document">
+            <button class="modal-close" aria-label="Fermer">×</button>
+            <h3 id="service-modal-title"></h3>
+            <p class="modal-lead"></p>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
     <footer class="footer">
         <p>© 2026 Coopérative DevSym – Tous droits réservés</p>
     </footer>
+    <script src="main.js" defer></script>
 </body>
 
 </html>

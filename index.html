@@ -19,7 +19,11 @@
                     <span class="brand-text">DevSym</span>
                 </a>
             </div>
-            <nav class="nav">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation"
+                aria-label="Ouvrir le menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <nav id="primary-navigation" class="nav">
                 <a href="about.html">À propos</a>
                 <a href="services.html">Services</a>
                 <a href="">Équipe</a>
@@ -28,15 +32,18 @@
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
+    <!-- PAGE HERO (style 'À propos') -->
+    <section class="page-hero">
         <div class="container">
-            <h2>Ensemble, co-construisons la réussite durable de vos projets</h2>
-            <p>Bureau d’étude coopératif spécialisé en conseil, gestion de projets et innovation sociale.</p>
-            <a href="services.html" class="btn btn-light">Découvrir nos services</a>
+            <div class="hero-inner">
+                <h1>Ensemble, co-construisons la réussite durable de vos projets</h1>
+                <p class="lead">Bureau d’étude coopératif spécialisé en conseil, gestion de projets et innovation
+                    sociale.</p>
+                <p><a href="services.html" class="btn btn-light">Découvrir nos services</a></p>
+            </div>
         </div>
     </section>
-
+    <script src="main.js" defer></script>
 </body>
 
 </html>
