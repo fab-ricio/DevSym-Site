@@ -94,4 +94,40 @@ document.addEventListener("DOMContentLoaded", function () {
       if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
     });
   }
+  /* Light parallax for home hero (mouse movement) */
+  (function () {
+    var hero = document.querySelector(".page-hero.home-hero");
+    if (!hero) return;
+    var decor = hero.querySelector(".hero-decor");
+    var inner = hero.querySelector(".hero-inner");
+    var prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+    var raf = null;
+    var tx = 0,
+      ty = 0;
+    function onMove(e) {
+      var rect = hero.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      tx = x * 12;
+      ty = y * 10;
+      if (!raf) raf = requestAnimationFrame(update);
+    }
+    function update() {
+      raf = null;
+      if (decor)
+        decor.style.transform =
+          "translate(" + tx + "px, " + ty + "px) rotate(" + tx * 0.06 + "deg)";
+      if (inner)
+        inner.style.transform =
+          "translate(" + tx * 0.18 + "px, " + ty * 0.12 + "px)";
+    }
+    hero.addEventListener("mousemove", onMove);
+    hero.addEventListener("mouseleave", function () {
+      if (decor) decor.style.transform = "";
+      if (inner) inner.style.transform = "";
+    });
+  })();
 });
