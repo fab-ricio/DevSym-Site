@@ -558,6 +558,7 @@ p {
     align-items: center;
     padding: 0 0 40px;
     /* keep some bottom breathing room for small screens */
+    background-image: linear-gradient(rgba(8, 18, 35, 0.65), rgba(8, 18, 35, 0.5)), url('images/couverture.jpeg');
     background-position: center;
     background-size: cover;
 }
