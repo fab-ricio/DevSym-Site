@@ -47,13 +47,22 @@ document.addEventListener("DOMContentLoaded", function () {
     var modalLead = modal.querySelector(".modal-lead");
     var modalBody = modal.querySelector(".modal-body");
     var closeBtn = modal.querySelector(".modal-close");
+    var contactBtn = modal.querySelector("#service-contact-btn");
     var lastFocus = null;
+    var currentService = null;
 
     function openModal(data) {
       lastFocus = document.activeElement;
       modalTitle.textContent = data.title || "";
       modalLead.textContent = data.lead || "";
       modalBody.innerHTML = data.description || "";
+      currentService = data.title;
+      
+      // Update contact button with service parameter
+      if (contactBtn && currentService) {
+        contactBtn.href = "contact.html?service=" + encodeURIComponent(currentService);
+      }
+      
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
       closeBtn.focus();
