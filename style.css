@@ -741,6 +741,12 @@ p {
     width: 100%;
     border-radius: 12px;
     box-shadow: 0 12px 30px rgba(2, 6, 23, 0.08);
+    filter: grayscale(100%) contrast(1.1);
+    transition: filter 0.3s ease;
+}
+
+.about-media img:hover {
+    filter: grayscale(100%) contrast(1.15);
 }
 
 /* About page enhancements */
@@ -1119,6 +1125,18 @@ img {
 
 .modal .modal-body {
     color: #334155;
+}
+
+.modal-cta {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(2, 6, 23, 0.1);
+}
+
+.modal-cta .btn {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
 }
 
 @media (max-width: 480px) {
