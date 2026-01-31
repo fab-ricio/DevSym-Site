@@ -33,69 +33,116 @@
     </header>
 
     <main>
-        <section class="section">
+        <section id="missions" class="section">
             <div class="container">
+                <div class="projects-controls" role="toolbar" aria-label="Filtres projets">
+                    <div class="filters">
+                        <label>Type
+                            <select id="filter-type">
+                                <option value="">Tous</option>
+                                <option value="formation">Formation</option>
+                                <option value="audit">Audit</option>
+                                <option value="accompagnement">Accompagnement</option>
+                            </select>
+                        </label>
+                        <label>Année
+                            <select id="filter-year">
+                                <option value="">Toutes</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                        </label>
+                        <label class="search-label">
+                            <input id="filter-search" type="search" placeholder="Rechercher par mot-clé" />
+                        </label>
+                    </div>
+                    <div class="actions">
+                        <button id="reset-filters" class="btn btn-light">Réinitialiser</button>
+                    </div>
+                </div>
+
                 <h2>Missions réalisées</h2>
-                <p class="lead">Voici une sélection de missions et projets que nous avons accompagnés. Remplacez les
-                    placeholders par vos contenus réels.</p>
+                <p class="lead">Sélection de missions où nous avons accompagné des organisations. Cliquez sur une carte pour en savoir plus.</p>
 
                 <div class="missions-grid">
-                    <article class="mission-card">
-                        <h4>Mission 1 — Titre du projet</h4>
-                        <p class="muted">Client / Lieu • Année</p>
-                        <p>Brève description de la mission, objectifs et résultats clés. Remplacez ce texte par le
-                            contenu réel.</p>
+                    <article class="mission-card" data-type="formation" data-year="2024" data-title="Formation numérique" data-lead="Renforcement des compétences" data-description="Programme de formation sur les outils numériques pour collectivités." data-images="images/project1.jpg">
+                        <img data-src="images/project1.jpg" alt="Vignette projet 1" class="project-thumb lazy" />
+                        <h4>Formation numérique</h4>
+                        <p class="muted">Collectivité • 2024</p>
+                        <p>Programme de montée en compétence des agents autour des outils collaboratifs et d'évaluation.</p>
                     </article>
 
-                    <article class="mission-card">
-                        <h4>Mission 2 — Titre du projet</h4>
-                        <p class="muted">Client / Lieu • Année</p>
-                        <p>Brève description de la mission, objectifs et résultats clés.</p>
+                    <article class="mission-card" data-type="audit" data-year="2023" data-title="Audit de déploiement" data-lead="Évaluation technique" data-description="Audit complet de l'architecture et recommandations pour montée en charge." data-images="images/project2.jpg">
+                        <img data-src="images/project2.jpg" alt="Vignette projet 2" class="project-thumb lazy" />
+                        <h4>Audit de déploiement</h4>
+                        <p class="muted">Associatif • 2023</p>
+                        <p>Audit des processus de déploiement et recommandations opérationnelles.</p>
                     </article>
 
-                    <article class="mission-card">
-                        <h4>Mission 3 — Titre du projet</h4>
-                        <p class="muted">Client / Lieu • Année</p>
-                        <p>Brève description de la mission, objectifs et résultats clés.</p>
+                    <article class="mission-card" data-type="accompagnement" data-year="2022" data-title="Accompagnement stratégique" data-lead="Stratégie & pilotage" data-description="Accompagnement sur la stratégie d'usage et gouvernance des données." data-images="images/project3.jpg">
+                        <img data-src="images/project3.jpg" alt="Vignette projet 3" class="project-thumb lazy" />
+                        <h4>Accompagnement stratégique</h4>
+                        <p class="muted">Institution • 2022</p>
+                        <p>Co-construction d'une feuille de route pour la gouvernance des données.</p>
                     </article>
 
-                    <article class="mission-card">
-                        <h4>Mission 4 — Titre du projet</h4>
-                        <p class="muted">Client / Lieu • Année</p>
-                        <p>Brève description de la mission, objectifs et résultats clés.</p>
+                    <article class="mission-card" data-type="formation" data-year="2023" data-title="Atelier UX" data-lead="Design centré utilisateur" data-description="Atelier de design thinking pour définir parcours utilisateurs et MVP." data-images="images/project4.jpg">
+                        <img data-src="images/project4.jpg" alt="Vignette projet 4" class="project-thumb lazy" />
+                        <h4>Atelier UX</h4>
+                        <p class="muted">Collectivité • 2023</p>
+                        <p>Ateliers participatifs pour identifier besoins utilisateurs et prioriser fonctionnalités.</p>
                     </article>
 
-                    <article class="mission-card">
-                        <h4>Mission 5 — Titre du projet</h4>
-                        <p class="muted">Client / Lieu • Année</p>
-                        <p>Brève description de la mission, objectifs et résultats clés.</p>
+                    <article class="mission-card" data-type="audit" data-year="2024" data-title="Audit accessibilité" data-lead="Conformité RGAA" data-description="Audit d'accessibilité et plan d'actions pour améliorer l'expérience inclusive." data-images="images/project5.jpg">
+                        <img data-src="images/project5.jpg" alt="Vignette projet 5" class="project-thumb lazy" />
+                        <h4>Audit accessibilité</h4>
+                        <p class="muted">Associatif • 2024</p>
+                        <p>Analyse des points d'amélioration et priorisation des correctifs pour conformité.</p>
                     </article>
 
-                    <article class="mission-card">
-                        <h4>Mission 6 — Titre du projet</h4>
-                        <p class="muted">Client / Lieu • Année</p>
-                        <p>Brève description de la mission, objectifs et résultats clés.</p>
+                    <article class="mission-card" data-type="accompagnement" data-year="2023" data-title="Support opérationnel" data-lead="Soutien terrain" data-description="Support opérationnel lors du déploiement d'un service en production." data-images="images/project6.jpg">
+                        <img data-src="images/project6.jpg" alt="Vignette projet 6" class="project-thumb lazy" />
+                        <h4>Support opérationnel</h4>
+                        <p class="muted">Privé • 2023</p>
+                        <p>Assistance technique et formation des équipes lors du premier trimestre de production.</p>
                     </article>
+                </div>
+
+                <div class="load-more-wrap" style="text-align:center; margin-top:1rem;">
+                    <button id="load-more" class="btn">Charger plus</button>
                 </div>
 
                 <h3 style="margin-top:40px;">Nos partenaires</h3>
-                <p class="muted">Nous travaillons avec des partenaires institutionnels et privés. Ajoutez ici les logos
-                    (10 emplacements).</p>
+                <p class="muted">Nous travaillons avec des partenaires institutionnels et privés. Ajoutez ici les logos.</p>
 
                 <div class="partners-grid">
-                    <div class="partner-slot">Logo 1</div>
-                    <div class="partner-slot">Logo 2</div>
-                    <div class="partner-slot">Logo 3</div>
-                    <div class="partner-slot">Logo 4</div>
-                    <div class="partner-slot">Logo 5</div>
-                    <div class="partner-slot">Logo 6</div>
-                    <div class="partner-slot">Logo 7</div>
-                    <div class="partner-slot">Logo 8</div>
-                    <div class="partner-slot">Logo 9</div>
-                    <div class="partner-slot">Logo 10</div>
+                    <div class="partner-slot"><img data-src="images/partner1.png" alt="Partner 1" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner2.png" alt="Partner 2" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner3.png" alt="Partner 3" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner4.png" alt="Partner 4" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner5.png" alt="Partner 5" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner6.png" alt="Partner 6" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner7.png" alt="Partner 7" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner8.png" alt="Partner 8" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner9.png" alt="Partner 9" class="lazy partner-logo"/></div>
+                    <div class="partner-slot"><img data-src="images/partner10.png" alt="Partner 10" class="lazy partner-logo"/></div>
                 </div>
             </div>
         </section>
+
+        <!-- Project modal (lightbox) -->
+        <div id="project-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+            <div class="modal-dialog">
+                <button class="modal-close" aria-label="Fermer">×</button>
+                <div class="modal-content">
+                    <h3 id="modal-title"></h3>
+                    <p id="modal-lead" class="muted"></p>
+                    <div id="modal-gallery" class="modal-gallery"></div>
+                    <div id="modal-body" class="modal-body"></div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Scripts for social embeds -->
