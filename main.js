@@ -57,12 +57,13 @@ document.addEventListener("DOMContentLoaded", function () {
       modalLead.textContent = data.lead || "";
       modalBody.innerHTML = data.description || "";
       currentService = data.title;
-      
+
       // Update contact button with service parameter
       if (contactBtn && currentService) {
-        contactBtn.href = "contact.html?service=" + encodeURIComponent(currentService);
+        contactBtn.href =
+          "contact.html?service=" + encodeURIComponent(currentService);
       }
-      
+
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
       closeBtn.focus();
