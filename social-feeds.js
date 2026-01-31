@@ -21,8 +21,7 @@
     script.async = true;
     script.defer = true;
     script.crossOrigin = "anonymous";
-    script.src =
-      "https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v18.0";
+    script.src = "https://www.facebook.com/profile.php?id=100090623652091";
     document.body.appendChild(script);
   }
 
