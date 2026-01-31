@@ -259,7 +259,30 @@ p {
     border-radius: 50%;
     background: linear-gradient(135deg, var(--brand), var(--brand-dark));
     box-shadow: 0 8px 20px rgba(228, 86, 0, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card .card-icon svg {
+    width: 28px;
+    height: 28px;
     display: block;
+    fill: #fff;
+    stroke: #fff;
+    stroke-width: 0.8px;
+}
+
+@media (max-width: 480px) {
+    .card .card-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .card .card-icon svg {
+        width: 22px;
+        height: 22px;
+    }
 }
 
 .card .card-body {
@@ -310,6 +333,118 @@ p {
     color: var(--black);
 }
 
+/* Team grid & avatars */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+    align-items: start;
+}
+
+.bio-card {
+    border-radius: 50%;
+    text-align: center;
+    padding: 18px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(2, 6, 23, 0.06);
+}
+
+.bio-avatar {
+    /* width: 120px;
+    height: 120px; */
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 12px;
+    border: 4px solid rgba(255, 106, 0, 0.08);
+    box-shadow: 0 8px 26px rgba(2, 6, 23, 0.08);
+    transition: transform 0.28s cubic-bezier(.2, .9, .2, 1), box-shadow 0.28s ease;
+    transform: translateZ(0);
+}
+
+.bio-card:hover .bio-avatar,
+.bio-card:focus .bio-avatar {
+    transform: scale(1.06);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+}
+
+.bio-card:focus {
+    outline: 3px solid rgba(255, 106, 0, 0.18);
+    outline-offset: 6px;
+    border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bio-avatar {
+        transition: none !important;
+    }
+}
+
+/* Responsive avatar sizes */
+@media (max-width: 600px) {
+    .bio-avatar {
+        width: 96px;
+        height: 96px;
+    }
+}
+
+.bio-card h4 {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.bio-card .role {
+    color: var(--muted-color);
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+}
+
+.bio-card .bio {
+    color: var(--muted-color);
+    font-size: 0.95rem;
+}
+
+/* Caption under avatar: name in bold and role */
+.bio-figure {
+    margin: 0 auto 10px;
+}
+
+.bio-caption {
+    display: block;
+    text-align: center;
+    margin-top: 6px;
+}
+
+.bio-caption strong {
+    display: block;
+    font-weight: 800;
+    color: var(--black);
+    font-size: 1.02rem;
+}
+
+.role-caption {
+    display: block;
+    color: var(--muted-color);
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+    .bio-avatar {
+        width: 96px;
+        height: 96px;
+    }
+
+    .bio-card {
+        padding: 14px;
+    }
+}
+
+
 /* =====================
    CONTACT
 ===================== */
@@ -345,11 +480,44 @@ p {
     }
 }
 
+/* Specific adjustments for narrower desktops and tablets */
+@media (max-width: 900px) {
+
+    /* Scale down hero titles and lead a little */
+    .page-hero.home-hero h1 {
+        font-size: 1.9rem;
+    }
+
+    .page-hero.home-hero .lead {
+        font-size: 1rem;
+        max-width: 680px;
+        padding: 0 14px;
+    }
+
+    /* Stack hero CTAs vertically and make buttons fill width for better tap targets */
+    .hero-cta {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+        max-width: 420px;
+        box-sizing: border-box;
+    }
+
+    /* Reduce bottom padding so the hero visually fits without white gaps */
+    .page-hero.home-hero {
+        padding-bottom: 20px;
+    }
+}
+
 /* -----------------------
    ABOUT PAGE STYLES
    ----------------------- */
 .page-hero {
-    background: linear-gradient(180deg, rgba(8, 18, 35, 0.85), rgba(8, 18, 35, 0.65)), url('https://images.unsplash.com/photo-1497493292307-31c376b6e479?w=1600&q=60&auto=format&fit=crop') center/cover no-repeat;
+    background: linear-gradient(180deg, rgba(8, 18, 35, 0.85), rgba(8, 18, 35, 0.65)), url('../images/couverture.jpeg') center/cover no-repeat;
     color: #fff;
     padding: 80px 0;
 }
@@ -379,7 +547,8 @@ p {
     min-height: calc(100vh - var(--header-height));
     display: flex;
     align-items: center;
-    padding: 0 0 40px; /* keep some bottom breathing room for small screens */
+    padding: 0 0 40px;
+    /* keep some bottom breathing room for small screens */
     background-position: center;
     background-size: cover;
 }
@@ -956,5 +1125,48 @@ img {
     .modal-dialog {
         padding: 18px;
         width: calc(100% - 24px);
+    }
+}
+
+/* =====================
+   SOCIAL FEEDS (MEDIA PAGE)
+===================== */
+.social-feeds {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 28px;
+    margin-top: 30px;
+}
+
+.social-feed {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 22px rgba(2, 6, 23, 0.06);
+}
+
+.social-feed h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: var(--black);
+    font-size: 1.1rem;
+}
+
+.facebook-feed .fb-page {
+    width: 100%;
+}
+
+.instagram-feed .instagram-media {
+    margin: 0 auto !important;
+    max-width: 100%;
+}
+
+.linkedin-feed #linkedin-feed {
+    border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+    .social-feeds {
+        grid-template-columns: 1fr;
     }
 }
