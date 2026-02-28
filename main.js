@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (nav && nav.classList.contains("nav--open")) {
         nav.classList.remove("nav--open");
         var toggle = document.querySelector(
-          '.nav-toggle[aria-controls="' + nav.id + '"]'
+          '.nav-toggle[aria-controls="' + nav.id + '"]',
         );
         if (toggle) toggle.setAttribute("aria-expanded", "false");
       }
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("click", function (e) {
     var nav = document.getElementById("primary-navigation");
     var toggle = document.querySelector(
-      '.nav-toggle[aria-controls="primary-navigation"]'
+      '.nav-toggle[aria-controls="primary-navigation"]',
     );
     if (!nav || !toggle) return;
     if (
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  /* Service modal handling */
+  /* Service modal handling - VERSION CORRIGÉE */
   var modal = document.getElementById("service-modal");
   if (modal) {
     var modalTitle = modal.querySelector("#service-modal-title");
@@ -55,10 +55,23 @@ document.addEventListener("DOMContentLoaded", function () {
       lastFocus = document.activeElement;
       modalTitle.textContent = data.title || "";
       modalLead.textContent = data.lead || "";
-      modalBody.innerHTML = data.description || "";
+
+      if (data.description && data.description.includes("§")) {
+        var items = data.description.split("§");
+        var html = "<ul>";
+        items.forEach(function (item) {
+          if (item.trim() !== "") {
+            html += "<li>" + item.trim() + "</li>";
+          }
+        });
+        html += "</ul>";
+        modalBody.innerHTML = html;
+      } else {
+        modalBody.innerHTML = data.description || "";
+      }
+
       currentService = data.title;
 
-      // Update contact button with service parameter
       if (contactBtn && currentService) {
         contactBtn.href =
           "contact.html?service=" + encodeURIComponent(currentService);
@@ -104,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
     });
   }
+
   /* Projects interactive: filters, lazy-load, pagination, modal */
   (function projectsInteractive() {
     const section = document.getElementById("missions");
@@ -150,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Attach filter listeners
     const filters = ["filter-type", "filter-year"];
     filters.forEach((id) => {
       const el = document.getElementById(id);
@@ -185,10 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
         applyFiltersAndPagination();
       });
 
-    // Initial render
     applyFiltersAndPagination();
 
-    // Lazy-load images
     const lazyImgs = section.querySelectorAll("img.lazy");
     if ("IntersectionObserver" in window && lazyImgs.length) {
       const io = new IntersectionObserver(
@@ -205,27 +216,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           });
         },
-        { rootMargin: "200px 0px" }
+        { rootMargin: "200px 0px" },
       );
       lazyImgs.forEach((i) => io.observe(i));
-    } else {
-      lazyImgs.forEach((i) => {
-        if (i.dataset.src) {
-          i.src = i.dataset.src;
-          i.removeAttribute("data-src");
-          i.classList.remove("lazy");
-        }
-      });
     }
 
-    // Modal
-    const modal = document.getElementById("project-modal");
-    if (modal) {
-      const titleEl = modal.querySelector("#modal-title");
-      const leadEl = modal.querySelector("#modal-lead");
-      const bodyEl = modal.querySelector("#modal-body");
-      const galleryEl = modal.querySelector("#modal-gallery");
-      const closeBtn = modal.querySelector(".modal-close");
+    const projectModal = document.getElementById("project-modal");
+    if (projectModal) {
+      const titleEl = projectModal.querySelector("#modal-title");
+      const leadEl = projectModal.querySelector("#modal-lead");
+      const bodyEl = projectModal.querySelector("#modal-body");
+      const galleryEl = projectModal.querySelector("#modal-gallery");
+      const closeBtn = projectModal.querySelector(".modal-close");
       let lastFocus = null;
       function openProject(card) {
         lastFocus = document.activeElement;
@@ -244,23 +246,23 @@ document.addEventListener("DOMContentLoaded", function () {
           i.alt = "";
           galleryEl.appendChild(i);
         });
-        modal.classList.add("open");
-        modal.setAttribute("aria-hidden", "false");
+        projectModal.classList.add("open");
+        projectModal.setAttribute("aria-hidden", "false");
         closeBtn.focus();
         document.body.style.overflow = "hidden";
       }
       function closeProject() {
-        modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
+        projectModal.classList.remove("open");
+        projectModal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
         if (lastFocus && lastFocus.focus) lastFocus.focus();
       }
       closeBtn.addEventListener("click", closeProject);
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeProject();
+      projectModal.addEventListener("click", (e) => {
+        if (e.target === projectModal) closeProject();
       });
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.classList.contains("open"))
+        if (e.key === "Escape" && projectModal.classList.contains("open"))
           closeProject();
       });
       cards.forEach((card) => {
@@ -283,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var decor = hero.querySelector(".hero-decor");
     var inner = hero.querySelector(".hero-inner");
     var prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
     if (prefersReduced) return;
     var raf = null;
@@ -311,5 +313,35 @@ document.addEventListener("DOMContentLoaded", function () {
       if (decor) decor.style.transform = "";
       if (inner) inner.style.transform = "";
     });
+  })();
+
+  /* --- DYNAMIC PARTNERS INJECTION --- */
+  (function dynamicPartners() {
+    const container = document.getElementById("partners-container");
+    if (!container) return;
+
+    // Modifie cette liste avec tes vrais chemins d'images
+    const partners = [
+      { name: "Partenaire 1", logo: "images/Asticude.png" },
+      { name: "Partenaire 2", logo: "images/alcs.png" },
+      { name: "Partenaire 3", logo: "images/ddm.png" },
+      { name: "Partenaire 4", logo: "images/ims.png" },
+      { name: "Partenaire 5", logo: "images/fundación-sevilla-acoge.png" },
+      { name: "Partenaire 6", logo: "images/ideia.png" },
+      { name: "Partenaire 7", logo: "images/innovate.png" },
+      { name: "Partenaire 8", logo: "images/innovate.png" },
+      { name: "Partenaire 9", logo: "images/innovate.png" },
+      { name: "Partenaire 10", logo: "images/innovate.png" },
+    ];
+
+    container.innerHTML = partners
+      .map(
+        (partner) => `
+      <div class="partner-item">
+        <img src="${partner.logo}" alt="Logo ${partner.name}" title="${partner.name}">
+      </div>
+    `,
+      )
+      .join("");
   })();
 });

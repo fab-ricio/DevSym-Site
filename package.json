@@ -1,0 +1,14 @@
+{
+  "name": "devsym-site",
+  "version": "1.0.0",
+  "description": "DevSym static site with dynamic partners management",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

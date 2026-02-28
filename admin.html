@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Admin - DevSym</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Un peu de style rapide pour ton interface */
+        .admin-box {
+            max-width: 450px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="login-section" class="admin-box">
+        <h2>Connexion Admin</h2>
+        <input type="email" id="email" placeholder="Email du client">
+        <input type="password" id="password" placeholder="Mot de passe">
+        <button class="btn" onclick="login()">Se connecter</button>
+        <p id="login-error" style="color:red;"></p>
+    </div>
+
+    <div id="dashboard-section" class="admin-box hidden">
+        <h2>Bonjour, Admin</h2>
+        <p>Modifiez les liens ci-dessous :</p>
+        <hr>
+        <label>Facebook :</label> <input type="text" id="fb-url">
+        <label>Instagram :</label> <input type="text" id="insta-url">
+        <label>LinkedIn :</label> <input type="text" id="li-url">
+        <button class="btn" onclick="save()">Enregistrer</button>
+        <button class="btn btn-logout" onclick="logout()">Déconnexion</button>
+        <p id="save-status"></p>
+    </div>
+
+    <script>
+        // --- TON CODE JAVASCRIPT RESTE ICI ---
+        const _supabase = supabase.createClient('https://fjcqhibkmfpbukcsmigy.supabase.co', 'sb_publishable_jdcp_2l8Qjqrw3JX3HJoLw_-A-HcTh_');
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) document.getElementById('login-error').innerText = "Accès refusé.";
+            else checkSession();
+        }
+
+        async function checkSession() {
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (user) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard-section').classList.remove('hidden');
+                fetchCurrentLinks();
+            }
+        }
+
+        async function fetchCurrentLinks() {
+            const { data } = await _supabase.from('social_links').select('*');
+            data.forEach(link => {
+                if (link.platform === 'facebook') document.getElementById('fb-url').value = link.url;
+                if (link.platform === 'instagram') document.getElementById('insta-url').value = link.url;
+                if (link.platform === 'linkedin') document.getElementById('li-url').value = link.url;
+            });
+        }
+
+        async function save() {
+            const status = document.getElementById('save-status');
+            status.innerText = "Enregistrement...";
+            const updates = [
+                { p: 'facebook', u: document.getElementById('fb-url').value },
+                { p: 'instagram', u: document.getElementById('insta-url').value },
+                { p: 'linkedin', u: document.getElementById('li-url').value }
+            ];
+            for (let item of updates) {
+                await _supabase.from('social_links').update({ url: item.u }).eq('platform', item.p);
+            }
+            status.innerText = "✅ Succès !";
+        }
+
+        async function logout() {
+            await _supabase.auth.signOut();
+            location.reload();
+        }
+
+        // Vérifier si déjà connecté au chargement
+        checkSession();
+    </script>
+</body>
+
+</html>
