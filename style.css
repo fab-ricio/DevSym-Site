@@ -723,6 +723,16 @@ p {
     }
 }
 
+/* further scale down hero text on very small screens */
+@media (max-width: 480px) {
+    .page-hero.home-hero h1 {
+        font-size: 1.6rem;
+    }
+    .page-hero.home-hero .lead {
+        font-size: 0.95rem;
+        padding: 0 10px;
+    }
+}
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 480px;
