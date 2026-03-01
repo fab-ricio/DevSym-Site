@@ -130,19 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function applyFiltersAndPagination() {
       const type = (document.getElementById("filter-type") || {}).value || "";
       const year = (document.getElementById("filter-year") || {}).value || "";
-      const q = ((document.getElementById("filter-search") || {}).value || "")
-        .trim()
-        .toLowerCase();
       let shown = 0;
       cards.forEach((card) => {
         const matchesType = !type || card.dataset.type === type;
         const matchesYear = !year || card.dataset.year === year;
-        const text = (card.textContent || "").toLowerCase();
-        const matchesSearch = !q || text.indexOf(q) !== -1;
         if (
           matchesType &&
           matchesYear &&
-          matchesSearch &&
           shown < currentLimit
         ) {
           card.style.display = "";
@@ -156,9 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
           cards.filter((c) => {
             const matchesType = !type || c.dataset.type === type;
             const matchesYear = !year || c.dataset.year === year;
-            const text = (c.textContent || "").toLowerCase();
-            const matchesSearch = !q || text.indexOf(q) !== -1;
-            return matchesType && matchesYear && matchesSearch;
+            return matchesType && matchesYear;
           }).length - shown;
         loadMoreBtn.style.display = remaining > 0 ? "" : "none";
       }
@@ -173,12 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
           applyFiltersAndPagination();
         });
     });
-    const searchEl = document.getElementById("filter-search");
-    if (searchEl)
-      searchEl.addEventListener("input", () => {
-        currentLimit = pageSize;
-        applyFiltersAndPagination();
-      });
     const resetBtn = document.getElementById("reset-filters");
     if (resetBtn)
       resetBtn.addEventListener("click", () => {
@@ -186,8 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("filter-type").value = "";
         if (document.getElementById("filter-year"))
           document.getElementById("filter-year").value = "";
-        if (document.getElementById("filter-search"))
-          document.getElementById("filter-search").value = "";
         currentLimit = pageSize;
         applyFiltersAndPagination();
       });

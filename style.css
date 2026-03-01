@@ -1220,6 +1220,7 @@ img {
     justify-content: center;
     gap: 30px;
     padding: 20px 0;
+    overflow-x: hidden;
 }
 
 .social-feed {
@@ -1241,6 +1242,17 @@ img {
 
 .facebook-feed .fb-page {
     width: 100%;
+    max-width: 100% !important;
+}
+
+.instagram-feed .instagram-media {
+    margin: 0 auto !important;
+    max-width: 100%;
+}
+
+.linkedin-feed #linkedin-feed {
+    border-radius: 8px;
+    max-width:100%;
 }
 
 .instagram-feed .instagram-media {
@@ -1254,8 +1266,96 @@ img {
 
 @media (max-width: 900px) {
     .social-feeds {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
     }
+    .social-feed {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .social-feed iframe,
+    .social-feed .fb-page,
+    .social-feed blockquote {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+}
+
+/* Team section styling */
+.team-section .team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.team-section .team-member {
+    text-align: center;
+    max-width: 180px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.team-section .team-member:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.team-section .team-avatar {
+    display: block;
+    margin: 0 auto;
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    transition: transform 0.25s ease;
+}
+
+.team-section .team-member:hover .team-avatar {
+    transform: scale(1.05);
+}
+
+.team-section .team-info {
+    margin-top: 0.5rem;
+}
+
+.team-section .team-role {
+    font-size: 0.9rem;
+    color: var(--muted-color);
+    margin-top: 0.25rem;
+}
+
+/* overlay text on avatar */
+.team-section .team-avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.team-section .team-member:hover .team-avatar-overlay {
+    opacity: 1;
 }
 
 /* Projects page: controls, grid, modal, lazy-load */
@@ -1266,6 +1366,27 @@ img {
     gap: 12px;
     margin-bottom: 18px;
     flex-wrap: wrap;
+}
+
+/* responsive tweaks for filter toolbar */
+@media (max-width: 600px) {
+    .projects-controls .filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .projects-controls label {
+        width: 100%;
+    }
+    .projects-controls select,
+    .projects-controls input[type="search"] {
+        width: 100%;
+    }
+    .projects-controls .actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
 }
 
 .projects-controls .filters {
