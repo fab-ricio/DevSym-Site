@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // page transition on nav link click
+  document.querySelectorAll('.nav a').forEach(link=>{
+    link.addEventListener('click', e=>{
+      const href = link.href;
+      if (href && href !== window.location.href) {
+        e.preventDefault();
+        document.body.classList.add('fade-out');
+        setTimeout(()=>{ window.location = href; }, 300);
+      }
+    });
+  });
+
   // Handle all nav-toggle buttons (there may be one per page)
   document.querySelectorAll(".nav-toggle").forEach(function (btn) {
     btn.addEventListener("click", function () {
