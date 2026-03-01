@@ -1063,6 +1063,26 @@ p {
     margin-top: 20px;
 }
 
+/* stack contact grid on narrow screens */
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    .contact-grid aside {
+        order: -1; /* show map after form if desired */
+    }
+}
+
+/* further adjust for very small devices */
+@media (max-width: 480px) {
+    .contact-grid {
+        gap: 16px;
+    }
+    .contact-form {
+        width: 100%;
+    }
+}
+
 /* Responsive images */
 img {
     max-width: 100%;
