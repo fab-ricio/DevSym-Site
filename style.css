@@ -1299,23 +1299,15 @@ img {
     max-width: 100% !important;
 }
 
-.instagram-feed .instagram-media {
-    margin: 0 auto !important;
+.youtube-feed iframe {
+    width: 100%;
     max-width: 100%;
+    border-radius: 8px;
 }
 
 .linkedin-feed #linkedin-feed {
     border-radius: 8px;
     max-width: 100%;
-}
-
-.instagram-feed .instagram-media {
-    margin: 0 auto !important;
-    max-width: 100%;
-}
-
-.linkedin-feed #linkedin-feed {
-    border-radius: 8px;
 }
 
 @media (max-width: 900px) {

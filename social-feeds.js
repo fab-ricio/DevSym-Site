@@ -27,10 +27,30 @@ function renderFeed(platform, url) {
     if (el) {
       el.setAttribute("data-href", url);
     }
-  } else if (platform === "instagram") {
-    const container = document.querySelector(".instagram-feed");
+  } else if (platform === "youtube") {
+    const container = document.querySelector(".youtube-feed");
     if (container) {
-      container.innerHTML = `<h3>Instagram</h3><blockquote class="instagram-media" data-instgrm-permalink="${url}" data-instgrm-version="14"></blockquote>`;
+      // support video URLs and channel URLs
+      let videoId = "";
+      let channelId = "";
+      if (url.includes("youtube.com/watch?v=")) {
+        videoId = url.split("v=")[1].split("&")[0];
+      } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1].split("?")[0];
+      } else if (url.includes("youtube.com/embed/")) {
+        videoId = url.split("embed/")[1].split("?")[0];
+      } else if (url.includes("youtube.com/channel/")) {
+        channelId = url.split("youtube.com/channel/")[1].split(/[\/?]/)[0];
+      }
+      if (videoId) {
+        container.innerHTML = `<h3>YouTube</h3><iframe width="100%" height="600" src="https://www.youtube.com/embed/${videoId}" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      } else if (channelId) {
+        // embed uploads playlist for channel
+        container.innerHTML = `<h3>YouTube</h3><iframe width="100%" height="600" src="https://www.youtube.com/embed?listType=user_uploads&list=${channelId}" title="Chaîne YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      } else {
+        // fallback: just link
+        container.innerHTML = `<h3>YouTube</h3><p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
+      }
     }
   } else if (platform === "linkedin") {
     const container = document.querySelector(".linkedin-feed");
@@ -84,7 +104,7 @@ async function loadSocialFeeds() {
 
   // 2. Injection des URLs dans le HTML
   // si la base contient des URLs personnalisées, on s'en sert, sinon on applique les valeurs par défaut
-  const seen = { facebook: false, linkedin: false, instagram: false };
+  const seen = { facebook: false, linkedin: false, youtube: false };
   links.forEach((link) => {
     const pl = link.platform.toLowerCase();
     if (pl === "facebook" || pl === "linkedin" || pl === "instagram") {
@@ -100,10 +120,6 @@ async function loadSocialFeeds() {
     // Facebook
     if (window.FB) {
       window.FB.XFBML.parse();
-    }
-    // Instagram
-    if (window.instgrm) {
-      window.instgrm.Embeds.process();
     }
   }, 800);
 }
