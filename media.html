@@ -88,6 +88,43 @@
     <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: fr_FR</script>
 
     <script src="social-feeds.js" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const youtubeContainer = document.querySelector('.youtube-placeholder');
+            const rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCndcjUOurpeU4ozqoGG1d-A';
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+            fetch(proxyUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(xmlText => {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                    const entries = xmlDoc.getElementsByTagName('entry');
+                    if (entries.length > 0) {
+                        const videoIdElement = entries[0].getElementsByTagName('yt:videoId')[0];
+                        if (videoIdElement) {
+                            const videoId = videoIdElement.textContent;
+                            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                            const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+                            youtubeContainer.innerHTML = `<a href="${videoUrl}" target="_blank" style="display: block;"><img src="${thumbnailUrl}" alt="Dernière vidéo YouTube" style="width: 100%; max-width: 480px; height: auto;"></a>`;
+                        } else {
+                            youtubeContainer.innerHTML = 'ID de vidéo non trouvé.';
+                        }
+                    } else {
+                        youtubeContainer.innerHTML = 'Aucune vidéo trouvée.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement de YouTube:', error);
+                    youtubeContainer.innerHTML = 'Erreur de chargement de YouTube.';
+                });
+        });
+    </script>
 </body>
 
 </html>
