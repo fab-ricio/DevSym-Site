@@ -36,29 +36,6 @@
     <main>
         <section id="missions" class="section">
             <div class="container">
-                <div class="projects-controls" role="toolbar" aria-label="Filtres projets">
-                    <div class="filters">
-                        <label>Type
-                            <select id="filter-type">
-                                <option value="">Tous</option>
-                                <option value="formation">Formation</option>
-                                <option value="audit">Audit</option>
-                                <option value="accompagnement">Accompagnement</option>
-                            </select>
-                        </label>
-                        <label>Année
-                            <select id="filter-year">
-                                <option value="">Toutes</option>
-                                <option value="2024">2024</option>
-                                <option value="2023">2023</option>
-                                <option value="2022">2022</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="actions">
-                        <button id="reset-filters" class="btn btn-light">Réinitialiser</button>
-                    </div>
-                </div>
 
                 <h2>Missions réalisées</h2>
                 <p class="lead">Sélection de missions où nous avons accompagné des organisations. Cliquez sur une carte
@@ -132,31 +109,6 @@
                 </div>
             </div>
         </section>
-        <section class="partners-section">
-            <div class="container">
-                <h2>Nos parténaires de développement</h2>
-                <!-- <p class="lead">
-                    Nous collaborons avec des partenaires institutionnels, associatifs et privés.
-                </p> -->
-
-                <div class="partners-grid" id="partners-container">
-                    <!-- Les partenaires seront injectés ici dynamiquement -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Project modal (lightbox) -->
-        <div id="project-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-            <div class="modal-dialog">
-                <button class="modal-close" aria-label="Fermer">×</button>
-                <div class="modal-content">
-                    <h3 id="modal-title"></h3>
-                    <p id="modal-lead" class="muted"></p>
-                    <div id="modal-gallery" class="modal-gallery"></div>
-                    <div id="modal-body" class="modal-body"></div>
-                </div>
-            </div>
-        </div>
     </main>
 
     <!-- Scripts for social embeds -->
