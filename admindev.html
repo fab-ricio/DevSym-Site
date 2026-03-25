@@ -69,7 +69,8 @@
             font-weight: bold;
         }
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -77,6 +78,33 @@
         }
         .form-group textarea {
             height: 100px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        .tab-btn.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
@@ -100,37 +128,105 @@
 
     <main>
         <div class="admin-container">
-            <h1>Administration des Services</h1>
+            <h1>Panneau d'Administration</h1>
 
-            <!-- Services List -->
-            <section class="services-list">
-                <h2>Liste des Services</h2>
-                <div id="services-container">
-                    <!-- Services will be loaded here -->
-                </div>
-            </section>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="services-tab">Services</button>
+                <button class="tab-btn" data-tab="projets-tab">Projets</button>
+            </div>
 
-            <!-- Add/Edit Form -->
-            <section class="form-section">
-                <h2 id="form-title">Ajouter un Nouveau Service</h2>
-                <form id="service-form">
-                    <input type="hidden" id="service-id" value="">
-                    <div class="form-group">
-                        <label for="service-title">Titre</label>
-                        <input type="text" id="service-title" required>
+            <!-- Services Tab -->
+            <div id="services-tab" class="tab-content active">
+                <!-- Services List -->
+                <section class="services-list">
+                    <h2>Liste des Services</h2>
+                    <div id="services-container">
+                        <!-- Services will be loaded here -->
                     </div>
-                    <div class="form-group">
-                        <label for="service-lead">Lead</label>
-                        <input type="text" id="service-lead" required>
+                </section>
+
+                <!-- Add/Edit Form -->
+                <section class="form-section">
+                    <h2 id="service-form-title">Ajouter un Nouveau Service</h2>
+                    <form id="service-form">
+                        <input type="hidden" id="service-id" value="">
+                        <div class="form-group">
+                            <label for="service-title">Titre</label>
+                            <input type="text" id="service-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-lead">Lead</label>
+                            <input type="text" id="service-lead" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-description">Description</label>
+                            <textarea id="service-description" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">Ajouter</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-btn">Annuler</button>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Projects Tab -->
+            <div id="projets-tab" class="tab-content">
+                <!-- Projects List -->
+                <section class="projets-list">
+                    <h2>Liste des Projets</h2>
+                    <div id="projets-container">
+                        <!-- Projects will be loaded here -->
                     </div>
-                    <div class="form-group">
-                        <label for="service-description">Description</label>
-                        <textarea id="service-description" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="submit-btn">Ajouter</button>
-                    <button type="button" class="btn btn-secondary" id="cancel-btn">Annuler</button>
-                </form>
-            </section>
+                </section>
+
+                <!-- Add/Edit Form -->
+                <section class="form-section">
+                    <h2 id="projet-form-title">Ajouter un Nouveau Projet</h2>
+                    <form id="projet-form">
+                        <input type="hidden" id="projet-id" value="">
+                        <div class="form-group">
+                            <label for="projet-title">Titre</label>
+                            <input type="text" id="projet-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projet-lead">Lead</label>
+                            <input type="text" id="projet-lead" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projet-type">Type</label>
+                            <select id="projet-type" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="formation">Formation</option>
+                                <option value="audit">Audit</option>
+                                <option value="accompagnement">Accompagnement</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projet-year">Année</label>
+                            <select id="projet-year" required>
+                                <option value="">Sélectionner une année</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projet-description">Description</label>
+                            <textarea id="projet-description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="projet-context">Contexte</label>
+                            <input type="text" id="projet-context" placeholder="ex: Collectivité • 2024" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projet-image">Image (URL)</label>
+                            <input type="text" id="projet-image" placeholder="ex: images/project1.jpg" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="projet-submit-btn">Ajouter</button>
+                        <button type="button" class="btn btn-secondary" id="projet-cancel-btn">Annuler</button>
+                    </form>
+                </section>
+            </div>
         </div>
     </main>
 
@@ -138,7 +234,7 @@
         <p>© 2026 Coopérative DevSym – Tous droits réservés</p>
     </footer>
 
-    <script src="admindev.js"></script>
+    <script src="admindev.js" defer></script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const partnersFile = path.join(__dirname, "partners.json");
 const servicesFile = path.join(__dirname, "services.json");
+const projetsFile = path.join(__dirname, "projets.json");
 
 // Middleware
 app.use(cors());
@@ -34,6 +35,17 @@ app.get("/api/services", (req, res) => {
   } catch (err) {
     console.error("Error reading services.json:", err);
     res.status(500).json({ error: "Failed to read services" });
+  }
+});
+
+// API: Get projects
+app.get("/api/projets", (req, res) => {
+  try {
+    const data = fs.readFileSync(projetsFile, "utf8");
+    res.json(JSON.parse(data));
+  } catch (err) {
+    console.error("Error reading projets.json:", err);
+    res.status(500).json({ error: "Failed to read projets" });
   }
 });
 
@@ -87,6 +99,59 @@ app.delete("/api/services/:id", (req, res) => {
   } catch (err) {
     console.error("Error deleting service:", err);
     res.status(500).json({ error: "Failed to delete service" });
+  }
+});
+
+// API: Add new project
+app.post("/api/projets", (req, res) => {
+  try {
+    const projets = JSON.parse(fs.readFileSync(projetsFile, "utf8"));
+    const newProjet = req.body;
+    // Assign new id
+    const maxId = projets.length > 0 ? Math.max(...projets.map(p => p.id)) : 0;
+    newProjet.id = maxId + 1;
+    projets.push(newProjet);
+    fs.writeFileSync(projetsFile, JSON.stringify(projets, null, 2), "utf8");
+    res.status(201).json(newProjet);
+  } catch (err) {
+    console.error("Error adding project:", err);
+    res.status(500).json({ error: "Failed to add project" });
+  }
+});
+
+// API: Update project
+app.put("/api/projets/:id", (req, res) => {
+  try {
+    const projets = JSON.parse(fs.readFileSync(projetsFile, "utf8"));
+    const id = parseInt(req.params.id);
+    const index = projets.findIndex(p => p.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+    projets[index] = { ...projets[index], ...req.body };
+    fs.writeFileSync(projetsFile, JSON.stringify(projets, null, 2), "utf8");
+    res.json(projets[index]);
+  } catch (err) {
+    console.error("Error updating project:", err);
+    res.status(500).json({ error: "Failed to update project" });
+  }
+});
+
+// API: Delete project
+app.delete("/api/projets/:id", (req, res) => {
+  try {
+    const projets = JSON.parse(fs.readFileSync(projetsFile, "utf8"));
+    const id = parseInt(req.params.id);
+    const index = projets.findIndex(p => p.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+    const deletedProjet = projets.splice(index, 1)[0];
+    fs.writeFileSync(projetsFile, JSON.stringify(projets, null, 2), "utf8");
+    res.json(deletedProjet);
+  } catch (err) {
+    console.error("Error deleting project:", err);
+    res.status(500).json({ error: "Failed to delete project" });
   }
 });
 
