@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <title>Administration Services — DevSym</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Additional styles for admin page */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .services-list {
+            margin-bottom: 40px;
+        }
+        .service-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .service-item h3 {
+            margin: 0 0 5px 0;
+        }
+        .service-item p {
+            margin: 5px 0;
+        }
+        .service-actions {
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .form-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group textarea {
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="brand">
+                <a href="index.html" class="brand-link">
+                    <img src="images/logo devsym.png" alt="DevSym logo" class="logo-img" />
+                    <span class="brand-text">DevSym</span>
+                </a>
+            </div>
+            <nav id="primary-navigation" class="nav">
+                <a href="index.html">Accueil</a>
+                <a href="services.html">Services</a>
+                <a href="admindev.html" class="active">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="admin-container">
+            <h1>Administration des Services</h1>
+
+            <!-- Services List -->
+            <section class="services-list">
+                <h2>Liste des Services</h2>
+                <div id="services-container">
+                    <!-- Services will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Add/Edit Form -->
+            <section class="form-section">
+                <h2 id="form-title">Ajouter un Nouveau Service</h2>
+                <form id="service-form">
+                    <input type="hidden" id="service-id" value="">
+                    <div class="form-group">
+                        <label for="service-title">Titre</label>
+                        <input type="text" id="service-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-lead">Lead</label>
+                        <input type="text" id="service-lead" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-description">Description</label>
+                        <textarea id="service-description" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Ajouter</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Annuler</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Coopérative DevSym – Tous droits réservés</p>
+    </footer>
+
+    <script src="admindev.js"></script>
+</body>
+
+</html>

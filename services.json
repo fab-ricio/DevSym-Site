@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Conseils & Accompagnement",
+    "lead": "Support stratégique & opérationnel",
+    "description": "Conseil, coordination et appui au pilotage de projets§Eclairage stratégiques et politique§Conception et animation des démarches prospectives§Appui à l'exécution des activités externalisées des projets§Appui sur l'architecture et mise en place d'incubateur§Appui à la rédaction d'appel d'offre à destination des prestataires§Accompagnement pour la sélection des organismes répondant à l'appel d'offre§Identification de l'expertise géographique, technique ou institutionnelle requise pour votre projet",
+    "shortDescription": "Support stratégique et opérationnel pour concevoir et piloter vos projets à impact.",
+    "icon": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 7a2 2 0 0 1 2-2h3V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7zM9 5h6v1H9V5z\"/></svg>"
+  },
+  {
+    "id": 2,
+    "title": "Formation",
+    "lead": "Programmes sur mesure",
+    "description": "Montage technique et financier de projets§Gestion axés sur les résultats§Stratégie de communication autour du projet§Animation des ateliers d'accompagnement des porteurs de projets (entrepreneuriat)§Animation des ateliers de vulgarisation et sensibilisation§Animation des ateliers de soft skills§Mutualisation de connaissance sur mesure selon les thématiques des programmes de coopération international",
+    "shortDescription": "Programmes sur mesure pour renforcer compétences et capacités des équipes.",
+    "icon": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v14h-2V6H5v12H3V5zM7 7h9v2H7V7z\"/></svg>"
+  },
+  {
+    "id": 3,
+    "title": "Étude & Diagnostic",
+    "lead": "Analyses et diagnostics",
+    "description": "Etudes et missions de recherches-action, études de faisabilité, diagnostics territoriaux, études techniques et économiques, études de filières ou d'organisation§Enquêtes, animation de groupes de travail pour explorer un sujet, établir un état des lieux, définir une feuille de route…§Appui aux centres de recherche sur des études documentaires et statistiques",
+    "shortDescription": "Analyses contextuelles et diagnostics pour orienter décisions et priorités.",
+    "icon": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M10 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm11 18-4.35-4.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+  },
+  {
+    "id": 4,
+    "title": "Suivi & Évaluation",
+    "lead": "Indicateurs & évaluations",
+    "description": "Nous mettons en place des techniques et méthodes de suivi et d'évaluation personnalisé vous permettant facilement d'examiner les moyens déployés, les activités ainsi que la performance§Evaluation mi-parcours§Evaluation finale",
+    "shortDescription": "Mise en place d'indicateurs et évaluations pour mesurer l'impact réel.",
+    "icon": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 3v18h18\"/><path d=\"M7 13v6M12 9v10M17 5v14\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+  },
+  {
+    "id": 5,
+    "title": "Animation & Interventions publiques",
+    "lead": "Ateliers & mobilisation",
+    "description": "Animation d'ateliers, débats, rencontres, tables rondes et autres conférences publics§Préparation conceptuelle, animation et modération d'ateliers thématiques des projets§Appui à l'organisation colloques, séminaires, démarches constructives, …",
+    "shortDescription": "Animation d'ateliers et interventions pour mobiliser et partager savoir-faire.",
+    "icon": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10v4h3l7 4V6L6 10H3z\"/><path d=\"M16 7l6-3v14l-6-3\"/></svg>"
+  },
+  {
+    "id": 6,
+    "title": "Rédaction de rapports",
+    "lead": "Restitution & recommandations",
+    "description": "Production des rapports finaux (narratif et financier) des projets§Production de livrables facilement appropriables et diffusables§Rédaction des canevas des rapports à éditer et le respect de ceux à réviser§Rédaction des documents techniques, compte rendu, des articles",
+    "shortDescription": "Rédaction claire et structurée pour restituer résultats, recommandations et preuves.",
+    "icon": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z\"/><path d=\"M8 9h8M8 13h8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+  }
+]

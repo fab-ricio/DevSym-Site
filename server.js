@@ -6,6 +6,7 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const partnersFile = path.join(__dirname, "partners.json");
+const servicesFile = path.join(__dirname, "services.json");
 
 // Middleware
 app.use(cors());
@@ -22,6 +23,70 @@ app.get("/api/partners", (req, res) => {
   } catch (err) {
     console.error("Error reading partners.json:", err);
     res.status(500).json({ error: "Failed to read partners" });
+  }
+});
+
+// API: Get services
+app.get("/api/services", (req, res) => {
+  try {
+    const data = fs.readFileSync(servicesFile, "utf8");
+    res.json(JSON.parse(data));
+  } catch (err) {
+    console.error("Error reading services.json:", err);
+    res.status(500).json({ error: "Failed to read services" });
+  }
+});
+
+// API: Add new service
+app.post("/api/services", (req, res) => {
+  try {
+    const services = JSON.parse(fs.readFileSync(servicesFile, "utf8"));
+    const newService = req.body;
+    // Assign new id
+    const maxId = services.length > 0 ? Math.max(...services.map(s => s.id)) : 0;
+    newService.id = maxId + 1;
+    services.push(newService);
+    fs.writeFileSync(servicesFile, JSON.stringify(services, null, 2), "utf8");
+    res.status(201).json(newService);
+  } catch (err) {
+    console.error("Error adding service:", err);
+    res.status(500).json({ error: "Failed to add service" });
+  }
+});
+
+// API: Update service
+app.put("/api/services/:id", (req, res) => {
+  try {
+    const services = JSON.parse(fs.readFileSync(servicesFile, "utf8"));
+    const id = parseInt(req.params.id);
+    const index = services.findIndex(s => s.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Service not found" });
+    }
+    services[index] = { ...services[index], ...req.body };
+    fs.writeFileSync(servicesFile, JSON.stringify(services, null, 2), "utf8");
+    res.json(services[index]);
+  } catch (err) {
+    console.error("Error updating service:", err);
+    res.status(500).json({ error: "Failed to update service" });
+  }
+});
+
+// API: Delete service
+app.delete("/api/services/:id", (req, res) => {
+  try {
+    const services = JSON.parse(fs.readFileSync(servicesFile, "utf8"));
+    const id = parseInt(req.params.id);
+    const index = services.findIndex(s => s.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Service not found" });
+    }
+    const deletedService = services.splice(index, 1)[0];
+    fs.writeFileSync(servicesFile, JSON.stringify(services, null, 2), "utf8");
+    res.json(deletedService);
+  } catch (err) {
+    console.error("Error deleting service:", err);
+    res.status(500).json({ error: "Failed to delete service" });
   }
 });
 
