@@ -153,6 +153,7 @@
             <div class="tabs">
                 <button class="tab-btn active" data-tab="services-tab">Services</button>
                 <button class="tab-btn" data-tab="projets-tab">Projets</button>
+                <button class="tab-btn" data-tab="portfolio-tab">Portfolio</button>
             </div>
 
             <!-- Services Tab -->
@@ -243,6 +244,53 @@
                         </div>
                         <button type="submit" class="btn btn-primary" id="projet-submit-btn">Ajouter</button>
                         <button type="button" class="btn btn-secondary" id="projet-cancel-btn">Annuler</button>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Portfolio Tab -->
+            <div id="portfolio-tab" class="tab-content">
+                <section class="projets-list">
+                    <h2>Liste du Portfolio</h2>
+                    <div id="portfolio-container">
+                        <!-- Portfolio items will be loaded here -->
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2 id="portfolio-form-title">Ajouter un Nouvel Article</h2>
+                    <form id="portfolio-form">
+                        <input type="hidden" id="portfolio-id" value="">
+                        <div class="form-group">
+                            <label for="portfolio-title">Titre</label>
+                            <input type="text" id="portfolio-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio-lead">Lead</label>
+                            <input type="text" id="portfolio-lead">
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio-type">Type</label>
+                            <input type="text" id="portfolio-type" placeholder="ex: formation, assistance, appui" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio-year">Année</label>
+                            <input type="text" id="portfolio-year" placeholder="ex: 2024" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio-summary">Résumé</label>
+                            <input type="text" id="portfolio-summary" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio-description">Description</label>
+                            <textarea id="portfolio-description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio-image">Image (URL)</label>
+                            <input type="text" id="portfolio-image" placeholder="ex: images/project1.jpg" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="portfolio-submit-btn">Ajouter</button>
+                        <button type="button" class="btn btn-secondary" id="portfolio-cancel-btn">Annuler</button>
                     </form>
                 </section>
             </div>

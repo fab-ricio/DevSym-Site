@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 const partnersFile = path.join(__dirname, "partners.json");
 const servicesFile = path.join(__dirname, "services.json");
 const projetsFile = path.join(__dirname, "projets.json");
+const portfolioFile = path.join(__dirname, "portfolio.json");
 
 // Middleware
 app.use(cors());
@@ -154,6 +155,69 @@ app.delete("/api/projets/:id", (req, res) => {
   } catch (err) {
     console.error("Error deleting project:", err);
     res.status(500).json({ error: "Failed to delete project" });
+  }
+});
+
+// API: Get portfolio items
+app.get("/api/portfolio", (req, res) => {
+  try {
+    const data = fs.readFileSync(portfolioFile, "utf8");
+    res.json(JSON.parse(data));
+  } catch (err) {
+    console.error("Error reading portfolio.json:", err);
+    res.status(500).json({ error: "Failed to read portfolio" });
+  }
+});
+
+// API: Add new portfolio item
+app.post("/api/portfolio", (req, res) => {
+  try {
+    const items = JSON.parse(fs.readFileSync(portfolioFile, "utf8"));
+    const newItem = req.body;
+    const maxId = items.length > 0 ? Math.max(...items.map((i) => i.id)) : 0;
+    newItem.id = maxId + 1;
+    items.push(newItem);
+    fs.writeFileSync(portfolioFile, JSON.stringify(items, null, 2), "utf8");
+    res.status(201).json(newItem);
+  } catch (err) {
+    console.error("Error adding portfolio item:", err);
+    res.status(500).json({ error: "Failed to add portfolio item" });
+  }
+});
+
+// API: Update portfolio item
+app.put("/api/portfolio/:id", (req, res) => {
+  try {
+    const items = JSON.parse(fs.readFileSync(portfolioFile, "utf8"));
+    const id = parseInt(req.params.id);
+    const index = items.findIndex((i) => i.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Portfolio item not found" });
+    }
+    items[index] = { ...items[index], ...req.body };
+    fs.writeFileSync(portfolioFile, JSON.stringify(items, null, 2), "utf8");
+    res.json(items[index]);
+  } catch (err) {
+    console.error("Error updating portfolio item:", err);
+    res.status(500).json({ error: "Failed to update portfolio item" });
+  }
+});
+
+// API: Delete portfolio item
+app.delete("/api/portfolio/:id", (req, res) => {
+  try {
+    const items = JSON.parse(fs.readFileSync(portfolioFile, "utf8"));
+    const id = parseInt(req.params.id);
+    const index = items.findIndex((i) => i.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Portfolio item not found" });
+    }
+    const deletedItem = items.splice(index, 1)[0];
+    fs.writeFileSync(portfolioFile, JSON.stringify(items, null, 2), "utf8");
+    res.json(deletedItem);
+  } catch (err) {
+    console.error("Error deleting portfolio item:", err);
+    res.status(500).json({ error: "Failed to delete portfolio item" });
   }
 });
 

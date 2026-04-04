@@ -1,6 +1,7 @@
 // API base URLs
 const SERVICES_API = "/api/services";
 const PROJETS_API = "/api/projets";
+const PORTFOLIO_API = "/api/portfolio";
 
 // DOM elements - will be initialized after DOM loads
 let servicesContainer,
@@ -19,6 +20,17 @@ let projetsContainer,
   projetYear;
 let projetDescription, projetContext, projetImage;
 let projetSubmitBtn, projetCancelBtn, projetFormTitle;
+let portfolioContainer,
+  portfolioForm,
+  portfolioId,
+  portfolioTitle,
+  portfolioLead,
+  portfolioType,
+  portfolioYear,
+  portfolioSummary,
+  portfolioDescription,
+  portfolioImage;
+let portfolioSubmitBtn, portfolioCancelBtn, portfolioFormTitle;
 let tabButtons;
 
 // Initialize all DOM elements and event listeners
@@ -49,6 +61,21 @@ document.addEventListener("DOMContentLoaded", () => {
   projetCancelBtn = document.getElementById("projet-cancel-btn");
   projetFormTitle = document.getElementById("projet-form-title");
 
+  // Get DOM elements for Portfolio
+  portfolioContainer = document.getElementById("portfolio-container");
+  portfolioForm = document.getElementById("portfolio-form");
+  portfolioId = document.getElementById("portfolio-id");
+  portfolioTitle = document.getElementById("portfolio-title");
+  portfolioLead = document.getElementById("portfolio-lead");
+  portfolioType = document.getElementById("portfolio-type");
+  portfolioYear = document.getElementById("portfolio-year");
+  portfolioSummary = document.getElementById("portfolio-summary");
+  portfolioDescription = document.getElementById("portfolio-description");
+  portfolioImage = document.getElementById("portfolio-image");
+  portfolioSubmitBtn = document.getElementById("portfolio-submit-btn");
+  portfolioCancelBtn = document.getElementById("portfolio-cancel-btn");
+  portfolioFormTitle = document.getElementById("portfolio-form-title");
+
   // Get tab buttons
   tabButtons = document.querySelectorAll(".tab-btn");
 
@@ -59,11 +86,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (projetForm) projetForm.addEventListener("submit", handleProjetFormSubmit);
   if (projetCancelBtn)
     projetCancelBtn.addEventListener("click", resetProjetForm);
+  if (portfolioForm)
+    portfolioForm.addEventListener("submit", handlePortfolioFormSubmit);
+  if (portfolioCancelBtn)
+    portfolioCancelBtn.addEventListener("click", resetPortfolioForm);
 
   // Initialize tabs and load data
   setupTabs();
   loadServices();
   loadProjets();
+  loadPortfolio();
 });
 
 // ==================== TABS ====================
@@ -224,6 +256,152 @@ function resetServiceForm() {
   serviceDescription.value = "";
   serviceFormTitle.textContent = "Ajouter un Nouveau Service";
   submitBtn.textContent = "Ajouter";
+}
+
+// ==================== PORTFOLIO ====================
+async function loadPortfolio() {
+  try {
+    const response = await fetch(PORTFOLIO_API);
+    if (!response.ok) {
+      throw new Error("Failed to load portfolio items");
+    }
+    const items = await response.json();
+    displayPortfolio(items);
+  } catch (error) {
+    console.error("Error loading portfolio:", error);
+    portfolioContainer.innerHTML =
+      "<p>Erreur lors du chargement du portfolio.</p>";
+  }
+}
+
+function displayPortfolio(items) {
+  portfolioContainer.innerHTML = "";
+
+  if (!items || items.length === 0) {
+    portfolioContainer.innerHTML = "<p>Aucun article de portfolio trouvé.</p>";
+    return;
+  }
+
+  items.forEach((item) => {
+    const itemElement = document.createElement("div");
+    itemElement.className = "service-item";
+    itemElement.innerHTML = `
+            <h3>${item.title}</h3>
+            <p><strong>Lead:</strong> ${item.lead || "-"}</p>
+            <p><strong>Type:</strong> ${item.type || "-"} • <strong>Année:</strong> ${item.year || "-"}</p>
+            <p><strong>Résumé:</strong> ${item.summary || "-"}</p>
+            <p><strong>Description:</strong> ${item.description.substring(0, 100)}...</p>
+            <div class="service-actions">
+                <button class="btn btn-secondary" onclick="editPortfolio(${item.id})">Modifier</button>
+                <button class="btn btn-danger" onclick="deletePortfolio(${item.id})">Supprimer</button>
+            </div>
+        `;
+    portfolioContainer.appendChild(itemElement);
+  });
+}
+
+async function handlePortfolioFormSubmit(event) {
+  event.preventDefault();
+
+  const portfolioData = {
+    title: portfolioTitle.value.trim(),
+    lead: portfolioLead.value.trim(),
+    type: portfolioType.value.trim(),
+    year: portfolioYear.value.trim(),
+    summary: portfolioSummary.value.trim(),
+    description: portfolioDescription.value.trim(),
+    image: portfolioImage.value.trim(),
+  };
+
+  const id = portfolioId.value;
+
+  try {
+    let response;
+    if (id) {
+      response = await fetch(`${PORTFOLIO_API}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(portfolioData),
+      });
+    } else {
+      response = await fetch(PORTFOLIO_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(portfolioData),
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to save portfolio item");
+    }
+
+    resetPortfolioForm();
+    loadPortfolio();
+  } catch (error) {
+    console.error("Error saving portfolio item:", error);
+    alert("Erreur lors de la sauvegarde de l'article portfolio.");
+  }
+}
+
+function editPortfolio(id) {
+  fetch(PORTFOLIO_API)
+    .then((response) => response.json())
+    .then((items) => {
+      const item = items.find((i) => i.id === id);
+      if (item) {
+        portfolioId.value = item.id;
+        portfolioTitle.value = item.title;
+        portfolioLead.value = item.lead;
+        portfolioType.value = item.type;
+        portfolioYear.value = item.year;
+        portfolioSummary.value = item.summary;
+        portfolioDescription.value = item.description;
+        portfolioImage.value = item.image;
+        portfolioFormTitle.textContent = "Modifier l'Article";
+        portfolioSubmitBtn.textContent = "Mettre à jour";
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching portfolio item for edit:", error);
+    });
+}
+
+async function deletePortfolio(id) {
+  if (!confirm("Êtes-vous sûr de vouloir supprimer cet article de portfolio ?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${PORTFOLIO_API}/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete portfolio item");
+    }
+
+    loadPortfolio();
+  } catch (error) {
+    console.error("Error deleting portfolio item:", error);
+    alert("Erreur lors de la suppression de l'article portfolio.");
+  }
+}
+
+function resetPortfolioForm() {
+  portfolioId.value = "";
+  portfolioTitle.value = "";
+  portfolioLead.value = "";
+  portfolioType.value = "";
+  portfolioYear.value = "";
+  portfolioSummary.value = "";
+  portfolioDescription.value = "";
+  portfolioImage.value = "";
+  portfolioFormTitle.textContent = "Ajouter un Nouvel Article";
+  portfolioSubmitBtn.textContent = "Ajouter";
 }
 
 // ==================== PROJETS ====================

@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1,
+    "type": "Assistance",
+    "year": "2026",
+    "title": "Assistance technique d’appui à l’intégration socio-professionnelles des personnes migrantes",
+    "lead": "Renforcement des compétences",
+    "description": "Cartographie des acteurs de la formation professionnelles et de l’insertion§Accompagnement à la création et au développement d'initiatives économiques (AGR).§Mise en œuvre par la Délégation Diocésaine des Migrations (DDM) avec le financement de MISEREOR et Manos Unidas",
+    "image": "images/ddm.png",
+    "summary": "Assistance technique d’appui"
+  },
+  {
+    "id": 2,
+    "type": "Assistance",
+    "year": "2026",
+    "title": "Assistance technique et Accompagnement de proximité de 100 femmes migrantes.",
+    "lead": "Renforcement des compétences",
+    "description": "« Contribuer à la mise en œuvre de l’Économie Sociale et Solidaire comme outil pour la réduction des violences économiques et l’accès aux droits socio-économiques des femmes dans la région de Tanger-Tétouan-Al Hoceima mise en œuvre par l’Union de l’Action Féministe (UAF) et ONGD ACPP avec le financement de AACID",
+    "image": "images/Logo-UAF.jpg",
+    "summary": "Assistance technique et Accompagnement."
+  },
+  {
+    "id": 3,
+    "type": "Appui",
+    "year": "2025",
+    "title": "Expertise d’appui à la coopération décentralisée internationale",
+    "lead": "Renforcement des compétences",
+    "description": "Appui à la coopération décentralisée internationale (coopération sud-sud) entre la Commune de Sebkha à Nouakchott (Mauritanie) et les Communes marocaines ainsi qu’à la gouvernance de la politique migratoire à travers la conception des projets, levée de fonds et mise en réseau",
+    "image": "images/Sebkha_mairie.jpg",
+    "summary": "Expertise d’appui à la coopération décentralisée internationale"
+  },
+  {
+    "id": 4,
+    "type": "formation",
+    "year": "2025",
+    "title": "renforcement des capacités entrepreneuriales et d’autonomisation des jeunes migrants et marocains",
+    "lead": "Renforcement des compétences",
+    "description": "dans le cadre du projet « Himaya wa Tamkin » mise en œuvre par Association pour la protection de l'enfance et sensibilisation de famille (APISF) et UNICEF via le financement de l’Union Européenne",
+    "image": "images/APISF.png",
+    "summary": "Expertise d’appui à la coopération décentralisée internationale"
+  },
+  {
+    "id": 5,
+    "type": "formation",
+    "year": "2025",
+    "title": "Accompagnement et formation de 15 AGR",
+    "lead": "Renforcement des compétences",
+    "description": "Accompagnement et formation sur les stratégies de développement dans le cadre du projet migration mise en œuvre par Caritas Tanger avec le financement Manos Unidas",
+    "image": "images/caritas.png",
+    "summary": "Accompagnement et formation de 15 AGR"
+  },
+  {
+    "id": 6,
+    "type": "diagnostic",
+    "year": "2025",
+    "title": "Participation au diagnostic :",
+    "lead": "",
+    "description": "Identification des obstacles à l'exercice des droits des jeunes filles et la mise en lumière des modèles et des expériences réussis en matière d'autonomisation et de gouvernance locale sensible au genre, porté par l’Association Thissaghnasse pour la Culture et le Développement (ASTICUDE).§Participation à l’élaboration d’un guide d’identification et d’analyse des besoins de la population migrante dans la province de Nador dans le cadre du projet « Appui Psychosocial & Intégration des populations migrantes dans la province de Nador – APSI-2 » porté par l’Association Thissaghnasse pour la Culture et le Développement (ASTICUDE) et financé par l’AFD à travers Expertise France, dans le cadre du Programme Régional des Initiatives de la Migration (PRIM)",
+    "image": "images/Asticude.png",
+    "summary": "Identification des obstacles à l'exercice des droits des jeunes filles et la mise en lumière des modèles et des expériences réussis"
+  },
+  {
+    "id": 7,
+    "type": "Formation",
+    "year": "2025",
+    "title": "Formation de renforcement des capacités de l’équipe de l’UAF et 75 Défenseures des Droits Humains ainsi que 50 Femmes migrantes .",
+    "lead": "Renforcement des compétences",
+    "description": "«Formation de renforcement des capacités de l’équipe de l’UAF et 75 Défenseures des Droits Humains (dont 30 femmes migrantes) ainsi que 50 Femmes migrantes (Défenseures des droit humains) sur la Défense des droits humains, les droits économiques, sociaux et culturels (DESC), ainsi que les droits civils et politiques (DCP) à Tanger dans le cadre du projet « Promouvoir les processus de plaidoyer et d’autonomie socio-économique des femmes migrantes et marocaines dans la ville de Tanger, Maroc (Droits et autonomie des femmes migrantes et marocaines à Tanger) » financé par Alianza por la Solidaridad à travers -le financement de Gouvernement des Iles Baléares",
+    "image": "images/Logo-UAF.jpg",
+    "summary": "Formation de renforcement des capacités"
+  },
+  {
+    "id": 8,
+    "type": "formation",
+    "year": "2025",
+    "title": "Formation et accompagnement de 30 personnes migrantes sur la gestion des activités génératrices de revenu :",
+    "lead": "",
+    "description": "Formation et accompagnement de 30 personnes migrantes sur la gestion des activités génératrices de revenu « AGR » dont 95% sont des femmes et celles ayant des mineurs à leur charge, dans le cadre du projet « Promotion de l'autonomie et de l'indépendance des femmes migrantes subsahariennes dans le nord du Maroc par le renforcement de leur sécurité, de leur formation et de leur employabilité », mise en œuvre par la Fundación Sevilla Acoge et APISF, financé par l’Agence Andalouse de la Coopération Internationale pour le Développement (AACID)",
+    "image": "images/fundación-sevilla-acoge.png",
+    "summary": "Formation sur la gestion des activités génératrices de revenu"
+  },
+  {
+    "id": 9,
+    "type": "plan",
+    "year": "2024",
+    "title": "Formation et accompagnement de 30 personnes migrantes sur la gestion des activités génératrices de revenu :",
+    "lead": "",
+    "description": "Elaboration de la feuille de route et le plan d’action de l’Expo Interculturel Africa 2025, dans le cadre du programme « Egalité de genre et questions migratoires » mise en œuvre par l’Association Thissaghnasse pour la Culture et le Développement (ASTICUDE) avec financé par l’UNFPA.§Consultance pour la formulation, l’identification et la mobilisation d’intervenant-e-s au séminaire international pour la convergence multisectorielle en faveur de la prise en charge et l’autonomisation économique des femmes migrantes avec une dimension Sud-Sud, dans le cadre du programme « Egalité de genre et questions migratoires » mise en œuvre par l’Association Thissaghnasse pour la Culture et le Développement (ASTICUDE) avec financé par l’UNFPA.",
+    "image": "images/Asticude.png",
+    "summary": "Elaboration de la feuille de route et de plan d’action, consultance pour la formulation et la mobilisation d’intervenant-e-s"
+  },
+  {
+    "id": 10,
+    "type": "evaluation",
+    "year": "2024",
+    "title": "Evaluation intermédiaire externe du projet « Rendre la migration bénéfique pour toutes et tous",
+    "lead": "",
+    "description": "Participation à l’évaluation intermédiaire externe du projet « Rendre la migration bénéfique pour toutes et tous : Améliorer la cohésion sociale et l’accès équitable aux services pour les personnes migrantes au Maroc » financé par le Migration Multi-Partner Trust Fund (MMPTF) mis en œuvre conjointement par l’OIM, l’UNICEF, le HCR et l’UNFPA.",
+    "image": "images/jammin.png",
+    "summary": "Evaluation du projet : Rendre la migration bénéfique pour toutes et tous"
+  },
+  {
+    "id": 11,
+    "type": "assistance",
+    "year": "2024",
+    "title": "Assistance technique d’appui",
+    "lead": "",
+    "description": "Implémentation du programme « Renforcer les droits, la résilience et l'intégration sociale des femmes migrantes subsahariennes en améliorant les compétences pour accéder au marché du travail”, dans la ville de Tanger, Maroc », financé par l’Agence espagnole pour la coopération internationale au développement « AECID »",
+    "image": "images/mzc.png",
+    "summary": "Assistance technique d’appui à l’implémentation d'un programme"
+  },
+  {
+    "id": 12,
+    "type": "Consultance",
+    "year": "2024",
+    "title": "Identification, mobilisation et formation des auto-entrepreneurs",
+    "lead": "",
+    "description": "Consultance d’appui au projet pour l’identification, la mobilisation et formation des auto-entrepreneurs et des enfants dans le cadre des activités du projet « la multiculturalité au service de la cohésion sociale dans les territoires », financé par Migration MPTF avec le soutien de l’OIM",
+    "image": "images/ulcg-africa.png",
+    "summary": "Identification, mobilisation et formation des auto-entrepreneurs"
+  },
+  {
+    "id": 13,
+    "type": "formation",
+    "year": "2024",
+    "title": "modération et reporting de la formation sur le nexus migration, environnement et changement climatique",
+    "lead": "",
+    "description": "Consultance pour la modération et le reporting de la formation sur le nexus migration, environnement et changement climatique dans le cadre du projet « Les liens entre la migration, l’environnement et le changement climatique au Maroc », mise en œuvre par l’Organisation internationale pour les migrations au Maroc avec financement du Fonds de développement de l’OIM",
+    "image": "images/oim.png",
+    "summary": "Formation sur le nexus migration, environnement et changement climatique"
+  },
+  {
+    "id": 14,
+    "type": "Consultance",
+    "year": "2024",
+    "title": "Appui à l’équipe finance sur la justification technique et financière finale du projet",
+    "lead": "",
+    "description": "Consultance d’appui à l’équipe finance sur la justification technique et financière finale du projet, dans le cadre du projet « PROMIMED » mis en œuvre par la Délégation Diocésaine des Migrations (DDM) en partenariat avec la Fondation Entreculturas comme cheffe de file et sous financement de l’Union Européenne.",
+    "image": "images/ddm.png",
+    "summary": "Consultance d’appui à l’équipe finance sur la justification finale du projet"
+  },
+  {
+    "id": 15,
+    "type": "formation",
+    "year": "2023",
+    "title": "Formation et accompagnement de 50 personnes migrantes sur la gestion des activités génératrices de revenu",
+    "lead": "",
+    "description": "Consultance d’appui à l’équipe finance sur la justification technique et financière finale du projet, dans le cadre du projet « PROMIMED » mis en œuvre par la Délégation Diocésaine des Migrations (DDM) en partenariat avec la Fondation Entreculturas comme cheffe de file et sous financement de l’Union Européenne.",
+    "image": "images/fundación-sevilla-acoge.png",
+    "summary": "Formation et accompagnement sur la gestion des activités génératrices de revenu"
+  },
+  {
+    "id": 16,
+    "type": "etude",
+    "year": "2023",
+    "title": "Participation à la réalisation des activités d’études quantitatives et qualitatives du projet",
+    "lead": "",
+    "description": "Participation à la réalisation des activités d’études quantitatives et qualitatives du projet « Enfants et jeunes sur les routes migratoires en Afrique de l'Ouest et du Nord (EJM) », mise en œuvre par le Centre de migration mixte (MMC) en partenariat avec OJA via le financement de la DDC – coopération suisse",
+    "image": "images/mmc.jpg",
+    "summary": "Activités d’études quantitatives et qualitatives du projet EJM"
+  },
+  {
+    "id": 17,
+    "type": "diagnostic",
+    "year": "2021",
+    "title": "réalisation du diagnostic de situation dans le cadre d'une réflexion sur les facteurs qui permettent ou entravent l'accès à l'emploi des femmes subsahariennes",
+    "lead": "",
+    "description": "Participation à la réalisation du diagnostic de situation dans le cadre d'une réflexion sur les facteurs qui permettent ou entravent l'accès à l'emploi des femmes subsahariennes ou leur employabilité et leur intégration au Maroc « DAFO EMPLOYABILITÉ-ACCES A L´EMPLOI PROGRAMME-MED-ATTADAMUN II », mise en œuvre par la Fundación Sevilla Acoge et APISF avec financement de la Junta de Andalucía.",
+    "image": "images/fundación-sevilla-acoge.png",
+    "summary": "Réflexion sur l'emploi des femmes subsahariennes au Maroc"
+  },
+  {
+    "id": 18,
+    "type": "implementation",
+    "year": "2021",
+    "title": "Implémentation des activités du Projet « Tanger Accueil »",
+    "lead": "",
+    "description": "Participation à l’implémentation des activités du Projet « Tanger Accueil » mise en œuvre par l’Association MedCités et la Commune de Tanger en partenariat avec OJA, dans le cadre du Programme MC2CM, coordonné par l’ICMPD et financé par l’Union Européenne et la Coopération Suisse.",
+    "image": "images/medcite.png",
+    "summary": "Implémentation des activités du Projet Tanger Accueil"
+  },
+  {
+    "id": 19,
+    "type": "evaluation",
+    "year": "2021",
+    "title": "Evaluation du projet : « Continuité des soins de santé pour les enfants et les femmes migrant-e-s dans le contexte de la pandémie Covid-19 dans le cadre du projet UN Trust Fund »",
+    "lead": "",
+    "description": "Evaluation externe finale du projet « Continuité des soins de santé pour les enfants et les femmes migrant-e-s dans le contexte de la pandémie Covid-19 dans le cadre du projet UN Trust Fund », financé par le Bureau Unicef Maroc",
+    "image": "images/alcs.png",
+    "summary": "Continuité des soins de santé pour les enfants et les femmes migrant-e-s pendant la pandémie Covid-19"
+  }
+]
