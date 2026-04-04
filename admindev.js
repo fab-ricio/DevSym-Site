@@ -217,6 +217,9 @@ function editService(id) {
     .then((services) => {
       const service = services.find((s) => s.id === id);
       if (service) {
+        // Scroll to the form first
+        scrollToForm("services-tab");
+
         serviceId.value = service.id;
         serviceTitle.value = service.title;
         serviceLead.value = service.lead;
@@ -379,6 +382,9 @@ function editPortfolio(id) {
 
         portfolioFormTitle.textContent = "Modifier l'Article";
         portfolioSubmitBtn.textContent = "Mettre à jour";
+
+        // Scroll to the form
+        scrollToForm("portfolio-tab");
       }
     })
     .catch((error) => {
@@ -534,6 +540,9 @@ function editProjet(id) {
 
         projetFormTitle.textContent = "Modifier le Projet";
         projetSubmitBtn.textContent = "Mettre à jour";
+
+        // Scroll to the form
+        scrollToForm("projets-tab");
       }
     })
     .catch((error) => {
@@ -756,4 +765,39 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeImageUpload("projet");
   initializeImageUpload("portfolio");
 });
+
+// ====================
+// UTILITY FUNCTIONS
+// ====================
+
+// Scroll to the form section for the specified tab
+function scrollToForm(tabId) {
+  // First, switch to the correct tab
+  const tabButton = document.querySelector(`[data-tab="${tabId}"]`);
+  if (tabButton && !tabButton.classList.contains('active')) {
+    // Only switch tabs if not already active
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    // Add active class to the target tab
+    tabButton.classList.add('active');
+    const tabContent = document.getElementById(tabId);
+    if (tabContent) {
+      tabContent.classList.add('active');
+    }
+  }
+
+  // Then scroll to the form section
+  const formSection = document.querySelector(`#${tabId} .form-section`);
+  if (formSection) {
+    // Add a small delay to ensure the tab switch is complete
+    setTimeout(() => {
+      formSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 100);
+  }
+}
 
