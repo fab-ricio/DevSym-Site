@@ -32,6 +32,9 @@ async function loadPortfolio() {
         <p>${item.summary || item.title || ""}</p>
       `;
 
+      // Add click event to open modal
+      article.addEventListener("click", () => openPortfolioModal(item));
+
       container.appendChild(article);
     });
 
@@ -41,4 +44,47 @@ async function loadPortfolio() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", loadPortfolio);
+// Open portfolio modal with item details
+function openPortfolioModal(item) {
+  const modal = document.getElementById("portfolio-modal");
+  
+  document.getElementById("modal-image").src = item.image || "";
+  document.getElementById("modal-type").textContent = item.type || "";
+  document.getElementById("modal-year").textContent = item.year || "";
+  document.getElementById("modal-title").textContent = item.title || "";
+  document.getElementById("modal-lead").textContent = item.lead || "";
+  document.getElementById("modal-description").textContent = item.description || "";
+
+  modal.classList.add("active");
+}
+
+// Close portfolio modal
+function closePortfolioModal() {
+  const modal = document.getElementById("portfolio-modal");
+  modal.classList.remove("active");
+}
+
+// Setup modal event listeners
+function setupModalListeners() {
+  const modal = document.getElementById("portfolio-modal");
+  const closeBtn = document.querySelector(".portfolio-modal-close");
+  const overlay = document.querySelector(".portfolio-modal-overlay");
+
+  // Close button
+  closeBtn?.addEventListener("click", closePortfolioModal);
+
+  // Click on overlay to close
+  overlay?.addEventListener("click", closePortfolioModal);
+
+  // Close on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePortfolioModal();
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadPortfolio();
+  setupModalListeners();
+});

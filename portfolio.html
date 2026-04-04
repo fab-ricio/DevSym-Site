@@ -270,12 +270,31 @@
 
     </main>
 
+    <!-- Portfolio Detail Modal -->
+    <div id="portfolio-modal" class="portfolio-modal">
+        <div class="portfolio-modal-overlay"></div>
+        <div class="portfolio-modal-content">
+            <button class="portfolio-modal-close" aria-label="Fermer le modal">&times;</button>
+            <div class="portfolio-modal-body">
+                <img id="modal-image" src="" alt="" class="modal-image" />
+                <div class="modal-info">
+                    <div class="modal-meta">
+                        <span id="modal-type" class="badge"></span>
+                        <span id="modal-year" class="badge badge-year"></span>
+                    </div>
+                    <h2 id="modal-title"></h2>
+                    <p id="modal-lead" class="modal-lead"></p>
+                    <div id="modal-description" class="modal-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts for social embeds -->
     <footer class="footer">
         <p>© 2026 Coopérative DevSym – Tous droits réservés</p>
     </footer>
     <script src="main.js" defer></script>
-    <script src="social-feeds.js" defer></script>
     <script src="portfolio.js" defer></script>
 </body>
 
