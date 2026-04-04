@@ -4,7 +4,7 @@
   "description": "DevSym static site with dynamic partners management",
   "main": "server.js",
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "node server.js",
