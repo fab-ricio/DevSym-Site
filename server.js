@@ -55,7 +55,8 @@ app.post("/api/services", (req, res) => {
     const services = JSON.parse(fs.readFileSync(servicesFile, "utf8"));
     const newService = req.body;
     // Assign new id
-    const maxId = services.length > 0 ? Math.max(...services.map(s => s.id)) : 0;
+    const maxId =
+      services.length > 0 ? Math.max(...services.map((s) => s.id)) : 0;
     newService.id = maxId + 1;
     services.push(newService);
     fs.writeFileSync(servicesFile, JSON.stringify(services, null, 2), "utf8");
@@ -71,7 +72,7 @@ app.put("/api/services/:id", (req, res) => {
   try {
     const services = JSON.parse(fs.readFileSync(servicesFile, "utf8"));
     const id = parseInt(req.params.id);
-    const index = services.findIndex(s => s.id === id);
+    const index = services.findIndex((s) => s.id === id);
     if (index === -1) {
       return res.status(404).json({ error: "Service not found" });
     }
@@ -89,7 +90,7 @@ app.delete("/api/services/:id", (req, res) => {
   try {
     const services = JSON.parse(fs.readFileSync(servicesFile, "utf8"));
     const id = parseInt(req.params.id);
-    const index = services.findIndex(s => s.id === id);
+    const index = services.findIndex((s) => s.id === id);
     if (index === -1) {
       return res.status(404).json({ error: "Service not found" });
     }
@@ -108,7 +109,8 @@ app.post("/api/projets", (req, res) => {
     const projets = JSON.parse(fs.readFileSync(projetsFile, "utf8"));
     const newProjet = req.body;
     // Assign new id
-    const maxId = projets.length > 0 ? Math.max(...projets.map(p => p.id)) : 0;
+    const maxId =
+      projets.length > 0 ? Math.max(...projets.map((p) => p.id)) : 0;
     newProjet.id = maxId + 1;
     projets.push(newProjet);
     fs.writeFileSync(projetsFile, JSON.stringify(projets, null, 2), "utf8");
@@ -124,7 +126,7 @@ app.put("/api/projets/:id", (req, res) => {
   try {
     const projets = JSON.parse(fs.readFileSync(projetsFile, "utf8"));
     const id = parseInt(req.params.id);
-    const index = projets.findIndex(p => p.id === id);
+    const index = projets.findIndex((p) => p.id === id);
     if (index === -1) {
       return res.status(404).json({ error: "Project not found" });
     }
@@ -142,7 +144,7 @@ app.delete("/api/projets/:id", (req, res) => {
   try {
     const projets = JSON.parse(fs.readFileSync(projetsFile, "utf8"));
     const id = parseInt(req.params.id);
-    const index = projets.findIndex(p => p.id === id);
+    const index = projets.findIndex((p) => p.id === id);
     if (index === -1) {
       return res.status(404).json({ error: "Project not found" });
     }

@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   // page transition on nav link click
-  document.querySelectorAll('.nav a').forEach(link=>{
-    link.addEventListener('click', e=>{
+  document.querySelectorAll(".nav a").forEach((link) => {
+    link.addEventListener("click", (e) => {
       const href = link.href;
       if (href && href !== window.location.href) {
         e.preventDefault();
-        document.body.classList.add('fade-out');
-        setTimeout(()=>{ window.location = href; }, 300);
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+          window.location = href;
+        }, 300);
       }
     });
   });
@@ -53,91 +55,124 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   /* Service modal handling - VERSION CORRIGÉE */
-  var modal = document.getElementById("service-modal");
-  if (modal) {
-    var modalTitle = modal.querySelector("#service-modal-title");
-    var modalLead = modal.querySelector(".modal-lead");
-    var modalBody = modal.querySelector(".modal-body");
-    var closeBtn = modal.querySelector(".modal-close");
-    var contactBtn = modal.querySelector("#service-contact-btn");
-    var lastFocus = null;
-    var currentService = null;
+  const serviceModal = document.getElementById("service-modal");
+  let serviceLastFocus = null;
 
-    function openModal(data) {
-      lastFocus = document.activeElement;
-      modalTitle.textContent = data.title || "";
-      modalLead.textContent = data.lead || "";
+  function openServiceModal(data) {
+    if (!serviceModal) return;
+    const modalTitle = serviceModal.querySelector("#service-modal-title");
+    const modalLead = serviceModal.querySelector(".modal-lead");
+    const modalBody = serviceModal.querySelector(".modal-body");
+    const contactBtn = serviceModal.querySelector("#service-contact-btn");
 
-      if (data.description && data.description.includes("§")) {
-        var items = data.description.split("§");
-        var html = "<ul>";
-        items.forEach(function (item) {
-          if (item.trim() !== "") {
-            html += "<li>" + item.trim() + "</li>";
-          }
-        });
-        html += "</ul>";
-        modalBody.innerHTML = html;
-      } else {
-        modalBody.innerHTML = data.description || "";
-      }
+    serviceLastFocus = document.activeElement;
+    modalTitle.textContent = data.title || "";
+    modalLead.textContent = data.lead || "";
 
-      currentService = data.title;
-
-      if (contactBtn && currentService) {
-        contactBtn.href =
-          "contact.html?service=" + encodeURIComponent(currentService);
-      }
-
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-      closeBtn.focus();
-      document.body.style.overflow = "hidden";
+    if (data.description && data.description.includes("§")) {
+      const items = data.description.split("§");
+      let html = "<ul>";
+      items.forEach((item) => {
+        if (item.trim() !== "") {
+          html += "<li>" + item.trim() + "</li>";
+        }
+      });
+      html += "</ul>";
+      modalBody.innerHTML = html;
+    } else {
+      modalBody.innerHTML = data.description || "";
     }
 
-    function closeModal() {
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    if (contactBtn && data.title) {
+      contactBtn.href =
+        "contact.html?service=" + encodeURIComponent(data.title);
     }
 
-    document.querySelectorAll('.card[role="button"]').forEach(function (card) {
-      card.addEventListener("click", function () {
-        openModal({
+    serviceModal.classList.add("open");
+    serviceModal.setAttribute("aria-hidden", "false");
+    serviceModal.querySelector(".modal-close").focus();
+    document.body.style.overflow = "hidden";
+  }
+
+  let serviceModalEventsInitialized = false;
+
+  function closeServiceModal() {
+    if (!serviceModal) return;
+    serviceModal.classList.remove("open");
+    serviceModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (serviceLastFocus && serviceLastFocus.focus) serviceLastFocus.focus();
+  }
+
+  function initializeServiceCards() {
+    if (!serviceModal) return;
+    const closeBtn = serviceModal.querySelector(".modal-close");
+    const cards = document.querySelectorAll('.card[role="button"]');
+
+    cards.forEach((card) => {
+      card.removeEventListener("click", card._serviceClick);
+      card.removeEventListener("keydown", card._serviceKeydown);
+
+      card._serviceClick = () =>
+        openServiceModal({
           title: card.dataset.title,
           lead: card.dataset.lead,
           description: card.dataset.description,
         });
-      });
-      card.addEventListener("keydown", function (e) {
+      card._serviceKeydown = (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          card.click();
+          card._serviceClick();
         }
+      };
+
+      card.addEventListener("click", card._serviceClick);
+      card.addEventListener("keydown", card._serviceKeydown);
+      card.tabIndex = 0;
+    });
+
+    if (closeBtn) {
+      closeBtn.removeEventListener("click", closeServiceModal);
+      closeBtn.addEventListener("click", closeServiceModal);
+    }
+
+    if (!serviceModalEventsInitialized) {
+      serviceModal.addEventListener("click", function (e) {
+        if (
+          e.target === serviceModal ||
+          e.target.classList.contains("modal-backdrop")
+        )
+          closeServiceModal();
       });
-    });
 
-    closeBtn.addEventListener("click", closeModal);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && serviceModal.classList.contains("open"))
+          closeServiceModal();
+      });
+      serviceModalEventsInitialized = true;
+    }
+  }
 
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal || e.target.classList.contains("modal-backdrop"))
-        closeModal();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
-    });
+  if (serviceModal) {
+    initializeServiceCards();
+    window.addEventListener("dynamic-content-updated", initializeServiceCards);
   }
 
   /* Projects interactive: filters, lazy-load, pagination, modal */
   (function projectsInteractive() {
     const section = document.getElementById("missions");
     if (!section) return;
-    const cards = Array.from(section.querySelectorAll(".mission-card"));
     const pageSize = 6;
     let currentLimit = pageSize;
+    let cards = [];
     const loadMoreBtn = document.getElementById("load-more");
+    const projectModal = document.getElementById("project-modal");
+    const titleEl = projectModal?.querySelector("#modal-title");
+    const leadEl = projectModal?.querySelector("#modal-lead");
+    const bodyEl = projectModal?.querySelector("#modal-body");
+    const galleryEl = projectModal?.querySelector("#modal-gallery");
+    const closeProjectBtn = projectModal?.querySelector(".modal-close");
+    let lastFocus = null;
 
     function applyFiltersAndPagination() {
       const type = (document.getElementById("filter-type") || {}).value || "";
@@ -146,11 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cards.forEach((card) => {
         const matchesType = !type || card.dataset.type === type;
         const matchesYear = !year || card.dataset.year === year;
-        if (
-          matchesType &&
-          matchesYear &&
-          shown < currentLimit
-        ) {
+        if (matchesType && matchesYear && shown < currentLimit) {
           card.style.display = "";
           shown++;
         } else {
@@ -165,6 +196,91 @@ document.addEventListener("DOMContentLoaded", function () {
             return matchesType && matchesYear;
           }).length - shown;
         loadMoreBtn.style.display = remaining > 0 ? "" : "none";
+      }
+    }
+
+    function openProject(card) {
+      if (
+        !projectModal ||
+        !titleEl ||
+        !leadEl ||
+        !bodyEl ||
+        !galleryEl ||
+        !closeProjectBtn
+      )
+        return;
+      lastFocus = document.activeElement;
+      titleEl.textContent = card.dataset.title || "";
+      leadEl.textContent = card.dataset.lead || "";
+      bodyEl.innerHTML =
+        card.dataset.description || card.querySelector("p")?.innerHTML || "";
+      galleryEl.innerHTML = "";
+      const imgs = (card.dataset.images || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      imgs.forEach((src) => {
+        const i = document.createElement("img");
+        i.src = src;
+        i.alt = "";
+        galleryEl.appendChild(i);
+      });
+      projectModal.classList.add("open");
+      projectModal.setAttribute("aria-hidden", "false");
+      closeProjectBtn.focus();
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeProject() {
+      if (!projectModal) return;
+      projectModal.classList.remove("open");
+      projectModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function attachProjectCardEvents() {
+      cards.forEach((card) => {
+        card.removeEventListener("click", card._projectClick);
+        card.removeEventListener("keydown", card._projectKeydown);
+
+        card._projectClick = () => openProject(card);
+        card._projectKeydown = (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            card._projectClick();
+          }
+        };
+
+        card.addEventListener("click", card._projectClick);
+        card.addEventListener("keydown", card._projectKeydown);
+        card.tabIndex = 0;
+      });
+    }
+
+    function refreshProjectCards() {
+      cards = Array.from(section.querySelectorAll(".mission-card"));
+      attachProjectCardEvents();
+      applyFiltersAndPagination();
+      const lazyImgs = section.querySelectorAll("img.lazy");
+      if ("IntersectionObserver" in window && lazyImgs.length) {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                  img.src = img.dataset.src;
+                  img.removeAttribute("data-src");
+                  img.classList.remove("lazy");
+                }
+                obs.unobserve(img);
+              }
+            });
+          },
+          { rootMargin: "200px 0px" },
+        );
+        lazyImgs.forEach((i) => io.observe(i));
       }
     }
 
@@ -194,66 +310,9 @@ document.addEventListener("DOMContentLoaded", function () {
         applyFiltersAndPagination();
       });
 
-    applyFiltersAndPagination();
-
-    const lazyImgs = section.querySelectorAll("img.lazy");
-    if ("IntersectionObserver" in window && lazyImgs.length) {
-      const io = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const img = entry.target;
-              if (img.dataset.src) {
-                img.src = img.dataset.src;
-                img.removeAttribute("data-src");
-                img.classList.remove("lazy");
-              }
-              obs.unobserve(img);
-            }
-          });
-        },
-        { rootMargin: "200px 0px" },
-      );
-      lazyImgs.forEach((i) => io.observe(i));
-    }
-
-    const projectModal = document.getElementById("project-modal");
     if (projectModal) {
-      const titleEl = projectModal.querySelector("#modal-title");
-      const leadEl = projectModal.querySelector("#modal-lead");
-      const bodyEl = projectModal.querySelector("#modal-body");
-      const galleryEl = projectModal.querySelector("#modal-gallery");
-      const closeBtn = projectModal.querySelector(".modal-close");
-      let lastFocus = null;
-      function openProject(card) {
-        lastFocus = document.activeElement;
-        titleEl.textContent = card.dataset.title || "";
-        leadEl.textContent = card.dataset.lead || "";
-        bodyEl.innerHTML =
-          card.dataset.description || card.querySelector("p")?.innerHTML || "";
-        galleryEl.innerHTML = "";
-        const imgs = (card.dataset.images || "")
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-        imgs.forEach((src) => {
-          const i = document.createElement("img");
-          i.src = src;
-          i.alt = "";
-          galleryEl.appendChild(i);
-        });
-        projectModal.classList.add("open");
-        projectModal.setAttribute("aria-hidden", "false");
-        closeBtn.focus();
-        document.body.style.overflow = "hidden";
-      }
-      function closeProject() {
-        projectModal.classList.remove("open");
-        projectModal.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
-        if (lastFocus && lastFocus.focus) lastFocus.focus();
-      }
-      closeBtn.addEventListener("click", closeProject);
+      if (closeProjectBtn)
+        closeProjectBtn.addEventListener("click", closeProject);
       projectModal.addEventListener("click", (e) => {
         if (e.target === projectModal) closeProject();
       });
@@ -261,17 +320,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.key === "Escape" && projectModal.classList.contains("open"))
           closeProject();
       });
-      cards.forEach((card) => {
-        card.addEventListener("click", () => openProject(card));
-        card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openProject(card);
-          }
-        });
-        card.tabIndex = 0;
-      });
     }
+
+    refreshProjectCards();
+    window.addEventListener("dynamic-content-updated", refreshProjectCards);
   })();
 
   /* Light parallax for home hero (mouse movement) */
@@ -323,9 +375,9 @@ document.addEventListener("DOMContentLoaded", function () {
       { name: "Partenaire 3", logo: "images/ddm.png" },
       { name: "Partenaire 4", logo: "images/ims.png" },
       { name: "Partenaire 5", logo: "images/fundación-sevilla-acoge.png" },
-      { name: "Partenaire 6", logo: "images/ideia.png" },
-      { name: "Partenaire 7", logo: "images/innovate.png" },
-      { name: "Partenaire 8", logo: "images/innovate.png" },
+      { name: "Partenaire 6", logo: "images/mzc.png" },
+      { name: "Partenaire 7", logo: "images/oim.png" },
+      { name: "Partenaire 8", logo: "images/ulcg-africa.png" },
       { name: "Partenaire 9", logo: "images/innovate.png" },
       { name: "Partenaire 10", logo: "images/innovate.png" },
     ];

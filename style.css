@@ -22,6 +22,7 @@ body {
     --brand-dark: #e45600;
     --black: #0b0b0b;
     --card-bg: #ffffff;
+    --header-height: 72px;
 }
 
 /* Homepage hero: make hero fullscreen and prevent native scrolling on index */
@@ -39,10 +40,6 @@ body {
 }
 
 /* header height used to size the hero area */
-:root {
-    --header-height: 72px;
-}
-
 .hero-page .hero {
     min-height: calc(100vh - var(--header-height));
     display: flex;
@@ -359,13 +356,13 @@ p {
     color: #333;
 }
 
-.team-grid {
+/* .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
-}
+} */
 
 .bio-card {
     background: white;
@@ -1334,13 +1331,13 @@ img {
 }
 
 /* Team section styling */
-.team-section .team-grid {
+/* .team-section .team-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
     margin-top: 1.5rem;
-}
+} */
 
 .team-section .team-member {
     text-align: center;
@@ -1351,10 +1348,10 @@ img {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.team-section .team-member:hover {
+/* .team-section .team-member:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .team-section .team-avatar {
     display: block;
@@ -1367,9 +1364,9 @@ img {
     transition: transform 0.25s ease;
 }
 
-.team-section .team-member:hover .team-avatar {
-    transform: scale(1.05);
-}
+/* .team-section .team-member:hover .team-avatar {
+    transform: scale(1.01);
+} */
 
 .team-section .team-info {
     margin-top: 0.5rem;
@@ -1402,9 +1399,9 @@ img {
     font-size: 0.9rem;
 }
 
-.team-section .team-member:hover .team-avatar-overlay {
+/* .team-section .team-member:hover .team-avatar-overlay {
     opacity: 1;
-}
+} */
 
 /* Projects page: controls, grid, modal, lazy-load */
 .projects-controls {
@@ -1514,7 +1511,7 @@ img {
     margin-top: 10px;
 }
 
-.partner-slot {
+/* .partner-slot {
     background: #fff;
     border-radius: 10px;
     padding: 10px;
@@ -1523,7 +1520,7 @@ img {
     justify-content: center;
     border: 1px solid rgba(2, 6, 23, 0.04);
     min-height: 68px;
-}
+} */
 
 .partner-slot .partner-logo {
     max-width: 100%;

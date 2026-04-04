@@ -23,22 +23,33 @@ async function loadServices() {
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-haspopup", "dialog");
-      card.setAttribute("data-title", service.title);
-      card.setAttribute("data-lead", service.lead);
-      card.setAttribute("data-description", service.description);
+      card.setAttribute("data-title", service.title || "Service");
+      card.setAttribute("data-lead", service.lead || "");
+      card.setAttribute("data-description", service.description || "");
+
+      const icon =
+        service.icon ||
+        `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="2"/></svg>`;
+      const shortDescription =
+        service.shortDescription ||
+        (service.description
+          ? service.description.substring(0, 100) + "..."
+          : "Description du service à venir.");
 
       card.innerHTML = `
         <span class="card-icon" aria-hidden="true">
-          ${service.icon}
+          ${icon}
         </span>
         <div class="card-body">
           <h4>${service.title}</h4>
-          <p>${service.shortDescription}</p>
+          <p>${shortDescription}</p>
         </div>
       `;
 
       container.appendChild(card);
     });
+
+    window.dispatchEvent(new Event("dynamic-content-updated"));
   } catch (error) {
     console.error("Error loading services:", error);
   }
