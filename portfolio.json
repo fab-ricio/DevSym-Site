@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "type": "Assistance",
+    "type": "Assistances",
     "year": "2026",
-    "title": "Assistance technique d’appui à l’intégration socio-professionnelles des personnes migrantes",
+    "title": "Assistances technique d’appui à l’intégration socio-professionnelles des personnes migrantes",
     "lead": "Renforcement des compétences",
     "description": "Cartographie des acteurs de la formation professionnelles et de l’insertion§Accompagnement à la création et au développement d'initiatives économiques (AGR).§Mise en œuvre par la Délégation Diocésaine des Migrations (DDM) avec le financement de MISEREOR et Manos Unidas",
     "image": "images/ddm.png",
@@ -16,7 +16,7 @@
     "title": "Assistance technique et Accompagnement de proximité de 100 femmes migrantes.",
     "lead": "Renforcement des compétences",
     "description": "« Contribuer à la mise en œuvre de l’Économie Sociale et Solidaire comme outil pour la réduction des violences économiques et l’accès aux droits socio-économiques des femmes dans la région de Tanger-Tétouan-Al Hoceima mise en œuvre par l’Union de l’Action Féministe (UAF) et ONGD ACPP avec le financement de AACID",
-    "image": "images/Logo-UAF.jpg",
+    "image": "images/APISF-1775266477323.png",
     "summary": "Assistance technique et Accompagnement."
   },
   {

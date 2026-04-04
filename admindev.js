@@ -96,6 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
   loadServices();
   loadProjets();
   loadPortfolio();
+
+  // Initialize image uploads for all sections
+  initializeImageUpload("service");
+  initializeImageUpload("projet");
+  initializeImageUpload("portfolio");
 });
 
 // ==================== TABS ====================
@@ -216,6 +221,11 @@ function editService(id) {
         serviceTitle.value = service.title;
         serviceLead.value = service.lead;
         serviceDescription.value = service.description;
+        serviceImage.value = service.image || "";
+
+        // Show existing image if available
+        showExistingImage("service", service.image);
+
         serviceFormTitle.textContent = "Modifier le Service";
         submitBtn.textContent = "Mettre à jour";
       }
@@ -254,6 +264,8 @@ function resetServiceForm() {
   serviceTitle.value = "";
   serviceLead.value = "";
   serviceDescription.value = "";
+  serviceImage.value = "";
+  showExistingImage("service", null);
   serviceFormTitle.textContent = "Ajouter un Nouveau Service";
   submitBtn.textContent = "Ajouter";
 }
@@ -360,7 +372,11 @@ function editPortfolio(id) {
         portfolioYear.value = item.year;
         portfolioSummary.value = item.summary;
         portfolioDescription.value = item.description;
-        portfolioImage.value = item.image;
+        portfolioImage.value = item.image || "";
+
+        // Show existing image if available
+        showExistingImage("portfolio", item.image);
+
         portfolioFormTitle.textContent = "Modifier l'Article";
         portfolioSubmitBtn.textContent = "Mettre à jour";
       }
@@ -400,6 +416,7 @@ function resetPortfolioForm() {
   portfolioSummary.value = "";
   portfolioDescription.value = "";
   portfolioImage.value = "";
+  showExistingImage("portfolio", null);
   portfolioFormTitle.textContent = "Ajouter un Nouvel Article";
   portfolioSubmitBtn.textContent = "Ajouter";
 }
@@ -510,7 +527,11 @@ function editProjet(id) {
         projetYear.value = projet.year;
         projetDescription.value = projet.description;
         projetContext.value = projet.context;
-        projetImage.value = projet.image;
+        projetImage.value = projet.image || "";
+
+        // Show existing image if available
+        showExistingImage("projet", projet.image);
+
         projetFormTitle.textContent = "Modifier le Projet";
         projetSubmitBtn.textContent = "Mettre à jour";
       }
@@ -553,6 +574,186 @@ function resetProjetForm() {
   projetDescription.value = "";
   projetContext.value = "";
   projetImage.value = "";
+  showExistingImage("projet", null);
   projetFormTitle.textContent = "Ajouter un Nouveau Projet";
   projetSubmitBtn.textContent = "Ajouter";
 }
+
+// ====================
+// IMAGE UPLOAD FUNCTIONS
+// ====================
+
+// Initialize image upload for a specific section
+function initializeImageUpload(section) {
+  const uploadZone = document.getElementById(`${section}-image-upload`);
+  const fileInput = document.getElementById(`${section}-image-file`);
+  const preview = document.getElementById(`${section}-image-preview`);
+  const progress = document.getElementById(`${section}-upload-progress`);
+  const progressFill = document.getElementById(`${section}-upload-fill`);
+  const status = document.getElementById(`${section}-upload-status`);
+  const imagePathInput = document.getElementById(`${section}-image`);
+
+  if (!uploadZone || !fileInput) return;
+
+  // Drag and drop events
+  uploadZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadZone.classList.add("dragover");
+  });
+
+  uploadZone.addEventListener("dragleave", () => {
+    uploadZone.classList.remove("dragover");
+  });
+
+  uploadZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove("dragover");
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileUpload(files[0], section, preview, progress, progressFill, status, imagePathInput);
+    }
+  });
+
+  // File input change
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleFileUpload(file, section, preview, progress, progressFill, status, imagePathInput);
+    }
+  });
+}
+
+// Handle file upload
+async function handleFileUpload(file, section, preview, progress, progressFill, status, imagePathInput) {
+  // Validate file type
+  if (!file.type.startsWith("image/")) {
+    status.textContent = "❌ Seuls les fichiers image sont acceptés";
+    status.className = "upload-status upload-error";
+    progress.style.display = "none";
+    return;
+  }
+
+  // Validate file size (5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    status.textContent = "❌ Le fichier est trop volumineux (max 5MB)";
+    status.className = "upload-status upload-error";
+    progress.style.display = "none";
+    return;
+  }
+
+  // Show preview
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.src = e.target.result;
+    preview.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+
+  // Show progress
+  progress.style.display = "block";
+  progressFill.style.width = "0%";
+  status.textContent = "⏳ Upload en cours...";
+  status.className = "upload-status";
+
+  try {
+    // Create FormData
+    const formData = new FormData();
+    formData.append("image", file);
+
+    // Upload file
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      // Success
+      progressFill.style.width = "100%";
+      status.textContent = "✅ Upload réussi !";
+      status.className = "upload-status upload-success";
+      imagePathInput.value = result.imagePath;
+
+      setTimeout(() => {
+        progress.style.display = "none";
+      }, 2000);
+    } else {
+      // Error
+      throw new Error(result.error || "Upload failed");
+    }
+  } catch (error) {
+    console.error("Upload error:", error);
+    progressFill.style.width = "0%";
+    status.textContent = `❌ Erreur: ${error.message}`;
+    status.className = "upload-status upload-error";
+    progress.style.display = "none";
+  }
+}
+
+// Show existing image in upload zone
+function showExistingImage(section, imagePath) {
+  const uploadZone = document.getElementById(`${section}-image-upload`);
+  const preview = document.getElementById(`${section}-image-preview`);
+  const uploadContent = uploadZone.querySelector('.image-upload-content');
+
+  if (imagePath) {
+    // Show existing image
+    preview.src = imagePath;
+    preview.style.display = "block";
+    uploadContent.style.display = "none";
+
+    // Add remove button if not already present
+    let removeBtn = uploadZone.querySelector('.image-remove-btn');
+    if (!removeBtn) {
+      removeBtn = document.createElement('button');
+      removeBtn.className = 'image-remove-btn';
+      removeBtn.innerHTML = '🗑️ Supprimer l\'image';
+      removeBtn.style.cssText = `
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 12px;
+      `;
+      removeBtn.onclick = (e) => {
+        e.preventDefault();
+        removeExistingImage(section);
+      };
+      uploadZone.appendChild(removeBtn);
+    }
+  } else {
+    // No image, show upload interface
+    preview.style.display = "none";
+    uploadContent.style.display = "block";
+
+    // Remove remove button if present
+    const removeBtn = uploadZone.querySelector('.image-remove-btn');
+    if (removeBtn) {
+      removeBtn.remove();
+    }
+  }
+}
+
+// Remove existing image
+function removeExistingImage(section) {
+  const imagePathInput = document.getElementById(`${section}-image`);
+  imagePathInput.value = "";
+  showExistingImage(section, null);
+}
+
+// Initialize all image uploads when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  // ... existing initialization code ...
+
+  // Initialize image uploads for all sections
+  initializeImageUpload("service");
+  initializeImageUpload("projet");
+  initializeImageUpload("portfolio");
+});
+

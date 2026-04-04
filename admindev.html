@@ -125,6 +125,102 @@
         .tab-content.active {
             display: block;
         }
+
+        /* Image upload styles */
+        .image-upload {
+            position: relative;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .image-upload:hover,
+        .image-upload.dragover {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+
+        .image-upload.dragover {
+            border-color: #28a745;
+            background: #f8fff8;
+        }
+
+        .image-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-upload-content {
+            pointer-events: none;
+        }
+
+        .image-upload-icon {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .image-upload-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .image-upload-subtext {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .upload-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .upload-progress-fill {
+            height: 100%;
+            background: #007bff;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .upload-status {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .upload-success {
+            color: #28a745;
+        }
+
+        .upload-error {
+            color: #dc3545;
+        }
     </style>
 </head>
 
@@ -134,7 +230,7 @@
             <div class="brand">
                 <a href="index.html" class="brand-link">
                     <img src="images/logo devsym.png" alt="DevSym logo" class="logo-img" />
-                    <span class="brand-text">DevSym</span>
+                    <span class="brand-text">Coopérative <br>DevSym</span></span>
                 </a>
             </div>
             <nav id="primary-navigation" class="nav">
@@ -186,6 +282,26 @@
                         <div class="form-group">
                             <label for="service-description">Description</label>
                             <textarea id="service-description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-image">Image</label>
+                            <div class="image-upload" id="service-image-upload">
+                                <input type="file" id="service-image-file" accept="image/*">
+                                <div class="image-upload-content">
+                                    <div class="image-upload-icon">📷</div>
+                                    <div class="image-upload-text">Cliquez pour sélectionner une image</div>
+                                    <div class="image-upload-subtext">ou glissez-déposez ici (max 5MB)</div>
+                                </div>
+                                <img class="image-preview" id="service-image-preview" alt="Aperçu">
+                                <div class="upload-progress" id="service-upload-progress">
+                                    <div class="upload-progress-bar">
+                                        <div class="upload-progress-fill" id="service-upload-fill"></div>
+                                    </div>
+                                    <div class="upload-status" id="service-upload-status"></div>
+                                </div>
+                            </div>
+                            <input type="text" id="service-image"
+                                placeholder="Chemin de l'image sera rempli automatiquement" readonly>
                         </div>
                         <button type="submit" class="btn btn-primary" id="submit-btn">Ajouter</button>
                         <button type="button" class="btn btn-secondary" id="cancel-btn">Annuler</button>
@@ -243,8 +359,24 @@
                             <input type="text" id="projet-context" placeholder="ex: Collectivité • 2024" required>
                         </div>
                         <div class="form-group">
-                            <label for="projet-image">Image (URL)</label>
-                            <input type="text" id="projet-image" placeholder="ex: images/project1.jpg" required>
+                            <label for="projet-image">Image</label>
+                            <div class="image-upload" id="projet-image-upload">
+                                <input type="file" id="projet-image-file" accept="image/*">
+                                <div class="image-upload-content">
+                                    <div class="image-upload-icon">📷</div>
+                                    <div class="image-upload-text">Cliquez pour sélectionner une image</div>
+                                    <div class="image-upload-subtext">ou glissez-déposez ici (max 5MB)</div>
+                                </div>
+                                <img class="image-preview" id="projet-image-preview" alt="Aperçu">
+                                <div class="upload-progress" id="projet-upload-progress">
+                                    <div class="upload-progress-bar">
+                                        <div class="upload-progress-fill" id="projet-upload-fill"></div>
+                                    </div>
+                                    <div class="upload-status" id="projet-upload-status"></div>
+                                </div>
+                            </div>
+                            <input type="text" id="projet-image"
+                                placeholder="Chemin de l'image sera rempli automatiquement" readonly>
                         </div>
                         <button type="submit" class="btn btn-primary" id="projet-submit-btn">Ajouter</button>
                         <button type="button" class="btn btn-secondary" id="projet-cancel-btn">Annuler</button>
@@ -291,8 +423,24 @@
                             <textarea id="portfolio-description" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="portfolio-image">Image (URL)</label>
-                            <input type="text" id="portfolio-image" placeholder="ex: images/project1.jpg" required>
+                            <label for="portfolio-image">Image</label>
+                            <div class="image-upload" id="portfolio-image-upload">
+                                <input type="file" id="portfolio-image-file" accept="image/*">
+                                <div class="image-upload-content">
+                                    <div class="image-upload-icon">📷</div>
+                                    <div class="image-upload-text">Cliquez pour sélectionner une image</div>
+                                    <div class="image-upload-subtext">ou glissez-déposez ici (max 5MB)</div>
+                                </div>
+                                <img class="image-preview" id="portfolio-image-preview" alt="Aperçu">
+                                <div class="upload-progress" id="portfolio-upload-progress">
+                                    <div class="upload-progress-bar">
+                                        <div class="upload-progress-fill" id="portfolio-upload-fill"></div>
+                                    </div>
+                                    <div class="upload-status" id="portfolio-upload-status"></div>
+                                </div>
+                            </div>
+                            <input type="text" id="portfolio-image"
+                                placeholder="Chemin de l'image sera rempli automatiquement" readonly>
                         </div>
                         <button type="submit" class="btn btn-primary" id="portfolio-submit-btn">Ajouter</button>
                         <button type="button" class="btn btn-secondary" id="portfolio-cancel-btn">Annuler</button>

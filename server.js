@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
+const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,6 +10,35 @@ const partnersFile = path.join(__dirname, "partners.json");
 const servicesFile = path.join(__dirname, "services.json");
 const projetsFile = path.join(__dirname, "projets.json");
 const portfolioFile = path.join(__dirname, "portfolio.json");
+
+// Configure multer for image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "images"));
+  },
+  filename: (req, file, cb) => {
+    // Generate unique filename with timestamp
+    const ext = path.extname(file.originalname);
+    const name = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, "-");
+    const timestamp = Date.now();
+    cb(null, `${name}-${timestamp}${ext}`);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    // Check if file is an image
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"), false);
+    }
+  }
+});
 
 // Middleware
 app.use(cors());
@@ -240,6 +270,26 @@ app.post("/api/partners", (req, res) => {
   } catch (err) {
     console.error("Error saving partners.json:", err);
     res.status(500).json({ error: "Failed to save partners" });
+  }
+});
+
+// API: Upload image
+app.post("/api/upload", upload.single("image"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    // Return the image path
+    const imagePath = `images/${req.file.filename}`;
+    res.json({
+      success: true,
+      imagePath: imagePath,
+      message: "Image uploaded successfully"
+    });
+  } catch (err) {
+    console.error("Error uploading image:", err);
+    res.status(500).json({ error: "Failed to upload image" });
   }
 });
 
