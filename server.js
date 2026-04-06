@@ -299,7 +299,5 @@ app.listen(PORT, () => {
   console.log(`\n🚀 DevSym Server running on http://localhost:${PORT}`);
   console.log(`📁 Serving files from: ${__dirname}`);
   console.log(`\nPartners editing is now enabled!`);
-  console.log(
-    `Open http://localhost:${PORT}/projet.html and click "✏️ Éditer l'ordre"\n`,
-  );
+  console.log(`Open http://localhost:${PORT}/projet.html and click.\n`);
 });
