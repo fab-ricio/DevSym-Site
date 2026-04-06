@@ -88,6 +88,22 @@ function updateResultsCount(count) {
   }
 }
 
+// Format description with bullet points for § separators
+function formatDescription(description) {
+  if (!description) return "";
+
+  // Split by § and filter out empty parts
+  const parts = description.split("§").filter(part => part.trim().length > 0);
+
+  if (parts.length <= 1) {
+    return description; // Return as-is if no § found
+  }
+
+  // Create HTML list with bullet points
+  const listItems = parts.map(part => `<li>${part.trim()}</li>`).join("");
+  return `<ul class="description-list">${listItems}</ul>`;
+}
+
 // Open portfolio modal with item details
 function openPortfolioModal(item) {
   const modal = document.getElementById("portfolio-modal");
@@ -97,8 +113,8 @@ function openPortfolioModal(item) {
   document.getElementById("modal-year").textContent = item.year || "";
   document.getElementById("modal-title").textContent = item.title || "";
   document.getElementById("modal-lead").textContent = item.lead || "";
-  document.getElementById("modal-description").textContent =
-    item.description || "";
+  document.getElementById("modal-description").innerHTML =
+    formatDescription(item.description);
 
   modal.classList.add("active");
 }
