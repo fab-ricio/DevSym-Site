@@ -1,25 +1,61 @@
-/**
- * DevSym - Connexion Supabase & Flux Sociaux
+﻿/**
+ * DevSym - Social feeds loader
  */
 
-// Configuration Supabase
-const SUPABASE_URL = "https://fjcqhibkmfpbukcsmigy.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_jdcp_2l8Qjqrw3JX3HJoLw_-A-HcTh_";
-
-// liens par défaut lorsque l'administrateur n'a rien renseigné
+// liens par défaut lorsque l’administrateur n’a rien renseigné
 const DEFAULT_LINKS = {
   facebook: "https://web.facebook.com/profile.php?id=100090623652091",
+  youtube: "https://www.youtube.com/channel/UCndcjUOurpeU4ozqoGG1d-A",
   linkedin: "https://www.linkedin.com/in/cooperative-devsym-consulting/",
 };
 
-// check that the Supabase client library is available
-if (typeof supabase === "undefined") {
-  console.error("Supabase SDK is not loaded — social feeds will not work.");
-} else {
-  var _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+async function loadSocialFeeds() {
+  const dataUrl = "social-links.json";
+  let links;
+
+  try {
+    const response = await fetch(dataUrl);
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status}`);
+    }
+    links = await response.json();
+  } catch (error) {
+    console.warn(
+      "Impossible de charger social-links.json, utilisation des liens par défaut.",
+      error,
+    );
+    links = [];
+  }
+
+  const seen = { facebook: false, linkedin: false, youtube: false };
+
+  if (Array.isArray(links)) {
+    links.forEach((link) => {
+      if (!link || !link.platform || !link.url) return;
+      const pl = link.platform.toLowerCase();
+      if (pl === "facebook" || pl === "linkedin" || pl === "youtube") {
+        renderFeed(pl, link.url);
+        seen[pl] = true;
+      }
+    });
+  }
+
+  if (!seen.facebook) renderFeed("facebook", DEFAULT_LINKS.facebook);
+  if (!seen.youtube) renderFeed("youtube", DEFAULT_LINKS.youtube);
+  if (!seen.linkedin) renderFeed("linkedin", DEFAULT_LINKS.linkedin);
+
+  setTimeout(() => {
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+  }, 800);
 }
 
-// Reusable helper: render a single feed inside page based on platform
+// Lancer la fonction quand le document est prêt
+document.addEventListener("DOMContentLoaded", () => {
+  loadSocialFeeds();
+});
+
 function renderFeed(platform, url) {
   platform = platform.toLowerCase();
   if (platform === "facebook") {
@@ -30,7 +66,6 @@ function renderFeed(platform, url) {
   } else if (platform === "youtube") {
     const container = document.querySelector(".youtube-feed");
     if (container) {
-      // support video URLs and channel URLs
       let videoId = "";
       let channelId = "";
       if (url.includes("youtube.com/watch?v=")) {
@@ -41,38 +76,37 @@ function renderFeed(platform, url) {
         videoId = url.split("embed/")[1].split("?")[0];
       } else if (url.includes("youtube.com/channel/")) {
         channelId = url.split("youtube.com/channel/")[1].split(/[\/?]/)[0];
+      } else if (url.includes("youtube.com/@")) {
+        const username = url.split("youtube.com/@")[1].split(/[\/?&]/)[0];
+        if (username) {
+          channelId = username;
+        }
       }
       if (videoId) {
-        container.innerHTML = `<h3>YouTube</h3><iframe width="100%" height="600" src="https://www.youtube.com/embed/${videoId}" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        renderYouTubeThumbnail(container, videoId);
       } else if (channelId) {
-        // embed uploads playlist for channel
-        container.innerHTML = `<h3>YouTube</h3><iframe width="100%" height="600" src="https://www.youtube.com/embed?listType=user_uploads&list=${channelId}" title="Chaîne YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        renderLatestYouTubeChannelVideo(container, channelId, url);
       } else {
-        // fallback: just link
         container.innerHTML = `<h3>YouTube</h3><p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
       }
     }
   } else if (platform === "linkedin") {
     const container = document.querySelector(".linkedin-feed");
     if (container) {
-      // if the URL points to a profile (in/ or profile.php) show the badge
       if (url.includes("linkedin.com/in/") || url.includes("profile.php")) {
         let vanity = "";
         if (url.includes("linkedin.com/in/")) {
           vanity = url.split("linkedin.com/in/")[1].split("/")[0];
         }
-        // build badge markup; for profile.php we fallback to a simple link
         if (vanity) {
           container.innerHTML = `<h3>LinkedIn</h3><div class="LI-profile-badge" data-version="v1" data-size="medium" data-locale="fr_FR" data-type="vertical" data-vanity="${vanity}" data-theme="light"><a class="badge-base__link linc-link" href="${url}">Voir notre profil LinkedIn</a></div>`;
         } else {
           container.innerHTML = `<h3>LinkedIn</h3><p><a href="${url}" target="_blank">Voir notre profil LinkedIn</a></p>`;
         }
-        // request LinkedIn parser if available
         setTimeout(() => {
           if (window.IN && typeof IN.parse === "function") IN.parse();
         }, 200);
       } else {
-        // treat as regular shared post
         const encoded = encodeURIComponent(url);
         container.innerHTML = `<h3>LinkedIn</h3><iframe src="https://www.linkedin.com/embed/feed/update?url=${encoded}" height="600" width="100%" frameborder="0" allowfullscreen="" title="Post LinkedIn"></iframe>`;
       }
@@ -80,52 +114,79 @@ function renderFeed(platform, url) {
   }
 }
 
-async function loadSocialFeeds() {
-  if (typeof _supabase === "undefined") {
-    console.warn("_supabase client not initialized; skipping social feed load.");
-    return;
-  }
-  console.log("Connexion à Supabase en cours...");
-
-  // 1. Récupération des données dans la table 'social_links'
-  const { data: links, error } = await _supabase
-    .from("social_links")
-    .select("*");
-
-  if (error) {
-    console.error("Erreur Supabase :", error.message);
-    return;
-  }
-
-  if (!links || links.length === 0) {
-    console.warn("La table social_links est vide sur Supabase.");
-    return;
-  }
-
-  // 2. Injection des URLs dans le HTML
-  // si la base contient des URLs personnalisées, on s'en sert, sinon on applique les valeurs par défaut
-  const seen = { facebook: false, linkedin: false, youtube: false };
-  links.forEach((link) => {
-    const pl = link.platform.toLowerCase();
-    if (pl === "facebook" || pl === "linkedin" || pl === "instagram") {
-      renderFeed(pl, link.url);
-      seen[pl] = true;
-    }
-  });
-  if (!seen.facebook) renderFeed("facebook", DEFAULT_LINKS.facebook);
-  if (!seen.linkedin) renderFeed("linkedin", DEFAULT_LINKS.linkedin);
-
-  // 3. Réactivation des scripts (SDK) pour afficher les visuels
-  setTimeout(() => {
-    // Facebook
-    if (window.FB) {
-      window.FB.XFBML.parse();
-    }
-  }, 800);
+function renderYouTubeThumbnail(container, videoId) {
+  const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  container.innerHTML = `
+    <h3>YouTube</h3>
+    <a href="${videoUrl}" target="_blank" class="youtube-video-link">
+      <img src="${thumbnailUrl}" alt="Dernière vidéo YouTube" style="width:100%; height:auto; display:block; border-radius: 14px;" />
+    </a>
+    <p style="margin-top: 12px; text-align:center;"><a href="${videoUrl}" target="_blank">Voir la dernière vidéo sur YouTube</a></p>
+  `;
 }
 
-// Lancer la fonction quand le document est prêt
-document.addEventListener("DOMContentLoaded", () => {
-  loadSocialFeeds();
+async function renderLatestYouTubeChannelVideo(container, channelId, channelUrl) {
+  container.innerHTML = `<h3>YouTube</h3><p>Chargement de la dernière vidéo...</p>`;
+  const videoId = await fetchLatestYouTubeVideoId(channelId, channelUrl);
+  if (videoId) {
+    renderYouTubeThumbnail(container, videoId);
+  } else {
+    renderYouTubeFallbackThumbnail(container, channelUrl || `https://www.youtube.com/channel/${channelId}`);
+  }
+}
 
-});
+function renderYouTubeFallbackThumbnail(container, url) {
+  const fallbackImage = "https://via.placeholder.com/1200x675.png?text=Dernière+vid%C3%A9o+YouTube";
+  container.innerHTML = `
+    <h3>YouTube</h3>
+    <a href="${url}" target="_blank" class="youtube-video-link">
+      <img src="${fallbackImage}" alt="Vignette YouTube de secours" style="width:100%; height:auto; display:block; border-radius: 14px;" />
+    </a>
+    <p style="margin-top: 12px; text-align:center;"><a href="${url}" target="_blank">Voir notre chaîne YouTube</a></p>
+  `;
+}
+
+async function fetchLatestYouTubeVideoId(channelId, channelUrl) {
+  const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+
+  try {
+    const response = await fetch(proxyUrl);
+    if (response.ok) {
+      const xmlText = await response.text();
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+      const videoIdElement = xmlDoc.getElementsByTagName("videoId")[0] || xmlDoc.getElementsByTagName("yt:videoId")[0] || xmlDoc.querySelector("videoId");
+      const videoId = videoIdElement ? videoIdElement.textContent.trim() : null;
+      if (videoId) {
+        return videoId;
+      }
+    }
+  } catch (error) {
+    console.warn("Flux RSS YouTube non récupéré, tentative alternative :", error);
+  }
+
+  const fallbackUrl = channelUrl || `https://www.youtube.com/channel/${channelId}`;
+  return fetchLatestYouTubeVideoIdFromPage(fallbackUrl);
+}
+
+async function fetchLatestYouTubeVideoIdFromPage(pageUrl) {
+  try {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(pageUrl)}`;
+    const response = await fetch(proxyUrl);
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status}`);
+    }
+    const html = await response.text();
+    const match = html.match(/\/watch\?v=([A-Za-z0-9_-]{11})/);
+    if (match && match[1]) {
+      return match[1];
+    }
+    const jsonMatch = html.match(/"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"/);
+    return jsonMatch ? jsonMatch[1] : null;
+  } catch (error) {
+    console.warn("Impossible de récupérer le HTML YouTube pour trouver la dernière vidéo.", error);
+    return null;
+  }
+}

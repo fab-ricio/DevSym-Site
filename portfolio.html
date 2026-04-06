@@ -7,6 +7,61 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <title>Médias — DevSym</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Filters Styles */
+        .filters-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .filter-group label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+        }
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        .filter-group select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        .filter-results {
+            margin-left: auto;
+        }
+        .filter-results #results-count {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-results {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -39,8 +94,42 @@
             <div class="container">
                 <p class="lead">Les missions où nous avons accompagné des organisations :</p>
 
+                <!-- Filters Section -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="type-filter">Filtrer par type :</label>
+                        <select id="type-filter">
+                            <option value="all">Tous les types</option>
+                            <option value="assistance">Assistance</option>
+                            <option value="formation">Formation</option>
+                            <option value="diagnostic">Diagnostic</option>
+                            <option value="consultance">Consultance</option>
+                            <option value="evaluation">Évaluation</option>
+                            <option value="appui">Appui</option>
+                            <option value="plan">Plan</option>
+                            <option value="etude">Étude</option>
+                            <option value="implementation">Implémentation</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="year-filter">Filtrer par année :</label>
+                        <select id="year-filter">
+                            <option value="all">Toutes les années</option>
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </div>
+                    <div class="filter-results">
+                        <span id="results-count">19 missions affichées</span>
+                    </div>
+                </div>
+
                 <div class="missions-grid">
-                    <article class="mission-card" data-type="Assistance" data-year="2026"
+                    <article class="mission-card" data-type="assistance" data-year="2026"
                         data-title="Assistance technique d’appui à l’intégration socio-professionnelles des personnes migrantes"
                         data-lead="Renforcement des compétences"
                         data-description="Cartographie des acteurs de la formation professionnelles et de l’insertion§Accompagnement à la création et au développement d'initiatives économiques (AGR).§Mise en œuvre par la Délégation Diocésaine des Migrations (DDM) avec le financement de MISEREOR et Manos Unidas "
@@ -52,7 +141,7 @@
                         </p>
                     </article>
 
-                    <article class="mission-card" data-type="Assistance" data-year="2026"
+                    <article class="mission-card" data-type="assistance" data-year="2026"
                         data-title="Assistance technique et Accompagnement de proximité de 100 femmes migrantes."
                         data-lead="Renforcement des compétences"
                         data-description="« Contribuer à la mise en œuvre de l’Économie Sociale et Solidaire comme outil pour la réduction des violences économiques et l’accès aux droits socio-économiques des femmes dans la région de Tanger-Tétouan-Al Hoceima mise en œuvre par l’Union de l’Action Féministe (UAF) et ONGD ACPP avec le financement de AACID"
@@ -64,7 +153,7 @@
                         </p>
                     </article>
 
-                    <article class="mission-card" data-type="Appui" data-year="2025"
+                    <article class="mission-card" data-type="appui" data-year="2025"
                         data-title="Expertise d’appui à la coopération décentralisée internationale"
                         data-lead="Renforcement des compétences"
                         data-description="Appui à la coopération décentralisée internationale (coopération sud-sud) entre la Commune de Sebkha à Nouakchott (Mauritanie) et les Communes marocaines ainsi qu’à la gouvernance de la politique migratoire à travers la conception des projets, levée de fonds et mise en réseau"
@@ -111,7 +200,7 @@
                         </p>
                     </article>
 
-                    <article class="mission-card" data-type="Formation" data-year="2025"
+                    <article class="mission-card" data-type="formation" data-year="2025"
                         data-title="Formation de renforcement des capacités de l’équipe de l’UAF et 75 Défenseures des Droits Humains ainsi que 50 Femmes migrantes ."
                         data-lead="Renforcement des compétences"
                         data-description="«Formation de renforcement des capacités de l’équipe de l’UAF et 75 Défenseures des Droits Humains (dont 30 femmes migrantes) ainsi que 50 Femmes migrantes (Défenseures des droit humains) sur la Défense des droits humains, les droits économiques, sociaux et culturels (DESC), ainsi que les droits civils et politiques (DCP) à Tanger dans le cadre du projet « Promouvoir les processus de plaidoyer et d’autonomie socio-économique des femmes migrantes et marocaines dans la ville de Tanger, Maroc (Droits et autonomie des femmes migrantes et marocaines à Tanger) » financé par Alianza por la Solidaridad à travers -le financement de Gouvernement des Iles Baléares"
@@ -168,7 +257,7 @@
                         </p>
                     </article>
 
-                    <article class="mission-card" data-type="Consultance" data-year="2024"
+                    <article class="mission-card" data-type="consultance" data-year="2024"
                         data-title="Identification, mobilisation et formation des auto-entrepreneurs"
                         data-description="Consultance d’appui au projet pour l’identification, la mobilisation et formation des auto-entrepreneurs et des enfants dans le cadre des activités du projet « la multiculturalité au service de la cohésion sociale dans les territoires », financé par Migration MPTF avec le soutien de l’OIM"
                         data-images="images/ulcg-africa.png">
@@ -190,7 +279,7 @@
                         </p>
                     </article>
 
-                    <article class="mission-card" data-type="Consultance" data-year="2024"
+                    <article class="mission-card" data-type="consultance" data-year="2024"
                         data-title="Appui à l’équipe finance sur la justification technique et financière finale du projet"
                         data-description="Consultance d’appui à l’équipe finance sur la justification technique et financière finale du projet, dans le cadre du projet « PROMIMED » mis en œuvre par la Délégation Diocésaine des Migrations (DDM) en partenariat avec la Fondation Entreculturas comme cheffe de file et sous financement de l’Union Européenne."
                         data-images="images/ddm.png">

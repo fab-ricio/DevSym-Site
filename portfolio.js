@@ -1,52 +1,94 @@
-// Fetch portfolio items from JSON and render mission cards
-async function loadPortfolio() {
-  try {
-    const response = await fetch("/portfolio.json");
-    if (!response.ok) {
-      throw new Error("Failed to fetch portfolio items");
+// Portfolio filtering functionality
+document.addEventListener('DOMContentLoaded', function() {
+    initializeFilters();
+    updateResultsCount();
+});
+
+// Initialize filter event listeners
+function initializeFilters() {
+    const typeFilter = document.getElementById('type-filter');
+    const yearFilter = document.getElementById('year-filter');
+
+    if (typeFilter) {
+        typeFilter.addEventListener('change', applyFilters);
     }
 
-    const items = await response.json();
-    const container = document.querySelector(".missions-grid");
-    if (!container) {
-      console.error("Portfolio container not found");
-      return;
+    if (yearFilter) {
+        yearFilter.addEventListener('change', applyFilters);
     }
 
-    container.innerHTML = "";
+    // Setup modal listeners
+    setupModalListeners();
 
-    items.forEach((item) => {
-      const article = document.createElement("article");
-      article.className = "mission-card";
-      article.setAttribute("data-type", item.type || "");
-      article.setAttribute("data-year", item.year || "");
-      article.setAttribute("data-title", item.title || "");
-      article.setAttribute("data-lead", item.lead || "");
-      article.setAttribute("data-description", item.description || "");
-      article.setAttribute("data-images", item.image || "");
+    // Add click events to mission cards
+    setupMissionCardListeners();
+}
 
-      article.innerHTML = `
-        <img data-src="${item.image || ""}" alt="Vignette ${item.title || "portfolio"}" class="project-thumb lazy" />
-        <h4>Missions Réalisées</h4>
-        <p class="muted">${item.year || ""}</p>
-        <p>${item.summary || item.title || ""}</p>
-      `;
+// Setup click listeners for mission cards to open modal
+function setupMissionCardListeners() {
+    const missionCards = document.querySelectorAll('.mission-card');
 
-      // Add click event to open modal
-      article.addEventListener("click", () => openPortfolioModal(item));
+    missionCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const item = {
+                type: this.getAttribute('data-type'),
+                year: this.getAttribute('data-year'),
+                title: this.getAttribute('data-title'),
+                lead: this.getAttribute('data-lead'),
+                description: this.getAttribute('data-description'),
+                image: this.getAttribute('data-images')
+            };
+            openPortfolioModal(item);
+        });
+    });
+}
 
-      container.appendChild(article);
+// Apply filters to mission cards
+function applyFilters() {
+    const typeFilter = document.getElementById('type-filter');
+    const yearFilter = document.getElementById('year-filter');
+    const missionCards = document.querySelectorAll('.mission-card');
+
+    const selectedType = typeFilter ? typeFilter.value.toLowerCase() : 'all';
+    const selectedYear = yearFilter ? yearFilter.value : 'all';
+
+    let visibleCount = 0;
+
+    missionCards.forEach(card => {
+        const cardType = card.getAttribute('data-type').toLowerCase();
+        const cardYear = card.getAttribute('data-year');
+
+        const typeMatch = selectedType === 'all' || cardType === selectedType;
+        const yearMatch = selectedYear === 'all' || cardYear === selectedYear;
+
+        if (typeMatch && yearMatch) {
+            card.style.display = 'block';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
     });
 
-    window.dispatchEvent(new Event("dynamic-content-updated"));
-  } catch (error) {
-    console.error("Error loading portfolio items:", error);
-  }
+    updateResultsCount(visibleCount);
+}
+
+// Update the results count display
+function updateResultsCount(count) {
+    const resultsCount = document.getElementById('results-count');
+    if (resultsCount) {
+        if (count !== undefined) {
+            resultsCount.textContent = `${count} mission${count !== 1 ? 's' : ''} affichée${count !== 1 ? 's' : ''}`;
+        } else {
+            const visibleCards = document.querySelectorAll('.mission-card[style*="display: block"], .mission-card:not([style*="display"])');
+            const totalCards = document.querySelectorAll('.mission-card').length;
+            resultsCount.textContent = `${visibleCards.length} mission${visibleCards.length !== 1 ? 's' : ''} affichée${visibleCards.length !== 1 ? 's' : ''}`;
+        }
+    }
 }
 
 // Open portfolio modal with item details
 function openPortfolioModal(item) {
-  const modal = document.getElementById("portfolio-modal");
+    const modal = document.getElementById("portfolio-modal");
   
   document.getElementById("modal-image").src = item.image || "";
   document.getElementById("modal-type").textContent = item.type || "";

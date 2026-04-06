@@ -19,10 +19,12 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     // Generate unique filename with timestamp
     const ext = path.extname(file.originalname);
-    const name = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, "-");
+    const name = path
+      .basename(file.originalname, ext)
+      .replace(/[^a-zA-Z0-9]/g, "-");
     const timestamp = Date.now();
     cb(null, `${name}-${timestamp}${ext}`);
-  }
+  },
 });
 
 const upload = multer({
@@ -37,7 +39,7 @@ const upload = multer({
     } else {
       cb(new Error("Only image files are allowed"), false);
     }
-  }
+  },
 });
 
 // Middleware
@@ -285,7 +287,7 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
     res.json({
       success: true,
       imagePath: imagePath,
-      message: "Image uploaded successfully"
+      message: "Image uploaded successfully",
     });
   } catch (err) {
     console.error("Error uploading image:", err);

@@ -393,7 +393,9 @@ function editPortfolio(id) {
 }
 
 async function deletePortfolio(id) {
-  if (!confirm("Êtes-vous sûr de vouloir supprimer cet article de portfolio ?")) {
+  if (
+    !confirm("Êtes-vous sûr de vouloir supprimer cet article de portfolio ?")
+  ) {
     return;
   }
 
@@ -619,7 +621,15 @@ function initializeImageUpload(section) {
     uploadZone.classList.remove("dragover");
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      handleFileUpload(files[0], section, preview, progress, progressFill, status, imagePathInput);
+      handleFileUpload(
+        files[0],
+        section,
+        preview,
+        progress,
+        progressFill,
+        status,
+        imagePathInput,
+      );
     }
   });
 
@@ -627,13 +637,29 @@ function initializeImageUpload(section) {
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (file) {
-      handleFileUpload(file, section, preview, progress, progressFill, status, imagePathInput);
+      handleFileUpload(
+        file,
+        section,
+        preview,
+        progress,
+        progressFill,
+        status,
+        imagePathInput,
+      );
     }
   });
 }
 
 // Handle file upload
-async function handleFileUpload(file, section, preview, progress, progressFill, status, imagePathInput) {
+async function handleFileUpload(
+  file,
+  section,
+  preview,
+  progress,
+  progressFill,
+  status,
+  imagePathInput,
+) {
   // Validate file type
   if (!file.type.startsWith("image/")) {
     status.textContent = "❌ Seuls les fichiers image sont acceptés";
@@ -704,7 +730,7 @@ async function handleFileUpload(file, section, preview, progress, progressFill, 
 function showExistingImage(section, imagePath) {
   const uploadZone = document.getElementById(`${section}-image-upload`);
   const preview = document.getElementById(`${section}-image-preview`);
-  const uploadContent = uploadZone.querySelector('.image-upload-content');
+  const uploadContent = uploadZone.querySelector(".image-upload-content");
 
   if (imagePath) {
     // Show existing image
@@ -713,11 +739,11 @@ function showExistingImage(section, imagePath) {
     uploadContent.style.display = "none";
 
     // Add remove button if not already present
-    let removeBtn = uploadZone.querySelector('.image-remove-btn');
+    let removeBtn = uploadZone.querySelector(".image-remove-btn");
     if (!removeBtn) {
-      removeBtn = document.createElement('button');
-      removeBtn.className = 'image-remove-btn';
-      removeBtn.innerHTML = '🗑️ Supprimer l\'image';
+      removeBtn = document.createElement("button");
+      removeBtn.className = "image-remove-btn";
+      removeBtn.innerHTML = "🗑️ Supprimer l'image";
       removeBtn.style.cssText = `
         position: absolute;
         top: 10px;
@@ -742,7 +768,7 @@ function showExistingImage(section, imagePath) {
     uploadContent.style.display = "block";
 
     // Remove remove button if present
-    const removeBtn = uploadZone.querySelector('.image-remove-btn');
+    const removeBtn = uploadZone.querySelector(".image-remove-btn");
     if (removeBtn) {
       removeBtn.remove();
     }
@@ -774,17 +800,21 @@ document.addEventListener("DOMContentLoaded", () => {
 function scrollToForm(tabId) {
   // First, switch to the correct tab
   const tabButton = document.querySelector(`[data-tab="${tabId}"]`);
-  if (tabButton && !tabButton.classList.contains('active')) {
+  if (tabButton && !tabButton.classList.contains("active")) {
     // Only switch tabs if not already active
     // Remove active class from all tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document
+      .querySelectorAll(".tab-btn")
+      .forEach((btn) => btn.classList.remove("active"));
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((content) => content.classList.remove("active"));
 
     // Add active class to the target tab
-    tabButton.classList.add('active');
+    tabButton.classList.add("active");
     const tabContent = document.getElementById(tabId);
     if (tabContent) {
-      tabContent.classList.add('active');
+      tabContent.classList.add("active");
     }
   }
 
@@ -794,10 +824,9 @@ function scrollToForm(tabId) {
     // Add a small delay to ensure the tab switch is complete
     setTimeout(() => {
       formSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+        behavior: "smooth",
+        block: "start",
       });
     }, 100);
   }
 }
-

@@ -710,6 +710,10 @@ p {
 }
 
 @media (max-width: 768px) {
+    .page-hero.home-hero {
+        background-position: center top;
+    }
+
     .page-hero.home-hero h1 {
         font-size: 1.9rem;
     }
@@ -1692,6 +1696,7 @@ img {
         transform: translateY(50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
