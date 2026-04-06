@@ -7,6 +7,74 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <title>À propos — DevSym</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Special Features Styles */
+        .special-features {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 60px 0;
+        }
+        .special-features h3 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #495057;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #007bff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .feature-arrow {
+            font-size: 2rem;
+            color: #007bff;
+            margin-right: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        .feature-content h4 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .feature-content p {
+            margin: 0;
+            color: #6c757d;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .feature-item {
+                padding: 20px;
+            }
+            .feature-arrow {
+                font-size: 1.5rem;
+                margin-right: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -96,6 +164,43 @@
                         <!-- <h4>Impact</h4> -->
                         <p>Construire et développer des projets sociaux
                             aux profits de la communauté locale.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Features Section -->
+        <section class="section special-features">
+            <div class="container">
+                <h3>Qu'est-ce qu'il y a de spécial ?</h3>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-arrow">→</div>
+                        <div class="feature-content">
+                            <h4>1. Expertise pointue</h4>
+                            <p>Une connaissance fine des méthodologies, des outils et un regard extérieur pour accompagner des structures de l'économie sociale et solidaire dans le domaine de la migration.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-arrow">→</div>
+                        <div class="feature-content">
+                            <h4>2. Démarche hybride</h4>
+                            <p>Une démarche mixte d'apport d'expertise et d'outils de production et recueil de données de qualité dans nos process d'étude, de diagnostic et d'évaluation.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-arrow">→</div>
+                        <div class="feature-content">
+                            <h4>3. Respect des délais</h4>
+                            <p>Le respect des deadlines à travers une approche novatrice de la création de valeur ajoutée et collaboration des commanditaires via la méthode agile mise sur une intelligence collective de nos équipes.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-arrow">→</div>
+                        <div class="feature-content">
+                            <h4>4. Veille permanente</h4>
+                            <p>Une veille permanente sur les sujets de prédilection de nos partenaires et l'intégration de celle-ci dans nos démarches post-missions afin de pérenniser les actions sur le terrain.</p>
+                        </div>
                     </div>
                 </div>
             </div>
