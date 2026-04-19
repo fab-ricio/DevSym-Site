@@ -1,10 +1,13 @@
 // ============================================
 // EmailJS Configuration
 // ============================================
-// 🔑 METTEZ VOS CLÉS ICI:
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // Remplacez par votre Service ID
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";  // Remplacez par votre Public Key
-const EMAILJS_TEMPLATE_ID = "contact_form";   // ID du template (optionnel à changer)
+// Les clés sont chargées depuis config.js (non versionnée pour la sécurité)
+// Voir config.example.js pour les instructions
+
+const EMAILJS_SERVICE_ID = window.EMAILJS_CONFIG?.SERVICE_ID || "YOUR_SERVICE_ID";
+const EMAILJS_PUBLIC_KEY = window.EMAILJS_CONFIG?.PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+const EMAILJS_TEMPLATE_ID = window.EMAILJS_CONFIG?.TEMPLATE_ID || "contact_form";
+const EMAILJS_TO_EMAIL = window.EMAILJS_CONFIG?.TO_EMAIL || "coopdevsym1@gmail.com";
 
 // Initialiser EmailJS au chargement de la page
 document.addEventListener("DOMContentLoaded", function () {
@@ -41,8 +44,7 @@ async function handleFormSubmit(e) {
         from_email: document.getElementById("email").value,
         subject: document.getElementById("subject").value,
         message: document.getElementById("message").value,
-        // L'email de réception peut être défini dans le template EmailJS
-        to_email: "coopdevsym1@gmail.com", // Remplacez par votre email
+        to_email: EMAILJS_TO_EMAIL,
       },
     };
 
