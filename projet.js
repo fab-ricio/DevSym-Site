@@ -1,7 +1,7 @@
-// Fetch projects from API and dynamically generate cards
+// Load projects from static JSON file and dynamically generate cards
 async function loadProjects() {
   try {
-    const response = await fetch("/api/projets");
+    const response = await fetch("projets.json");
     if (!response.ok) {
       throw new Error("Failed to fetch projects");
     }

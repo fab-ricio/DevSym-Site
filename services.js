@@ -1,7 +1,7 @@
-// Fetch services from API and dynamically generate cards
+// Load services from static JSON file and dynamically generate cards
 async function loadServices() {
   try {
-    const response = await fetch("/api/services");
+    const response = await fetch("services.json");
     if (!response.ok) {
       throw new Error("Failed to fetch services");
     }
