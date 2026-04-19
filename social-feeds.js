@@ -66,10 +66,10 @@ function renderFeed(platform, url) {
     if (el) {
       el.setAttribute("data-href", url);
     }
-  } else if (platform === "youtube" || platform === "youtube-2") {
-    const selector = platform === "youtube" ? ".youtube-feed" : ".youtube-feed-2";
-    const container = document.querySelector(selector);
-    if (container) {
+  } else if (platform === "youtube") {
+    // Remplir TOUS les conteneurs YouTube avec le même contenu
+    const containers = document.querySelectorAll(".youtube-feed");
+    containers.forEach((container) => {
       let videoId = "";
       let channelId = "";
       if (url.includes("youtube.com/watch?v=")) {
@@ -93,7 +93,7 @@ function renderFeed(platform, url) {
       } else {
         container.innerHTML = `<h3>YouTube</h3><p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
       }
-    }
+    });
   } else if (platform === "linkedin") {
     const container = document.querySelector(".linkedin-feed");
     if (container) {
