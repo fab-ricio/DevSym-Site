@@ -452,6 +452,11 @@
                 <div id="export" class="tab-content">
                     <div class="export-import">
                         <h3>Projets - Export/Import JSON</h3>
+                        <div style="background: #e8f4f8; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 500;">🚀 Sauvegarder directement:</p>
+                            <button class="btn btn-primary" onclick="saveProjectsToFile()" style="margin-right: 0.5rem;">💾 Sauvegarder Projets → JSON</button>
+                            <small style="display: block; margin-top: 0.5rem; color: #666;">Les données du localStorage seront écrites dans projets.json</small>
+                        </div>
                         <button class="btn btn-primary" onclick="exportProjects()">📥 Télécharger JSON Projets</button>
                         <button class="btn btn-secondary" onclick="showProjectsImport()">📤 Charger JSON Projets</button>
                         <input type="file" id="projectsImportInput" accept=".json" style="display: none;" onchange="importProjects(event)">
@@ -464,6 +469,11 @@
 
                     <div class="export-import">
                         <h3>Portfolio - Export/Import JSON</h3>
+                        <div style="background: #e8f4f8; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 500;">🚀 Sauvegarder directement:</p>
+                            <button class="btn btn-primary" onclick="savePortfolioToFile()" style="margin-right: 0.5rem;">💾 Sauvegarder Portfolio → JSON</button>
+                            <small style="display: block; margin-top: 0.5rem; color: #666;">Les données du localStorage seront écrites dans portfolio.json</small>
+                        </div>
                         <button class="btn btn-primary" onclick="exportPortfolio()">📥 Télécharger JSON Portfolio</button>
                         <button class="btn btn-secondary" onclick="showPortfolioImport()">📤 Charger JSON Portfolio</button>
                         <input type="file" id="portfolioImportInput" accept=".json" style="display: none;" onchange="importPortfolio(event)">

@@ -470,6 +470,70 @@ function savePortfolioJson() {
 }
 
 // ============================================
+// SAVE TO FILES (API)
+// ============================================
+
+/**
+ * Save projects to JSON file via API
+ */
+async function saveProjectsToFile() {
+  try {
+    const response = await fetch("http://localhost:3001/api/save-data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataType: "projects",
+        items: projects,
+      }),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      showSuccess(`✅ ${result.message}`);
+      console.log("💾 Projets sauvegardés:", result);
+    } else {
+      const error = await response.json();
+      showSuccess(`❌ Erreur: ${error.error}`, "error");
+    }
+  } catch (error) {
+    showSuccess(`❌ Erreur de connexion au serveur API (http://localhost:3001)`, "error");
+    console.error("Erreur:", error);
+  }
+}
+
+/**
+ * Save portfolio to JSON file via API
+ */
+async function savePortfolioToFile() {
+  try {
+    const response = await fetch("http://localhost:3001/api/save-data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataType: "portfolio",
+        items: portfolio,
+      }),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      showSuccess(`✅ ${result.message}`);
+      console.log("💾 Portfolio sauvegardé:", result);
+    } else {
+      const error = await response.json();
+      showSuccess(`❌ Erreur: ${error.error}`, "error");
+    }
+  } catch (error) {
+    showSuccess(`❌ Erreur de connexion au serveur API (http://localhost:3001)`, "error");
+    console.error("Erreur:", error);
+  }
+}
+
+// ============================================
 // UTILITIES
 // ============================================
 function saveToLocalStorage(key, data) {

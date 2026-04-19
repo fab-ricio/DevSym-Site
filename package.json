@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "http-server -c-1 -p 3000",
-    "start": "http-server -c-1 -p $PORT"
+    "start": "http-server -c-1 -p $PORT",
+    "api": "node api-server.js"
   },
   "devDependencies": {
     "http-server": "^14.1.1"
