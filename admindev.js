@@ -1,5 +1,6 @@
 /**
  * Admin Interface for Projects and Portfolio Management
+ * With Password Authentication
  */
 
 let projects = [];
@@ -8,15 +9,73 @@ let images = [];
 let currentEditingProject = null;
 let currentEditingPortfolio = null;
 
-// Initialize
+// ============================================
+// AUTHENTICATION
+// ============================================
+const ADMIN_PASSWORD = "devsym2026"; // Change this to your password
+
+// Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {
+  checkAuthentication();
+});
+
+function checkAuthentication() {
+  const isAuthenticated = sessionStorage.getItem("admin_authenticated");
+  const loginModal = document.getElementById("loginModal");
+  
+  if (!isAuthenticated) {
+    // Show login modal
+    loginModal.classList.remove("hidden");
+    document.getElementById("password").focus();
+    
+    // Allow Enter key to submit
+    document.getElementById("password").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkPassword();
+    });
+  } else {
+    // User is authenticated, hide login modal and show admin panel
+    loginModal.classList.add("hidden");
+    document.getElementById("logoutBtn").style.display = "block";
+    initializeAdmin();
+  }
+}
+
+function checkPassword() {
+  const password = document.getElementById("password").value;
+  const errorDiv = document.getElementById("loginError");
+  
+  if (password === ADMIN_PASSWORD) {
+    // Correct password
+    sessionStorage.setItem("admin_authenticated", "true");
+    errorDiv.style.display = "none";
+    document.getElementById("password").value = "";
+    checkAuthentication();
+  } else {
+    // Wrong password
+    errorDiv.textContent = "❌ Mot de passe incorrect";
+    errorDiv.style.display = "block";
+    document.getElementById("password").value = "";
+    document.getElementById("password").focus();
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem("admin_authenticated");
+  document.getElementById("logoutBtn").style.display = "none";
+  document.getElementById("loginModal").classList.remove("hidden");
+  document.getElementById("password").value = "";
+  document.getElementById("password").focus();
+  showSuccess("✅ Vous avez été déconnecté");
+}
+
+function initializeAdmin() {
   setupTabNavigation();
-  await loadAllData();
+  loadAllData();
   renderProjectsList();
   renderPortfolioList();
   setupImageSelectors();
   loadImages();
-});
+}
 
 // ============================================
 // TAB NAVIGATION
