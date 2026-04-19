@@ -145,6 +145,66 @@ function setupModalListeners() {
   });
 }
 
+// Load portfolio from localStorage or portfolio.json
+async function loadPortfolio() {
+  try {
+    let portfolioData;
+
+    // Check localStorage first
+    const cachedPortfolio = localStorage.getItem("portfolio");
+    if (cachedPortfolio) {
+      portfolioData = JSON.parse(cachedPortfolio);
+      console.log("✅ Portfolio chargé depuis localStorage");
+    } else {
+      // Fallback to JSON file
+      const response = await fetch("portfolio.json");
+      if (!response.ok) {
+        throw new Error("Failed to fetch portfolio");
+      }
+      portfolioData = await response.json();
+      console.log("✅ Portfolio chargé depuis portfolio.json");
+    }
+
+    const container = document.querySelector(".missions-grid");
+    if (!container) {
+      console.error("Missions grid container not found");
+      return;
+    }
+
+    // Clear existing content
+    container.innerHTML = "";
+
+    // Generate mission cards
+    portfolioData.forEach((item) => {
+      const article = document.createElement("article");
+      article.className = "mission-card";
+      article.setAttribute("data-type", item.type);
+      article.setAttribute("data-year", item.year);
+      article.setAttribute("data-title", item.title);
+      article.setAttribute("data-lead", item.lead);
+      article.setAttribute("data-description", item.description);
+      article.setAttribute("data-images", item.image);
+
+      article.innerHTML = `
+        <img data-src="${item.image}" alt="Vignette ${item.title}" class="project-thumb lazy" />
+        <h4>Missions Réalisées</h4>
+        <p class="muted">${item.year}</p>
+        <p>${item.summary || item.description?.substring(0, 100) || ""}</p>
+      `;
+
+      container.appendChild(article);
+    });
+
+    // Re-setup mission card listeners after content is loaded
+    setupMissionCardListeners();
+    updateResultsCount();
+
+    window.dispatchEvent(new Event("dynamic-content-updated"));
+  } catch (error) {
+    console.error("Error loading portfolio:", error);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   loadPortfolio();
   setupModalListeners();

@@ -1,11 +1,22 @@
-// Load projects from static JSON file and dynamically generate cards
+// Load projects from localStorage or static JSON file
 async function loadProjects() {
   try {
-    const response = await fetch("projets.json");
-    if (!response.ok) {
-      throw new Error("Failed to fetch projects");
+    let projects;
+
+    // Check localStorage first
+    const cachedProjects = localStorage.getItem("projects");
+    if (cachedProjects) {
+      projects = JSON.parse(cachedProjects);
+      console.log("✅ Projets chargés depuis localStorage");
+    } else {
+      // Fallback to JSON file
+      const response = await fetch("projets.json");
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+      projects = await response.json();
+      console.log("✅ Projets chargés depuis projets.json");
     }
-    const projects = await response.json();
 
     const container = document.getElementById("missions-container");
     if (!container) {
@@ -30,8 +41,8 @@ async function loadProjects() {
       article.innerHTML = `
         <img data-src="${project.image}" alt="Vignette ${project.title}" class="project-thumb lazy" />
         <h4>${project.title}</h4>
-        <p class="muted">${project.context}</p>
-        <p>${project.description}</p>
+        <p class="muted">${project.year || ""}</p>
+        <p>${project.description?.substring(0, 100) || ""}...</p>
       `;
 
       container.appendChild(article);
