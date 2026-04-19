@@ -44,7 +44,7 @@ async function loadSocialFeeds() {
   }
 
   if (!seen.facebook) renderFeed("facebook", DEFAULT_LINKS.facebook);
-  
+
   // Gérer les YouTube: si 2 URLs, utiliser les 2; sinon utiliser la valeur par défaut
   if (youtubeUrls.length >= 2) {
     renderFeed("youtube-1", youtubeUrls[0]);
@@ -56,7 +56,7 @@ async function loadSocialFeeds() {
     renderFeed("youtube-1", DEFAULT_LINKS.youtube);
     renderFeed("youtube-2", DEFAULT_LINKS.youtube);
   }
-  
+
   if (!seen.linkedin) renderFeed("linkedin", DEFAULT_LINKS.linkedin);
 
   setTimeout(() => {
@@ -120,7 +120,7 @@ function renderFeed(platform, url) {
 function renderYouTubeContent(container, url) {
   let videoId = "";
   let channelId = "";
-  
+
   if (url.includes("youtube.com/watch?v=")) {
     videoId = url.split("v=")[1].split("&")[0];
   } else if (url.includes("youtu.be/")) {
@@ -135,7 +135,7 @@ function renderYouTubeContent(container, url) {
       channelId = username;
     }
   }
-  
+
   if (videoId) {
     renderYouTubeThumbnail(container, videoId);
   } else if (channelId) {

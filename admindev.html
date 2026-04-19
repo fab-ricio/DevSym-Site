@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <title>Administration — DevSym</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .admin-tabs button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tabs button.active {
+            color: var(--primary-color, #007bff);
+            border-bottom-color: var(--primary-color, #007bff);
+        }
+
+        .admin-tabs button:hover {
+            color: var(--primary-color, #007bff);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .admin-section {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: #f9f9f9;
+        }
+
+        .admin-section h3 {
+            margin-top: 0;
+            color: var(--primary-color, #007bff);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group textarea.help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-color, #007bff);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-color-dark, #0056b3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .items-list {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .item-row {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-title {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-top: 0.5rem;
+        }
+
+        .image-selector {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-selector:hover {
+            border-color: var(--primary-color, #007bff);
+            background: rgba(0, 123, 255, 0.05);
+        }
+
+        .image-selector.selected {
+            border-color: var(--primary-color, #007bff);
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .export-import {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            margin-top: 2rem;
+        }
+
+        .export-import h3 {
+            margin-top: 0;
+        }
+
+        .json-editor {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="brand">
+                <a href="index.html" class="brand-link">
+                    <img src="images/logo devsym.png" alt="DevSym logo" class="logo-img" />
+                    <span class="brand-text">Coopérative <br>DevSym</span>
+                </a>
+            </div>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation"
+                aria-label="Ouvrir le menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <nav id="primary-navigation" class="nav">
+                <a href="index.html">Accueil</a>
+                <a href="about.html">À propos</a>
+                <a href="services.html">Services</a>
+                <a href="media.html">Médias</a>
+                <a href="projet.html">Projets</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contact.html">Contact</a>
+                <a href="admindev.html" class="active btn">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <div class="admin-container">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h1>Administration</h1>
+                    <p>Gérez vos projets et portfolio en temps réel</p>
+                </div>
+
+                <div class="success-message" id="successMessage"></div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="projets">Projets</button>
+                    <button class="tab-btn" data-tab="portfolio">Portfolio</button>
+                    <button class="tab-btn" data-tab="export">Export/Import</button>
+                </div>
+
+                <!-- TAB: PROJETS -->
+                <div id="projets" class="tab-content active">
+                    <div class="admin-grid">
+                        <!-- Liste des projets -->
+                        <div class="admin-section">
+                            <h3>Projets Actuels</h3>
+                            <div class="items-list" id="projectsList"></div>
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="addNewProject()">
+                                + Ajouter un projet
+                            </button>
+                        </div>
+
+                        <!-- Formulaire d'édition -->
+                        <div class="admin-section" id="projectFormSection" style="display: none;">
+                            <h3 id="projectFormTitle">Nouveau Projet</h3>
+                            <form id="projectForm">
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label for="projectType">Type</label>
+                                        <input type="text" id="projectType" placeholder="Ex: Assistances, Appui">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="projectYear">Année</label>
+                                        <input type="text" id="projectYear" placeholder="Ex: 2025">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="projectTitle">Titre</label>
+                                        <input type="text" id="projectTitle" placeholder="Titre du projet">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="projectLead">Lead/Intro</label>
+                                        <input type="text" id="projectLead" placeholder="Courte introduction">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label for="projectDescription">Description</label>
+                                        <textarea id="projectDescription" placeholder="Description complète du projet"></textarea>
+                                        <small class="help-text">💡 Utilisez § pour séparer les points</small>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label>Image</label>
+                                        <div class="image-selector" id="projectImageSelector">
+                                            <p>Cliquez pour sélectionner une image</p>
+                                        </div>
+                                        <img id="projectImagePreview" class="image-preview" style="display: none;">
+                                        <input type="hidden" id="projectImage">
+                                    </div>
+                                </div>
+
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-primary" onclick="saveProject()">Enregistrer</button>
+                                    <button type="button" class="btn btn-secondary" onclick="cancelProjectEdit()">Annuler</button>
+                                    <button type="button" class="btn btn-danger" id="deleteProjectBtn" style="display: none;" onclick="deleteProject()">Supprimer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: PORTFOLIO -->
+                <div id="portfolio" class="tab-content">
+                    <div class="admin-grid">
+                        <!-- Liste du portfolio -->
+                        <div class="admin-section">
+                            <h3>Portfolio</h3>
+                            <div class="items-list" id="portfolioList"></div>
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="addNewPortfolio()">
+                                + Ajouter au portfolio
+                            </button>
+                        </div>
+
+                        <!-- Formulaire d'édition -->
+                        <div class="admin-section" id="portfolioFormSection" style="display: none;">
+                            <h3 id="portfolioFormTitle">Nouveau Portfolio</h3>
+                            <form id="portfolioForm">
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label for="portfolioType">Type</label>
+                                        <input type="text" id="portfolioType" placeholder="Ex: Assistances, Appui">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portfolioYear">Année</label>
+                                        <input type="text" id="portfolioYear" placeholder="Ex: 2025">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portfolioTitle">Titre</label>
+                                        <input type="text" id="portfolioTitle" placeholder="Titre de l'expérience">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portfolioLead">Lead/Intro</label>
+                                        <input type="text" id="portfolioLead" placeholder="Courte introduction">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label for="portfolioDescription">Description</label>
+                                        <textarea id="portfolioDescription" placeholder="Description détaillée"></textarea>
+                                        <small class="help-text">💡 Utilisez § pour séparer les points</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portfolioSummary">Résumé</label>
+                                        <input type="text" id="portfolioSummary" placeholder="Résumé court">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label>Image</label>
+                                        <div class="image-selector" id="portfolioImageSelector">
+                                            <p>Cliquez pour sélectionner une image</p>
+                                        </div>
+                                        <img id="portfolioImagePreview" class="image-preview" style="display: none;">
+                                        <input type="hidden" id="portfolioImage">
+                                    </div>
+                                </div>
+
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-primary" onclick="savePortfolio()">Enregistrer</button>
+                                    <button type="button" class="btn btn-secondary" onclick="cancelPortfolioEdit()">Annuler</button>
+                                    <button type="button" class="btn btn-danger" id="deletePortfolioBtn" style="display: none;" onclick="deletePortfolio()">Supprimer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: EXPORT/IMPORT -->
+                <div id="export" class="tab-content">
+                    <div class="export-import">
+                        <h3>Projets - Export/Import JSON</h3>
+                        <button class="btn btn-primary" onclick="exportProjects()">📥 Télécharger JSON Projets</button>
+                        <button class="btn btn-secondary" onclick="showProjectsImport()">📤 Charger JSON Projets</button>
+                        <input type="file" id="projectsImportInput" accept=".json" style="display: none;" onchange="importProjects(event)">
+                        <textarea id="projectsJsonEditor" class="json-editor" placeholder="Collez ou éditez le JSON ici..."></textarea>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="saveProjectsJson()">💾 Sauvegarder depuis l'éditeur</button>
+                            <button class="btn btn-secondary" onclick="loadProjectsToEditor()">📖 Charger dans l'éditeur</button>
+                        </div>
+                    </div>
+
+                    <div class="export-import">
+                        <h3>Portfolio - Export/Import JSON</h3>
+                        <button class="btn btn-primary" onclick="exportPortfolio()">📥 Télécharger JSON Portfolio</button>
+                        <button class="btn btn-secondary" onclick="showPortfolioImport()">📤 Charger JSON Portfolio</button>
+                        <input type="file" id="portfolioImportInput" accept=".json" style="display: none;" onchange="importPortfolio(event)">
+                        <textarea id="portfolioJsonEditor" class="json-editor" placeholder="Collez ou éditez le JSON ici..."></textarea>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="savePortfolioJson()">💾 Sauvegarder depuis l'éditeur</button>
+                            <button class="btn btn-secondary" onclick="loadPortfolioToEditor()">📖 Charger dans l'éditeur</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Coopérative DevSym – Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="main.js" defer></script>
+    <script src="admindev.js" defer></script>
+</body>
+
+</html>
