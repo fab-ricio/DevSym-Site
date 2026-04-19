@@ -4,10 +4,14 @@
 // Les clés sont chargées depuis config.js (non versionnée pour la sécurité)
 // Voir config.example.js pour les instructions
 
-const EMAILJS_SERVICE_ID = window.EMAILJS_CONFIG?.SERVICE_ID || "YOUR_SERVICE_ID";
-const EMAILJS_PUBLIC_KEY = window.EMAILJS_CONFIG?.PUBLIC_KEY || "YOUR_PUBLIC_KEY";
-const EMAILJS_TEMPLATE_ID = window.EMAILJS_CONFIG?.TEMPLATE_ID || "contact_form";
-const EMAILJS_TO_EMAIL = window.EMAILJS_CONFIG?.TO_EMAIL || "coopdevsym1@gmail.com";
+const EMAILJS_SERVICE_ID =
+  window.EMAILJS_CONFIG?.SERVICE_ID || "YOUR_SERVICE_ID";
+const EMAILJS_PUBLIC_KEY =
+  window.EMAILJS_CONFIG?.PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+const EMAILJS_TEMPLATE_ID =
+  window.EMAILJS_CONFIG?.TEMPLATE_ID || "contact_form";
+const EMAILJS_TO_EMAIL =
+  window.EMAILJS_CONFIG?.TO_EMAIL || "coopdevsym1@gmail.com";
 
 // Initialiser EmailJS au chargement de la page
 document.addEventListener("DOMContentLoaded", function () {
@@ -53,7 +57,7 @@ async function handleFormSubmit(e) {
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
       formData.template_params,
-      EMAILJS_PUBLIC_KEY
+      EMAILJS_PUBLIC_KEY,
     );
 
     // Succès
@@ -71,7 +75,7 @@ async function handleFormSubmit(e) {
     // Afficher un message de confirmation
     showNotification(
       "Message envoyé avec succès! Nous vous répondrons sous 48h.",
-      "success"
+      "success",
     );
   } catch (error) {
     console.error("Erreur d'envoi:", error);
@@ -86,7 +90,10 @@ async function handleFormSubmit(e) {
       submitBtn.style.backgroundColor = "";
     }, 3000);
 
-    showNotification("Erreur lors de l'envoi. Vérifiez vos paramètres EmailJS.", "error");
+    showNotification(
+      "Erreur lors de l'envoi. Vérifiez vos paramètres EmailJS.",
+      "error",
+    );
   }
 }
 

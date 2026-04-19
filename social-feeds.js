@@ -28,23 +28,35 @@ async function loadSocialFeeds() {
   }
 
   const seen = { facebook: false, linkedin: false, youtube: false };
+  const youtubeUrls = []; // Collecter les URLs YouTube
 
   if (Array.isArray(links)) {
     links.forEach((link) => {
       if (!link || !link.platform || !link.url) return;
       const pl = link.platform.toLowerCase();
-      if (pl === "facebook" || pl === "linkedin" || pl === "youtube") {
+      if (pl === "facebook" || pl === "linkedin") {
         renderFeed(pl, link.url);
         seen[pl] = true;
+      } else if (pl === "youtube") {
+        youtubeUrls.push(link.url); // Collecter les URLs YouTube
       }
     });
   }
 
   if (!seen.facebook) renderFeed("facebook", DEFAULT_LINKS.facebook);
-  if (!seen.youtube) {
-    renderFeed("youtube", DEFAULT_LINKS.youtube);
-    renderFeed("youtube-2", DEFAULT_LINKS.youtube); // 2ème zone YouTube (même chaîne)
+  
+  // Gérer les YouTube: si 2 URLs, utiliser les 2; sinon utiliser la valeur par défaut
+  if (youtubeUrls.length >= 2) {
+    renderFeed("youtube-1", youtubeUrls[0]);
+    renderFeed("youtube-2", youtubeUrls[1]);
+  } else if (youtubeUrls.length === 1) {
+    renderFeed("youtube-1", youtubeUrls[0]);
+    renderFeed("youtube-2", youtubeUrls[0]); // Même chaîne pour les 2
+  } else {
+    renderFeed("youtube-1", DEFAULT_LINKS.youtube);
+    renderFeed("youtube-2", DEFAULT_LINKS.youtube);
   }
+  
   if (!seen.linkedin) renderFeed("linkedin", DEFAULT_LINKS.linkedin);
 
   setTimeout(() => {
@@ -66,34 +78,20 @@ function renderFeed(platform, url) {
     if (el) {
       el.setAttribute("data-href", url);
     }
-  } else if (platform === "youtube") {
-    // Remplir TOUS les conteneurs YouTube avec le même contenu
+  } else if (platform === "youtube-1") {
+    // Remplir le 1er conteneur YouTube
     const containers = document.querySelectorAll(".youtube-feed");
-    containers.forEach((container) => {
-      let videoId = "";
-      let channelId = "";
-      if (url.includes("youtube.com/watch?v=")) {
-        videoId = url.split("v=")[1].split("&")[0];
-      } else if (url.includes("youtu.be/")) {
-        videoId = url.split("youtu.be/")[1].split("?")[0];
-      } else if (url.includes("youtube.com/embed/")) {
-        videoId = url.split("embed/")[1].split("?")[0];
-      } else if (url.includes("youtube.com/channel/")) {
-        channelId = url.split("youtube.com/channel/")[1].split(/[\/?]/)[0];
-      } else if (url.includes("youtube.com/@")) {
-        const username = url.split("youtube.com/@")[1].split(/[\/?&]/)[0];
-        if (username) {
-          channelId = username;
-        }
-      }
-      if (videoId) {
-        renderYouTubeThumbnail(container, videoId);
-      } else if (channelId) {
-        renderLatestYouTubeChannelVideo(container, channelId, url);
-      } else {
-        container.innerHTML = `<h3>YouTube</h3><p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
-      }
-    });
+    if (containers.length > 0) {
+      const container = containers[0];
+      renderYouTubeContent(container, url);
+    }
+  } else if (platform === "youtube-2") {
+    // Remplir le 2e conteneur YouTube
+    const containers = document.querySelectorAll(".youtube-feed");
+    if (containers.length > 1) {
+      const container = containers[1];
+      renderYouTubeContent(container, url);
+    }
   } else if (platform === "linkedin") {
     const container = document.querySelector(".linkedin-feed");
     if (container) {
@@ -118,6 +116,35 @@ function renderFeed(platform, url) {
   }
 }
 
+// Fonction pour traiter le contenu YouTube
+function renderYouTubeContent(container, url) {
+  let videoId = "";
+  let channelId = "";
+  
+  if (url.includes("youtube.com/watch?v=")) {
+    videoId = url.split("v=")[1].split("&")[0];
+  } else if (url.includes("youtu.be/")) {
+    videoId = url.split("youtu.be/")[1].split("?")[0];
+  } else if (url.includes("youtube.com/embed/")) {
+    videoId = url.split("embed/")[1].split("?")[0];
+  } else if (url.includes("youtube.com/channel/")) {
+    channelId = url.split("youtube.com/channel/")[1].split(/[\/?]/)[0];
+  } else if (url.includes("youtube.com/@")) {
+    const username = url.split("youtube.com/@")[1].split(/[\/?&]/)[0];
+    if (username) {
+      channelId = username;
+    }
+  }
+  
+  if (videoId) {
+    renderYouTubeThumbnail(container, videoId);
+  } else if (channelId) {
+    renderLatestYouTubeChannelVideo(container, channelId, url);
+  } else {
+    container.innerHTML = `<h3>YouTube</h3><p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
+  }
+}
+
 function renderYouTubeThumbnail(container, videoId) {
   const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -130,18 +157,26 @@ function renderYouTubeThumbnail(container, videoId) {
   `;
 }
 
-async function renderLatestYouTubeChannelVideo(container, channelId, channelUrl) {
+async function renderLatestYouTubeChannelVideo(
+  container,
+  channelId,
+  channelUrl,
+) {
   container.innerHTML = `<h3>YouTube</h3><p>Chargement de la dernière vidéo...</p>`;
   const videoId = await fetchLatestYouTubeVideoId(channelId, channelUrl);
   if (videoId) {
     renderYouTubeThumbnail(container, videoId);
   } else {
-    renderYouTubeFallbackThumbnail(container, channelUrl || `https://www.youtube.com/channel/${channelId}`);
+    renderYouTubeFallbackThumbnail(
+      container,
+      channelUrl || `https://www.youtube.com/channel/${channelId}`,
+    );
   }
 }
 
 function renderYouTubeFallbackThumbnail(container, url) {
-  const fallbackImage = "https://via.placeholder.com/1200x675.png?text=Dernière+vid%C3%A9o+YouTube";
+  const fallbackImage =
+    "https://via.placeholder.com/1200x675.png?text=Dernière+vid%C3%A9o+YouTube";
   container.innerHTML = `
     <h3>YouTube</h3>
     <a href="${url}" target="_blank" class="youtube-video-link">
@@ -161,17 +196,24 @@ async function fetchLatestYouTubeVideoId(channelId, channelUrl) {
       const xmlText = await response.text();
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-      const videoIdElement = xmlDoc.getElementsByTagName("videoId")[0] || xmlDoc.getElementsByTagName("yt:videoId")[0] || xmlDoc.querySelector("videoId");
+      const videoIdElement =
+        xmlDoc.getElementsByTagName("videoId")[0] ||
+        xmlDoc.getElementsByTagName("yt:videoId")[0] ||
+        xmlDoc.querySelector("videoId");
       const videoId = videoIdElement ? videoIdElement.textContent.trim() : null;
       if (videoId) {
         return videoId;
       }
     }
   } catch (error) {
-    console.warn("Flux RSS YouTube non récupéré, tentative alternative :", error);
+    console.warn(
+      "Flux RSS YouTube non récupéré, tentative alternative :",
+      error,
+    );
   }
 
-  const fallbackUrl = channelUrl || `https://www.youtube.com/channel/${channelId}`;
+  const fallbackUrl =
+    channelUrl || `https://www.youtube.com/channel/${channelId}`;
   return fetchLatestYouTubeVideoIdFromPage(fallbackUrl);
 }
 
@@ -190,7 +232,10 @@ async function fetchLatestYouTubeVideoIdFromPage(pageUrl) {
     const jsonMatch = html.match(/"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"/);
     return jsonMatch ? jsonMatch[1] : null;
   } catch (error) {
-    console.warn("Impossible de récupérer le HTML YouTube pour trouver la dernière vidéo.", error);
+    console.warn(
+      "Impossible de récupérer le HTML YouTube pour trouver la dernière vidéo.",
+      error,
+    );
     return null;
   }
 }
