@@ -41,7 +41,10 @@ async function loadSocialFeeds() {
   }
 
   if (!seen.facebook) renderFeed("facebook", DEFAULT_LINKS.facebook);
-  if (!seen.youtube) renderFeed("youtube", DEFAULT_LINKS.youtube);
+  if (!seen.youtube) {
+    renderFeed("youtube", DEFAULT_LINKS.youtube);
+    renderFeed("youtube-2", DEFAULT_LINKS.youtube); // 2ème zone YouTube (même chaîne)
+  }
   if (!seen.linkedin) renderFeed("linkedin", DEFAULT_LINKS.linkedin);
 
   setTimeout(() => {
@@ -63,8 +66,9 @@ function renderFeed(platform, url) {
     if (el) {
       el.setAttribute("data-href", url);
     }
-  } else if (platform === "youtube") {
-    const container = document.querySelector(".youtube-feed");
+  } else if (platform === "youtube" || platform === "youtube-2") {
+    const selector = platform === "youtube" ? ".youtube-feed" : ".youtube-feed-2";
+    const container = document.querySelector(selector);
     if (container) {
       let videoId = "";
       let channelId = "";
