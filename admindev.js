@@ -11,12 +11,7 @@ let currentEditingPortfolio = null;
 // ============================================
 // AUTHENTICATION
 // ============================================
-const LOGIN_ENDPOINT = (() => {
-  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-    return "http://localhost:3001/login";
-  }
-  return "/login";
-})();
+const ADMIN_PASSWORD = "DevSymCoop@Admin2026!"; // Change this to your password
 
 // Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {
@@ -44,30 +39,19 @@ function checkAuthentication() {
   }
 }
 
-async function checkPassword() {
+function checkPassword() {
   const password = document.getElementById("password").value;
   const errorDiv = document.getElementById("loginError");
 
-  try {
-    const response = await fetch(LOGIN_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Mot de passe incorrect");
-    }
-
+  if (password === ADMIN_PASSWORD) {
+    // Correct password
     sessionStorage.setItem("admin_authenticated", "true");
     errorDiv.style.display = "none";
     document.getElementById("password").value = "";
     checkAuthentication();
-  } catch (error) {
-    console.error("Erreur d'authentification:", error);
-    errorDiv.textContent = `❌ ${error.message}`;
+  } else {
+    // Wrong password
+    errorDiv.textContent = "❌ Mot de passe incorrect";
     errorDiv.style.display = "block";
     document.getElementById("password").value = "";
     document.getElementById("password").focus();
@@ -83,9 +67,9 @@ function logout() {
   showSuccess("✅ Vous avez été déconnecté");
 }
 
-async function initializeAdmin() {
+function initializeAdmin() {
   setupTabNavigation();
-  await loadAllData();
+  loadAllData();
   renderProjectsList();
   renderPortfolioList();
   setupImageSelectors();
