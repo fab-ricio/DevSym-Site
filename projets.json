@@ -7,17 +7,7 @@
     "lead": "Renforcement des compétences",
     "description": "Programme de montée en compétence des agents autour des outils collaboratifs et d'évaluation.",
     "image": "",
-    "context": "Collectivité • 2024"
-  },
-  {
-    "id": 2,
-    "type": "audit",
-    "year": "2023",
-    "title": "Audit de déploiement",
-    "lead": "Évaluation technique",
-    "description": "Audit des processus de déploiement et recommandations opérationnelles.",
-    "image": "images/project2.jpg",
-    "context": "Associatif • 2023"
+    "summary": "Formation numérique"
   },
   {
     "id": 3,
@@ -28,35 +18,5 @@
     "description": "Co-construction d'une feuille de route pour la gouvernance des données.",
     "image": "images/project3.jpg",
     "context": "Institution • 2022"
-  },
-  {
-    "id": 4,
-    "type": "formation",
-    "year": "2023",
-    "title": "Atelier UX",
-    "lead": "Design centré utilisateur",
-    "description": "Ateliers participatifs pour identifier besoins utilisateurs et prioriser fonctionnalités.",
-    "image": "images/project4.jpg",
-    "context": "Collectivité • 2023"
-  },
-  {
-    "id": 5,
-    "type": "audit",
-    "year": "2024",
-    "title": "Audit accessibilité",
-    "lead": "Conformité RGAA",
-    "description": "Analyse des points d'amélioration et priorisation des correctifs pour conformité.",
-    "image": "images/project5.jpg",
-    "context": "Associatif • 2024"
-  },
-  {
-    "id": 6,
-    "type": "accompagnement",
-    "year": "2023",
-    "title": "Support opérationnel",
-    "lead": "Soutien terrain",
-    "description": "Assistance technique et formation des équipes lors du premier trimestre de production.",
-    "image": "images/project6.jpg",
-    "context": "Privé • 2023"
   }
 ]

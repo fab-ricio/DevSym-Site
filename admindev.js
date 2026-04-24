@@ -2,7 +2,6 @@
  * Admin Interface for Projects and Portfolio Management
  * With Password Authentication
  */
-
 let projects = [];
 let portfolio = [];
 let images = [];
@@ -12,7 +11,12 @@ let currentEditingPortfolio = null;
 // ============================================
 // AUTHENTICATION
 // ============================================
-const ADMIN_PASSWORD = "devsym2026"; // Change this to your password
+const LOGIN_ENDPOINT = (() => {
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    return "http://localhost:3001/login";
+  }
+  return "/login";
+})();
 
 // Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {
@@ -22,12 +26,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 function checkAuthentication() {
   const isAuthenticated = sessionStorage.getItem("admin_authenticated");
   const loginModal = document.getElementById("loginModal");
-  
+
   if (!isAuthenticated) {
     // Show login modal
     loginModal.classList.remove("hidden");
     document.getElementById("password").focus();
-    
+
     // Allow Enter key to submit
     document.getElementById("password").addEventListener("keypress", (e) => {
       if (e.key === "Enter") checkPassword();
@@ -40,19 +44,30 @@ function checkAuthentication() {
   }
 }
 
-function checkPassword() {
+async function checkPassword() {
   const password = document.getElementById("password").value;
   const errorDiv = document.getElementById("loginError");
-  
-  if (password === ADMIN_PASSWORD) {
-    // Correct password
+
+  try {
+    const response = await fetch(LOGIN_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Mot de passe incorrect");
+    }
+
     sessionStorage.setItem("admin_authenticated", "true");
     errorDiv.style.display = "none";
     document.getElementById("password").value = "";
     checkAuthentication();
-  } else {
-    // Wrong password
-    errorDiv.textContent = "❌ Mot de passe incorrect";
+  } catch (error) {
+    console.error("Erreur d'authentification:", error);
+    errorDiv.textContent = `❌ ${error.message}`;
     errorDiv.style.display = "block";
     document.getElementById("password").value = "";
     document.getElementById("password").focus();
@@ -68,9 +83,9 @@ function logout() {
   showSuccess("✅ Vous avez été déconnecté");
 }
 
-function initializeAdmin() {
+async function initializeAdmin() {
   setupTabNavigation();
-  loadAllData();
+  await loadAllData();
   renderProjectsList();
   renderPortfolioList();
   setupImageSelectors();
@@ -200,14 +215,16 @@ function editProject(index) {
   const project = projects[index];
 
   document.getElementById("projectFormSection").style.display = "block";
-  document.getElementById("projectFormTitle").textContent = `Éditer: ${project.title}`;
+  document.getElementById("projectFormTitle").textContent =
+    `Éditer: ${project.title}`;
   document.getElementById("deleteProjectBtn").style.display = "inline-block";
 
   document.getElementById("projectType").value = project.type || "";
   document.getElementById("projectYear").value = project.year || "";
   document.getElementById("projectTitle").value = project.title || "";
   document.getElementById("projectLead").value = project.lead || "";
-  document.getElementById("projectDescription").value = project.description || "";
+  document.getElementById("projectDescription").value =
+    project.description || "";
   document.getElementById("projectImage").value = project.image || "";
 
   if (project.image) {
@@ -217,12 +234,17 @@ function editProject(index) {
   }
 
   // Scroll to form
-  document.getElementById("projectFormSection").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("projectFormSection")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 function saveProject() {
   const project = {
-    id: currentEditingProject !== null ? projects[currentEditingProject].id : Date.now(),
+    id:
+      currentEditingProject !== null
+        ? projects[currentEditingProject].id
+        : Date.now(),
     type: document.getElementById("projectType").value,
     year: document.getElementById("projectYear").value,
     title: document.getElementById("projectTitle").value,
@@ -293,7 +315,8 @@ function renderPortfolioList() {
 function addNewPortfolio() {
   currentEditingPortfolio = null;
   document.getElementById("portfolioFormSection").style.display = "block";
-  document.getElementById("portfolioFormTitle").textContent = "Nouveau Portfolio";
+  document.getElementById("portfolioFormTitle").textContent =
+    "Nouveau Portfolio";
   document.getElementById("deletePortfolioBtn").style.display = "none";
   document.getElementById("portfolioForm").reset();
 }
@@ -303,14 +326,16 @@ function editPortfolio(index) {
   const item = portfolio[index];
 
   document.getElementById("portfolioFormSection").style.display = "block";
-  document.getElementById("portfolioFormTitle").textContent = `Éditer: ${item.title}`;
+  document.getElementById("portfolioFormTitle").textContent =
+    `Éditer: ${item.title}`;
   document.getElementById("deletePortfolioBtn").style.display = "inline-block";
 
   document.getElementById("portfolioType").value = item.type || "";
   document.getElementById("portfolioYear").value = item.year || "";
   document.getElementById("portfolioTitle").value = item.title || "";
   document.getElementById("portfolioLead").value = item.lead || "";
-  document.getElementById("portfolioDescription").value = item.description || "";
+  document.getElementById("portfolioDescription").value =
+    item.description || "";
   document.getElementById("portfolioSummary").value = item.summary || "";
   document.getElementById("portfolioImage").value = item.image || "";
 
@@ -320,12 +345,17 @@ function editPortfolio(index) {
     preview.style.display = "block";
   }
 
-  document.getElementById("portfolioFormSection").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("portfolioFormSection")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 function savePortfolio() {
   const item = {
-    id: currentEditingPortfolio !== null ? portfolio[currentEditingPortfolio].id : Date.now(),
+    id:
+      currentEditingPortfolio !== null
+        ? portfolio[currentEditingPortfolio].id
+        : Date.now(),
     type: document.getElementById("portfolioType").value,
     year: document.getElementById("portfolioYear").value,
     title: document.getElementById("portfolioTitle").value,
@@ -376,21 +406,29 @@ function cancelPortfolioEdit() {
 // IMAGE SELECTION
 // ============================================
 function setupImageSelectors() {
-  document.getElementById("projectImageSelector").addEventListener("click", () => {
-    showImageModal("project");
-  });
+  document
+    .getElementById("projectImageSelector")
+    .addEventListener("click", () => {
+      showImageModal("project");
+    });
 
-  document.getElementById("portfolioImageSelector").addEventListener("click", () => {
-    showImageModal("portfolio");
-  });
+  document
+    .getElementById("portfolioImageSelector")
+    .addEventListener("click", () => {
+      showImageModal("portfolio");
+    });
 }
 
 function showImageModal(type) {
   const imageList = images
-    .map((img) => `<div style="cursor: pointer; padding: 0.5rem; border: 1px solid #ddd; margin: 0.5rem 0; border-radius: 4px;" onclick="selectImage('${img}', '${type}')">
+    .map(
+      (
+        img,
+      ) => `<div style="cursor: pointer; padding: 0.5rem; border: 1px solid #ddd; margin: 0.5rem 0; border-radius: 4px;" onclick="selectImage('${img}', '${type}')">
       <img src="${img}" style="max-width: 100%; height: 100px; object-fit: cover; border-radius: 4px; margin-bottom: 0.5rem;">
       <div style="font-size: 0.85rem; word-break: break-all;">${img}</div>
-    </div>`)
+    </div>`,
+    )
     .join("");
 
   const modal = `
@@ -407,9 +445,18 @@ function showImageModal(type) {
 }
 
 function selectImage(imagePath, type) {
-  const input = type === "project" ? document.getElementById("projectImage") : document.getElementById("portfolioImage");
-  const preview = type === "project" ? document.getElementById("projectImagePreview") : document.getElementById("portfolioImagePreview");
-  const selector = type === "project" ? document.getElementById("projectImageSelector") : document.getElementById("portfolioImageSelector");
+  const input =
+    type === "project"
+      ? document.getElementById("projectImage")
+      : document.getElementById("portfolioImage");
+  const preview =
+    type === "project"
+      ? document.getElementById("projectImagePreview")
+      : document.getElementById("portfolioImagePreview");
+  const selector =
+    type === "project"
+      ? document.getElementById("projectImageSelector")
+      : document.getElementById("portfolioImageSelector");
 
   input.value = imagePath;
   preview.src = imagePath;
@@ -439,7 +486,10 @@ function exportPortfolio() {
 
 function downloadJSON(data, filename) {
   const element = document.createElement("a");
-  element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(data));
+  element.setAttribute(
+    "href",
+    "data:text/json;charset=utf-8," + encodeURIComponent(data),
+  );
   element.setAttribute("download", filename);
   element.style.display = "none";
   document.body.appendChild(element);
@@ -495,18 +545,28 @@ function importPortfolio(event) {
 }
 
 function loadProjectsToEditor() {
-  document.getElementById("projectsJsonEditor").value = JSON.stringify(projects, null, 2);
+  document.getElementById("projectsJsonEditor").value = JSON.stringify(
+    projects,
+    null,
+    2,
+  );
   showSuccess("✅ Projets chargés dans l'éditeur");
 }
 
 function loadPortfolioToEditor() {
-  document.getElementById("portfolioJsonEditor").value = JSON.stringify(portfolio, null, 2);
+  document.getElementById("portfolioJsonEditor").value = JSON.stringify(
+    portfolio,
+    null,
+    2,
+  );
   showSuccess("✅ Portfolio chargé dans l'éditeur");
 }
 
 function saveProjectsJson() {
   try {
-    const data = JSON.parse(document.getElementById("projectsJsonEditor").value);
+    const data = JSON.parse(
+      document.getElementById("projectsJsonEditor").value,
+    );
     projects = Array.isArray(data) ? data : [];
     saveToLocalStorage("projects", projects);
     renderProjectsList();
@@ -518,7 +578,9 @@ function saveProjectsJson() {
 
 function savePortfolioJson() {
   try {
-    const data = JSON.parse(document.getElementById("portfolioJsonEditor").value);
+    const data = JSON.parse(
+      document.getElementById("portfolioJsonEditor").value,
+    );
     portfolio = Array.isArray(data) ? data : [];
     saveToLocalStorage("portfolio", portfolio);
     renderPortfolioList();
@@ -557,7 +619,10 @@ async function saveProjectsToFile() {
       showSuccess(`❌ Erreur: ${error.error}`, "error");
     }
   } catch (error) {
-    showSuccess(`❌ Erreur de connexion au serveur API (http://localhost:3001)`, "error");
+    showSuccess(
+      `❌ Erreur de connexion au serveur API (http://localhost:3001)`,
+      "error",
+    );
     console.error("Erreur:", error);
   }
 }
@@ -587,7 +652,10 @@ async function savePortfolioToFile() {
       showSuccess(`❌ Erreur: ${error.error}`, "error");
     }
   } catch (error) {
-    showSuccess(`❌ Erreur de connexion au serveur API (http://localhost:3001)`, "error");
+    showSuccess(
+      `❌ Erreur de connexion au serveur API (http://localhost:3001)`,
+      "error",
+    );
     console.error("Erreur:", error);
   }
 }

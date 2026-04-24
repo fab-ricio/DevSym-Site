@@ -3,11 +3,11 @@
     "id": 1,
     "type": "Assistances",
     "year": "2026",
-    "title": "Assistances technique d’appui à l’intégration socio-professionnelles des personnes migrantes",
+    "title": "Assistance technique d’appui à l’intégration socio-professionnelles des personnes migrantes",
     "lead": "Renforcement des compétences",
     "description": "Cartographie des acteurs de la formation professionnelles et de l’insertion§Accompagnement à la création et au développement d'initiatives économiques (AGR).§Mise en œuvre par la Délégation Diocésaine des Migrations (DDM) avec le financement de MISEREOR et Manos Unidas",
-    "image": "images/ddm.png",
-    "summary": "Assistance technique d’appui"
+    "summary": "Assistance technique d’appui",
+    "image": "images/ddm.png"
   },
   {
     "id": 2,

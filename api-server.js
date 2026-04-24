@@ -3,12 +3,19 @@
  * Run: node api-server.js
  */
 
+require("dotenv").config();
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const url = require("url");
 
-const PORT = 3001;
+const PORT = process.env.API_PORT || 3001;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+if (!ADMIN_PASSWORD) {
+  console.error("❌ ADMIN_PASSWORD n'est pas défini dans le fichier .env");
+  process.exit(1);
+}
 
 const server = http.createServer((req, res) => {
   // Enable CORS
@@ -25,6 +32,40 @@ const server = http.createServer((req, res) => {
 
   // Parse URL
   const parsedUrl = url.parse(req.url, true);
+
+  // Login endpoint
+  if (parsedUrl.pathname === "/login" && req.method === "POST") {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", () => {
+      try {
+        const data = JSON.parse(body);
+        const { password } = data;
+
+        if (!password) {
+          throw new Error("Mot de passe requis");
+        }
+
+        if (password === ADMIN_PASSWORD) {
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: true, message: "Authentification réussie" }));
+        } else {
+          res.writeHead(401, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: false, error: "Mot de passe incorrect" }));
+        }
+      } catch (error) {
+        console.error("❌ Erreur lors de la connexion:", error.message);
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: false, error: error.message }));
+      }
+    });
+
+    return;
+  }
 
   // Save data endpoint
   if (parsedUrl.pathname === "/api/save-data" && req.method === "POST") {
@@ -65,18 +106,22 @@ const server = http.createServer((req, res) => {
 
         // Send success response
         res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ 
-          success: true, 
-          message: `${filename} sauvegardé avec succès`,
-          itemCount: items.length
-        }));
+        res.end(
+          JSON.stringify({
+            success: true,
+            message: `${filename} sauvegardé avec succès`,
+            itemCount: items.length,
+          }),
+        );
       } catch (error) {
         console.error("❌ Erreur:", error.message);
         res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ 
-          success: false, 
-          error: error.message 
-        }));
+        res.end(
+          JSON.stringify({
+            success: false,
+            error: error.message,
+          }),
+        );
       }
     });
   } else {
