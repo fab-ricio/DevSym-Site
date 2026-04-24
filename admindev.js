@@ -12,6 +12,12 @@ let currentEditingPortfolio = null;
 // AUTHENTICATION
 // ============================================
 const ADMIN_PASSWORD = "DevSymCoop@Admin2026!"; // Change this to your password
+const IMAGES_ENDPOINT = (() => {
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    return "http://localhost:3001/api/images";
+  }
+  return "/api/images";
+})();
 
 // Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {
@@ -67,13 +73,13 @@ function logout() {
   showSuccess("✅ Vous avez été déconnecté");
 }
 
-function initializeAdmin() {
+async function initializeAdmin() {
   setupTabNavigation();
-  loadAllData();
+  await loadAllData();
+  await loadImages();
   renderProjectsList();
   renderPortfolioList();
   setupImageSelectors();
-  loadImages();
 }
 
 // ============================================
@@ -145,23 +151,16 @@ async function loadAllData() {
 
 async function loadImages() {
   try {
-    // Try to get list of images from images directory
-    // Since we can't list directories statically, we'll look for common images
-    const commonImages = [
-      "ddm.png",
-      "Logo-UAF-jpg-1775320346381.jpeg",
-      "Sebkha-mairie-1775320181416.jpg",
-      "APISF.png",
-      "caritas.png",
-      "Asticude.png",
-      "Logo-UAF.jpg",
-      "fundación-sevilla-acoge.png",
-      "jammin.png",
-    ];
+    const response = await fetch(IMAGES_ENDPOINT);
+    if (!response.ok) {
+      throw new Error(`Impossible de charger les images : ${response.status}`);
+    }
 
-    images = commonImages.map((img) => `images/${img}`);
+    const data = await response.json();
+    images = Array.isArray(data) ? data : [];
   } catch (error) {
     console.error("Erreur lors du chargement des images:", error);
+    images = [];
   }
 }
 

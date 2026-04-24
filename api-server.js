@@ -9,11 +9,12 @@ const path = require("path");
 const url = require("url");
 
 const PORT = 3001;
+const IMAGE_DIR = path.join(__dirname, "images");
 
 const server = http.createServer((req, res) => {
   // Enable CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Handle OPTIONS requests
@@ -25,6 +26,26 @@ const server = http.createServer((req, res) => {
 
   // Parse URL
   const parsedUrl = url.parse(req.url, true);
+
+  // Images listing endpoint
+  if (parsedUrl.pathname === "/api/images" && req.method === "GET") {
+    try {
+      fs.mkdirSync(IMAGE_DIR, { recursive: true });
+      const filenames = fs.readdirSync(IMAGE_DIR);
+      const images = filenames
+        .filter((name) => !name.startsWith("."))
+        .map((name) => `images/${name}`);
+
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(images));
+    } catch (error) {
+      console.error("❌ Erreur lors de la lecture du dossier images:", error.message);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: false, error: error.message }));
+    }
+
+    return;
+  }
 
   // Save data endpoint
   if (parsedUrl.pathname === "/api/save-data" && req.method === "POST") {
@@ -92,6 +113,6 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`🚀 API Server démarré sur http://localhost:${PORT}`);
-  console.log(`📝 Endpoint: POST /api/save-data`);
+  console.log(`📝 Endpoints: GET /api/images, POST /api/save-data`);
   console.log(`💾 Les données seront sauvegardées dans les fichiers JSON\n`);
 });
