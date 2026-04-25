@@ -1624,6 +1624,22 @@ img {
     transform: scale(1.04);
 }
 
+/* Juste pour mettre la troisième photo de l'équipe au centre sur mobile */
+@media (max-width: 768px) {
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        gap: 18px;
+        justify-items: center;
+    }
+
+    .team-member:nth-child(3) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        max-width: 260px;
+    }
+}
+
 @media (max-width: 1200px) {
     .partners-grid {
         grid-template-columns: repeat(4, 1fr);
