@@ -378,8 +378,6 @@ document.addEventListener("DOMContentLoaded", function () {
       { name: "Partenaire 6", logo: "images/mzc.png" },
       { name: "Partenaire 7", logo: "images/oim.png" },
       { name: "Partenaire 8", logo: "images/ulcg-africa.png" },
-      { name: "Partenaire 9", logo: "images/innovate.png" },
-      { name: "Partenaire 10", logo: "images/innovate.png" },
     ];
 
     container.innerHTML = partners
