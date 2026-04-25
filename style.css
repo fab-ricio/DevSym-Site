@@ -1345,7 +1345,7 @@ img {
 
 .team-section .team-member {
     text-align: center;
-    max-width: 180px;
+    /* max-width: 180px; */
     position: relative;
     overflow: hidden;
     cursor: default;
