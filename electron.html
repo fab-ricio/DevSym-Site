@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevSym Desktop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f6fa;
+      color: #1f2937;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      color: #1f2937;
+    }
+    .button-row,
+    .panel {
+      margin-bottom: 16px;
+    }
+    button {
+      background: #1d4ed8;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      margin-right: 10px;
+    }
+    button.secondary {
+      background: #4b5563;
+    }
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    #logArea {
+      width: 100%;
+      min-height: 180px;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 10px;
+      padding: 12px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      font-family: Consolas, monospace;
+      font-size: 0.9rem;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .hint {
+      color: #4b5563;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>DevSym Desktop</h1>
+  <div class="button-row">
+    <button id="startBtn">Démarrer le site</button>
+    <button id="stopBtn" class="secondary">Arrêter le site</button>
+    <button id="openBtn" class="secondary">Ouvrir le site</button>
+  </div>
+
+  <div class="panel">
+    <label for="commitMessage">Message du commit Git</label>
+    <textarea id="commitMessage" placeholder="Écris le message du commit ici..."></textarea>
+    <div style="margin-top: 10px;">
+      <button id="gitBtn">Mettre à jour Git</button>
+    </div>
+    <p class="hint">Le commit sera ajouté, puis poussé vers la branche distante configurée.</p>
+  </div>
+
+  <div class="panel">
+    <label>Logs</label>
+    <div id="logArea">Prêt.</div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const openBtn = document.getElementById("openBtn");
+    const gitBtn = document.getElementById("gitBtn");
+    const commitMessage = document.getElementById("commitMessage");
+    const logArea = document.getElementById("logArea");
+
+    function appendLog(text) {
+      logArea.textContent += `\n${text}`;
+      logArea.scrollTop = logArea.scrollHeight;
+    }
+
+    async function runAction(action, button) {
+      button.disabled = true;
+      try {
+        const result = await action();
+        appendLog(result);
+      } catch (error) {
+        appendLog(`Erreur : ${error.message || error}`);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    startBtn.addEventListener("click", () => {
+      appendLog("Démarrage du site...");
+      runAction(() => window.electronAPI.startSite(), startBtn);
+    });
+
+    stopBtn.addEventListener("click", () => {
+      appendLog("Arrêt du site...");
+      runAction(() => window.electronAPI.stopSite(), stopBtn);
+    });
+
+    openBtn.addEventListener("click", () => {
+      appendLog("Ouverture du site dans le navigateur...");
+      runAction(() => window.electronAPI.openSite(), openBtn);
+    });
+
+    gitBtn.addEventListener("click", () => {
+      const message = commitMessage.value.trim();
+      if (!message) {
+        appendLog("Le message de commit est requis.");
+        return;
+      }
+      appendLog("Mise à jour Git en cours...");
+      runAction(() => window.electronAPI.gitUpdate(message), gitBtn);
+    });
+
+    window.addEventListener("site-log", (event) => {
+      appendLog(event.detail);
+    });
+  </script>
+</body>
+</html>

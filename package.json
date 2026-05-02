@@ -5,12 +5,15 @@
   "engines": {
     "node": "24.x"
   },
+  "main": "electron-main.js",
   "scripts": {
     "dev": "http-server -c-1 -p 3000",
     "start": "http-server -c-1 -p $PORT",
-    "api": "node api-server.js"
+    "api": "node api-server.js",
+    "desktop": "electron ."
   },
   "devDependencies": {
+    "electron": "^26.2.0",
     "http-server": "^14.1.1"
   },
   "dependencies": {
