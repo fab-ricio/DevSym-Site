@@ -5,11 +5,11 @@
 // Voir config.example.js pour les instructions
 
 const EMAILJS_SERVICE_ID =
-  window.EMAILJS_CONFIG?.SERVICE_ID || "YOUR_SERVICE_ID";
+  window.EMAILJS_CONFIG?.SERVICE_ID || "service_84ttemr";
 const EMAILJS_PUBLIC_KEY =
-  window.EMAILJS_CONFIG?.PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+  window.EMAILJS_CONFIG?.PUBLIC_KEY || "uMmHH5kV5jwu2OilT";
 const EMAILJS_TEMPLATE_ID =
-  window.EMAILJS_CONFIG?.TEMPLATE_ID || "contact_form";
+  window.EMAILJS_CONFIG?.TEMPLATE_ID || "template_24gp5h9";
 const EMAILJS_TO_EMAIL =
   window.EMAILJS_CONFIG?.TO_EMAIL || "coopdevsym1@gmail.com";
 

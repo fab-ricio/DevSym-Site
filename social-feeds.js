@@ -118,6 +118,12 @@ function renderFeed(platform, url) {
 
 // Fonction pour traiter le contenu YouTube
 function renderYouTubeContent(container, url) {
+  const placeholder = container.querySelector(".youtube-placeholder-2");
+  if (!placeholder) {
+    console.warn("Aucune zone de contenu YouTube trouvée dans", container);
+    return;
+  }
+
   let videoId = "";
   let channelId = "";
 
@@ -137,11 +143,11 @@ function renderYouTubeContent(container, url) {
   }
 
   if (videoId) {
-    renderYouTubeThumbnail(container, videoId);
+    renderYouTubeThumbnail(placeholder, videoId);
   } else if (channelId) {
-    renderLatestYouTubeChannelVideo(container, channelId, url);
+    renderLatestYouTubeChannelVideo(placeholder, channelId, url);
   } else {
-    container.innerHTML = `<h3>YouTube</h3><p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
+    placeholder.innerHTML = `<p><a href="${url}" target="_blank">Voir sur YouTube</a></p>`;
   }
 }
 
@@ -149,7 +155,6 @@ function renderYouTubeThumbnail(container, videoId) {
   const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   container.innerHTML = `
-    <h3>YouTube</h3>
     <a href="${videoUrl}" target="_blank" class="youtube-video-link">
       <img src="${thumbnailUrl}" alt="Dernière vidéo YouTube" style="width:100%; height:auto; display:block; border-radius: 14px;" />
     </a>
@@ -162,7 +167,7 @@ async function renderLatestYouTubeChannelVideo(
   channelId,
   channelUrl,
 ) {
-  container.innerHTML = `<h3>YouTube</h3><p>Chargement de la dernière vidéo...</p>`;
+  container.innerHTML = `<p>Chargement de la dernière vidéo...</p>`;
   const videoId = await fetchLatestYouTubeVideoId(channelId, channelUrl);
   if (videoId) {
     renderYouTubeThumbnail(container, videoId);
@@ -178,7 +183,6 @@ function renderYouTubeFallbackThumbnail(container, url) {
   const fallbackImage =
     "https://via.placeholder.com/1200x675.png?text=Dernière+vid%C3%A9o+YouTube";
   container.innerHTML = `
-    <h3>YouTube</h3>
     <a href="${url}" target="_blank" class="youtube-video-link">
       <img src="${fallbackImage}" alt="Vignette YouTube de secours" style="width:100%; height:auto; display:block; border-radius: 14px;" />
     </a>

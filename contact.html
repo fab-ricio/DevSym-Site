@@ -8,7 +8,7 @@
     <title>Contact — DevSym</title>
     <link rel="stylesheet" href="style.css" />
     <!-- EmailJS Library -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/index.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
             <div class="brand">
                 <a href="index.html" class="brand-link">
                     <img src="images/logo devsym.png" alt="DevSym logo" class="logo-img" />
-                    <span class="brand-text">Coopérative <br>DevSym</span></span>
+                    <span class="brand-text">Coopérative <br>DevSym</span>
                 </a>
             </div>
             <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation"
@@ -31,6 +31,7 @@
                 <a href="media.html">Médias</a>
                 <a href="projet.html">Projets</a>
                 <a href="portfolio.html">Portfolio</a>
+                <a href="podcast.html" class="nav-cta">Podcasts</a>
                 <a href="contact.html" class="btn">Contact</a>
             </nav>
         </div>
@@ -61,7 +62,7 @@
                         <p><strong>Téléphone :</strong> <a href="tel:+212617747277">+212 617 747 277</a></p> -->
 
                         <h3 style="margin-top:18px;">Envoyer un message</h3>
-                        <form action="#" method="post" class="contact-form" style="max-width:640px;">
+                        <form class="contact-form" onsubmit="return false;" style="max-width:640px;">
                             <label for="name">Nom</label>
                             <input id="name" name="name" type="text" required
                                 style="width:100%;padding:10px;margin:8px 0 14px;border:1px solid #ddd;border-radius:8px;" />
